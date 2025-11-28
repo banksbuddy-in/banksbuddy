@@ -202,7 +202,6 @@ p.abtdes {
   align-items: stretch;
 }
 
-
 .btnnss a {
   display: flex;
   align-items: center;
@@ -245,4 +244,69 @@ a.abtsn:hover {
 
 p.abtdes {
   padding: 2% 0 5%;
+}
+
+/* Services section */
+h1.shead {
+  font-size: 4rem;
+  margin-bottom: 3%;
+}
+
+div#Services {
+  padding: 0% 10% 4%;
+}
+
+.scont {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.scont div video {
+  width: 28rem;
+  padding-bottom: 3%;
+  border-radius: 10rem;
+}
+
+.scont div img {
+  width: 19rem;
+  border-radius: 7rem;
+  padding: 1% 7%;
+}
+
+.scont div {
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  padding: 0% 3% 2%;
+  border: 1px solid #4275ff;
+  align-items: flex-start;
+  box-shadow: 0px 0px 0px 0px #0869ff;
+  border-radius: 4rem;
+}
+
+.scont div h1 {
+  white-space: nowrap;
+}
+.div1,
+.div2 {
+  justify-content: flex-end;
+}
+.div2 h1 {
+  padding-right: 5%;
+}
+
+.scont div p {
+  color: black;
+}
+.scont div h1{
+  color: #0869ff;
+}
+.scont div {
+  cursor: pointer;
+}
+.scont div:hover {
+  box-shadow: -3.5px 1.75px 1px 1px #4275ff;
+  transition: all ease 0.2s;
 }

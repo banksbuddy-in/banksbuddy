@@ -2,6 +2,7 @@ import Marquee from "react-fast-marquee";
 import React from "react";
 import { MdArrowOutward, MdWhatsapp } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { Services } from "./Services";
 
 export const Hero = () => {
   const images = Array.from({ length: 10 }, (_, i) => `b${i + 1}.webp`);
@@ -18,7 +19,9 @@ export const Hero = () => {
         />
         {/* <img src="/shortabt.jpg" alt="shortabout" className="abtl" /> */}
         <div className="abtr">
-          <h1>ABOUT <span style={{color:"#ff451f"}}>US</span></h1>
+          <h1>
+            ABOUT <span style={{ color: "#ff451f" }}>US</span>
+          </h1>
           <p className="hdes">Your trusted partner in loans</p>
           <p className="abtdes">
             Banksbuddy Finance is committed to uplifting small, micro, and
@@ -34,7 +37,9 @@ export const Hero = () => {
             <Link className="abtsn" to="/about-us">
               Know More <MdArrowOutward />
             </Link>
-            <Link to="/services" className="abtsnaa">Services</Link>
+            <Link to="/services" className="abtsnaa">
+              Services
+            </Link>
           </div>
         </div>
       </div>
@@ -85,6 +90,7 @@ export const Hero = () => {
         </Marquee>
       </div>
       <ShortAbout />
+      <Services />
     </div>
   );
 };

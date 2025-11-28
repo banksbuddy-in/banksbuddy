@@ -8,6 +8,7 @@ import { LMachineryLoan } from "./components/LMachineryLoan";
 import { LEducationLoan } from "./components/LEducationLoan";
 import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
+import { MainServices } from "./components/MainServices";
 
 export const Dat = [
   {
@@ -28,7 +29,7 @@ export const Dat = [
   {
     path: "/services",
     label: "Services",
-    element: <Services />,
+    element: <MainServices />,
   },
   {
     path: "emi-calculator",

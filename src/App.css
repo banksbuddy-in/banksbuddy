@@ -262,3 +262,23 @@ p.number {
     flex-direction: row;
     align-items: center;
 }
+
+/* forgotten navbar animation */
+.nvanime{
+  transition:  all ease 0.2s;
+  display: flex;
+  gap: 3px;
+  flex-direction: column;
+}
+.nvanime:after{
+  content: '';
+  display: block;
+  width: 20%;
+  height: 1.6px;
+  background: black;
+  transition: width 0.3s;
+}
+.nvanime:hover::after{
+  background-color: #0869ff;
+  width: 60%;
+}
