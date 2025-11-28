@@ -1,0 +1,248 @@
+/* Hero CSS */
+img.rhrimg {
+  width: 100%;
+  border-radius: 6em 0 0 12em;
+}
+
+.rhr {
+  width: 50rem;
+}
+
+.herocont {
+  display: flex;
+  width: 100%;
+  padding: 1% 10%;
+  flex-direction: row-reverse;
+  gap: 4%;
+}
+
+h4.hr {
+  font-weight: 100;
+  font-size: 22px;
+  font-style: italic;
+}
+
+a.hrca {
+  color: white;
+  background: black;
+  padding: 2em 3em;
+  border-radius: 5em;
+}
+
+.btnss {
+  display: flex;
+  align-items: center;
+  gap: 0.67em;
+}
+
+a.hrc {
+  padding: 2em 3em;
+  border: 1px solid black;
+  border-radius: 5em;
+}
+
+.lhr {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 3%;
+  gap: 0.25%;
+}
+img.rhrimg {
+  width: 100%;
+  border-radius: 6em 0 0 12em;
+  padding: 3%;
+}
+
+.rhr {
+  width: 50rem;
+}
+
+h4.hr {
+  font-weight: 100;
+  font-size: 22px;
+  font-style: italic;
+}
+
+a.hrca {
+  color: white;
+  background: black;
+  padding: 1.67em 2.25em;
+  border: 1px solid white;
+  transition: all ease 0.2s;
+  border-radius: 5em;
+}
+
+.btnss {
+  display: flex;
+  align-items: center;
+  gap: 0.67em;
+}
+
+a.hrc {
+  padding: 1.67em 2.25em;
+  border: 1px solid black;
+  border-radius: 5em;
+  color: black;
+  transition: all ease 0.2s;
+}
+
+.lhr {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+a.hrc:hover {
+  color: white;
+  background: black;
+}
+
+a.hrca:hover {
+  filter: invert(1);
+}
+.lhr h1 {
+  font-size: 5rem;
+  color: #0869ff;
+  line-height: 100%;
+}
+
+.lhr h1 span {
+  color: #ff451f;
+}
+p.hdes {
+  font-size: 24px;
+  font-weight: 800;
+  background-clip: text;
+  background: linear-gradient(15deg, #3a87ff, #ff004e);
+  color: transparent;
+  background-clip: text;
+}
+
+p.pdes {
+  font-size: 17px;
+  margin-bottom: 4%;
+}
+a.hrc {
+  display: flex;
+  gap: 0.23em;
+  align-items: center;
+  flex-direction: row;
+}
+
+a.hrc span {
+  display: flex;
+  font-size: 30px;
+  font-weight: 100;
+}
+
+/* marquee */
+
+.marquee-container {
+  display: flex;
+  padding: 2% 10%;
+}
+
+.marquee-image {
+  width: 150px;
+  height: auto;
+  margin: 0 1rem;
+  border-radius: 0.5rem;
+}
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  display: block;
+  background: white;
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  z-index: 8;
+  box-shadow: 0 0 1em 1em white;
+}
+
+.marquee-container::after {
+  left: 86%;
+}
+
+/* About */
+video.abtl {
+  border-radius: 5rem 24em 27rem 43rem;
+  width: 28rem;
+  gap: 3em;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.shortAbt {
+  display: flex;
+  align-items: flex-start;
+  padding: 6% 10%;
+  gap: 3em;
+  flex-direction: row;
+}
+
+.abtr h1 {
+  color: #0869ff;
+  font-size: 5rem;
+  line-height: 100%;
+}
+
+p.abtdes {
+  font-size: 17px;
+  font-weight: 300;
+  display: flex;
+  padding: 2% 0 2%;
+  flex-direction: row;
+  text-align: justify;
+  margin-left: 4%;
+  gap: 1em;
+  align-items: stretch;
+}
+
+
+.btnnss a {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.btnnss {
+  display: flex;
+  gap: 0.67em;
+  align-items: center;
+}
+
+a.abtsn {
+  background: #ff451f;
+  padding: 1em 2em;
+  color: white;
+  border: 1px solid transparent;
+  transition: all ease 0.2s;
+}
+
+a.abtsnaa {
+  color: white;
+  padding: 1em 2rem;
+  background: #0869ff;
+  border: 1px solid transparent;
+  transition: all ease 0.2s;
+}
+
+a.abtsnaa:hover {
+  color: #0869ff;
+  background: white;
+  border: 1.5px solid #0869ff;
+}
+
+a.abtsn:hover {
+  background: white;
+  border: 1.5px solid #ff451f;
+  color: #ff451f;
+}
+
+p.abtdes {
+  padding: 2% 0 5%;
+}
