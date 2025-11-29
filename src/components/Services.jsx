@@ -9,7 +9,9 @@ export const Services = () => {
 
   return (
     <div id="Services">
-      <h1 className="shead">OUR SERVICES</h1>
+      <h1 className="shead">OUR SERVICES <br /> <span>Catering your needs with tailored products for financial actualization.
+
+</span></h1>
       <div className="scont">
         <div className="div1" onClick={() => BuddyNavigate("/personal-loan")}>
           <video src="/d1.mp4" autoPlay muted loop />

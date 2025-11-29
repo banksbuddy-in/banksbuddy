@@ -3,6 +3,8 @@ import React from "react";
 import { MdArrowOutward, MdWhatsapp } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Services } from "./Services";
+import { HeroEMI } from "./heroEMI";
+import { Reviews } from "./Reviews";
 
 export const Hero = () => {
   const images = Array.from({ length: 10 }, (_, i) => `b${i + 1}.webp`);
@@ -91,6 +93,8 @@ export const Hero = () => {
       </div>
       <ShortAbout />
       <Services />
+      <HeroEMI />
+      <Reviews />
     </div>
   );
 };
