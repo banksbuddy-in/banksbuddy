@@ -3,7 +3,7 @@ import React from "react";
 import { MdArrowOutward, MdWhatsapp } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Services } from "./Services";
-import { HeroEMI } from "./heroEMI";
+import { HeroEMI } from "./HeroEMI";
 import { Reviews } from "./Reviews";
 
 export const Hero = () => {
