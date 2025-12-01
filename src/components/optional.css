@@ -1,0 +1,126 @@
+Careers container .careers-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Search bar */
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Job cards */
+.job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.job-card {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Modal close button */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Apply button */
+.apply-button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-top: 15px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.apply-button:hover {
+  background: #0056b3;
+}
+.careers-container {
+  padding: 1% 10%;
+}
+
+.careers-container h1 {
+  font-size: 3em;
+  color: var(--bl);
+}
+
+.careers-container input.search-bar {
+  border-radius: 3rem;
+  font-size: 15px;
+  padding: 1.5% 3%;
+}
+
+.job-card {
+  border-radius: 3rem;
+  background: linear-gradient(270deg, #398cff75, #ffffff);
+  padding: 3% 5%;
+}
+
+.job-card h2 {
+  color: var(--bl);
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.job-card small {
+  margin-top: 2%;
+}
