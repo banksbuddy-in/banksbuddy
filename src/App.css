@@ -286,3 +286,107 @@ p.number {
 .navbar {
   background: linear-gradient(270deg, #398cff75, #ffffff);
 }
+
+/* Trusted Partners */
+.phed {
+  width: 100%;
+  text-align: center;
+}
+
+.phed h2 {
+  font-size: 7rem;
+  color: var(--bl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+div#partner {
+  padding: 2% 10%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.phed p {
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.phed h2::after {
+  content: " ";
+  display: block;
+  background: var(--bl);
+  height: 3px;
+  width: 20%;
+}
+
+.phed p {
+  margin: 2% 0;
+  padding: 0 8%;
+}
+
+.phed button {
+  padding: 2% 3%;
+  font-size: 20px;
+  border-radius: 4rem;
+  border: 1px solid transparent;
+  background: var(--bl);
+  color: white;
+  cursor: pointer;
+  margin: 1% 0;
+}
+
+.phed button:hover {
+  background: transparent;
+  color: var(--bl);
+  border: 1px solid var(--bl);
+}
+
+h1.ph1 {
+}
+
+.tpt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6% 0;
+  flex-direction: column;
+}
+
+.tpt h1.ph1 {
+  font-size: 6rem;
+  color: var(--bl);
+}
+
+.tpt p {
+  font-size: 20px;
+  padding: 0 16%;
+  text-align: center;
+}
+
+.emptsaes {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.empt h1 {
+  text-align: center;
+  font-size: 6rem;
+  color: var(--bl);
+}
+
+.emptsaes img {
+  width: 31rem;
+  margin: 2%;
+  border-radius: 4rem;
+  padding: 3%;
+  background: #ffc0cb52;
+}
