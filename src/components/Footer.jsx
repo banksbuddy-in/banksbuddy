@@ -2,6 +2,7 @@ import React from "react";
 import { FaInstagram, FaFacebook, FaWhatsapp } from "react-icons/fa";
 import { MdArrowOutward } from "react-icons/md";
 import { FaPhoneVolume } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
     const productName = "Loan Support";
@@ -64,19 +65,22 @@ Warm regards,
           <p className="fct">Services</p>
           <ul>
             <li>
-              <a href="/">Personal Loan</a>
+              <Link to="/services/personal-loan">Personal Loan</Link>
             </li>
             <li>
-              <a href="/">Home Loan </a>
+              <Link to="/services/home-loan">Home Loan </Link>
             </li>
             <li>
-              <a href="/">Education Loan</a>
+              <Link to="/services/education-loan">Education Loan</Link>
             </li>
             <li>
-              <a href="/">Business Loan</a>
+              <Link to="/services/business-loan">Business Loan</Link>
             </li>
             <li>
-              <a href="/">Machinery Loan</a>
+              <Link to="/services/machinery-loan">Auto/Machinery Loan</Link>
+            </li>
+            <li>
+              <Link to="/services/loan-against-property">Loan Against Property</Link>
             </li>
           </ul>
         </div>

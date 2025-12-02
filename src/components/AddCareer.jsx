@@ -35,7 +35,7 @@ export const AddCareer = () => {
   };
 
   return (
-    <div style={{ maxWidth: "550px", margin: "auto", padding: "20px" }}>
+    <div id="ADMINFORCAREERS">
       <h2>Add New Career</h2>
 
       <form onSubmit={handleSubmit}>
@@ -72,7 +72,7 @@ export const AddCareer = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <button type="submit" style={{ marginTop: "10px" }}>
+        <button type="submit" className="BUTTOn">
           Add Career
         </button>
       </form>
