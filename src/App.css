@@ -255,30 +255,34 @@ footer.foot {
   padding-bottom: 2%;
 }
 p.number {
-    margin: 3% 0;
-    margin-bottom: 0;
-    display: flex;
-    gap: 0.5em;
-    flex-direction: row;
-    align-items: center;
+  margin: 3% 0;
+  margin-bottom: 0;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: row;
+  align-items: center;
 }
 
 /* forgotten navbar animation */
-.nvanime{
-  transition:  all ease 0.2s;
+.nvanime {
+  transition: all ease 0.2s;
   display: flex;
   gap: 3px;
   flex-direction: column;
 }
-.nvanime:after{
-  content: '';
+.nvanime:after {
+  content: "";
   display: block;
   width: 20%;
   height: 1.6px;
   background: black;
   transition: width 0.3s;
 }
-.nvanime:hover::after{
+.nvanime:hover::after {
   background-color: #0869ff;
   width: 60%;
+}
+.herocont,
+.navbar {
+  background: linear-gradient(270deg, #398cff75, #ffffff);
 }

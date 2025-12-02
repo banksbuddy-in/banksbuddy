@@ -274,6 +274,26 @@ div#Services {
   padding: 1% 7%;
 }
 
+p.kn {
+  color: var(--rd);
+}
+
+a.kn {
+  color: white;
+  background: var(--rd);
+  padding: 0.25em 1em;
+  cursor: pointer;
+  margin: 3% 0;
+  border-radius: 10px;
+  transition: all ease 0.2s;
+  border: 1px solid transparent;
+}
+
+a.kn:hover {
+  background: transparent;
+  color: var(--rd);
+  border: 1px solid var(--rd);
+}
 .scont div {
   text-align: justify;
   display: flex;
@@ -381,20 +401,295 @@ img.her {
   color: var(--rd);
 }
 
-/* reviews button */
+/* Externel  */
+.herocont,
+.navbar {
+  background: linear-gradient(270deg, #398cff75, #ffffff);
+}
+
+/* reviews */
 
 h1.rehed {
-    font-size: 3rem;
-    color: var(--bl);
-    text-align: center;
+  font-size: 3rem;
+  color: var(--bl);
+  text-align: center;
 }
 
 div#review {
-    padding: 3% 10% 7%;
+  padding: 3% 10% 7%;
 }
 
 p.repd {
-    padding: 0px 20%;
-    text-align: center;
-    font-size: 20px;
+  padding: 0px 20%;
+  text-align: center;
+  font-size: 20px;
+}
+/* 404 Error */
+div#error404 {
+  text-align: center;
+  padding: 4%;
+}
+
+#error404 h1 {
+  font-size: 10rem;
+  line-height: 100%;
+  color: #8ba8ff;
+}
+
+#error404 p {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* emi calculator */
+h2.memih {
+  color: var(--bl);
+  font-size: 3rem;
+  margin-bottom: 1%;
+}
+
+div#emicalc {
+  padding: 4% 10%;
+}
+
+.emic1.emic1inactive {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1em;
+  transition: all ease 0.2s;
+}
+
+.emic1.emic1inactive div {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  width: 61%;
+  margin-left: 3%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0% 0% 0%;
+}
+
+.emic1.emic1inactive button {
+  padding: 1.6em 3em;
+  background: var(--bl);
+  border-radius: 5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 1.25rem;
+  border: 1px solid transparent;
+}
+
+.emic1.emic1inactive button:hover {
+  background: transparent;
+  border: 1px solid var(--bl);
+  color: var(--bl);
+}
+
+.emic1.emic1inactive input {
+  padding: 4%;
+  border-radius: 4em;
+  border: 1px solid black;
+}
+
+.emic1.emic1inactive label {
+  font-size: 1em;
+}
+
+/* active emi */
+div#emicalc {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.emic1 {
+  padding: 2% 4%;
+  background: linear-gradient(293deg, #398cff75, #ffffff);
+  border-radius: 5rem;
+}
+
+.emic1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1em;
+  transition: all ease 0.2s;
+}
+
+.emic1 div {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  width: 100%;
+  margin-left: 3%;
+  flex-direction: row;
+  padding: 0% 0% 0%;
+  justify-content: space-between;
+}
+
+.emic1 button {
+  padding: 1.6em 3em;
+  background: var(--bl);
+  border-radius: 5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 1.25rem;
+  border: 1px solid transparent;
+  margin-top: 9%;
+}
+
+.emic1 button:hover {
+  background: transparent;
+  border: 1px solid var(--bl);
+  color: var(--bl);
+}
+
+.emic1 input {
+  padding: 4%;
+  border-radius: 4em;
+  border: 1px solid black;
+}
+
+.emic1 label {
+  font-size: 1em;
+}
+
+.emic1 h2 {
+  font-size: 2em;
+}
+div#emicalc {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.emic1 {
+  padding: 2% 4%;
+  background: linear-gradient(293deg, #398cff75, #ffffff);
+  border-radius: 4rem;
+}
+
+.emic1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 61%;
+  gap: 1em;
+  transition: all ease 0.2s;
+}
+
+.emic1 div {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+  width: 100%;
+  margin-left: 3%;
+  flex-direction: row;
+  padding: 0% 0% 0%;
+  justify-content: space-between;
+}
+
+.emic1 button {
+  padding: 1.6em 3em;
+  background: var(--bl);
+  border-radius: 5rem;
+  cursor: pointer;
+  color: white;
+  font-size: 1.25rem;
+  border: 1px solid transparent;
+  margin-top: 9%;
+}
+
+.emic1 button:hover {
+  background: transparent;
+  border: 1px solid var(--bl);
+  color: var(--bl);
+}
+
+.emic1 input {
+  padding: 4%;
+  border-radius: 4em;
+  border: 1px solid black;
+}
+
+.emic1 label {
+  font-size: 1em;
+}
+
+.emic1 h2 {
+  font-size: 2em;
+}
+
+.emir2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.emic2.emic2active {
+  padding: 2% 5%;
+  background: linear-gradient(45deg, #ff7e9559, transparent);
+  border-radius: 4rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.emir1 {
+  background: var(--bl);
+  color: white;
+  border-radius: 2em;
+  padding: 3%;
+}
+
+.emir2c1 {
+  padding: 2% 17%;
+  background: white;
+  border-radius: 4rem;
+}
+
+.emir2c2 div {
+  background: white;
+  padding: 9% 7%;
+  border-radius: 2rem;
+}
+
+.emir2c2 {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.25em;
+  justify-content: space-between;
+}
+.emir2c2 div p {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-direction: row;
+}
+
+.emir3 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: white;
+  padding: 1% 3%;
+  font-size: 21px;
+  border-radius: 4rem;
+  gap: 0.5em;
+}
+
+.p {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.p span {
+  font-weight: 400;
+}
+div#emicalc {
+    gap: 1em;
 }

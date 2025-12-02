@@ -8,6 +8,7 @@
   text-decoration: none;
   list-style: none;
   scroll-behavior: smooth;
+  transition:  all ease 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
 ::-webkit-scrollbar,
@@ -17,4 +18,8 @@
 :root {
   --bl: #0869ff;
   --rd: rgb(255, 69, 31);
+}
+
+:focus-visible,:focus {
+  outline: none;
 }
