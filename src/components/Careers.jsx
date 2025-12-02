@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
-import "./optional.css"
+import "./optional.css";
 
 export const Careers = () => {
   const [careers, setCareers] = useState([]);
@@ -53,16 +53,20 @@ export const Careers = () => {
               onClick={() => setSelectedJob(job)}
               className="job-card"
             >
-              <h2>{job.title}</h2>
-              <p>
-                {job.description.length > 150
-                  ? job.description.substring(0, 150) + "..."
-                  : job.description}
-              </p>
-              <p>
-                <strong>Skills:</strong> {job.skills}
-              </p>
-              <small>Click to view full details →</small>
+              <img src="./onlyicon.png" alt="onlyicon" />
+              <div className="cnt">
+                {" "}
+                <h2>{job.title}</h2>
+                <p>
+                  {job.description.length > 150
+                    ? job.description.substring(0, 150) + "..."
+                    : job.description}
+                </p>
+                <p>
+                  <strong>Skills:</strong> {job.skills}
+                </p>
+                <small>Click to view full details →</small>
+              </div>
             </div>
           ))
         )}

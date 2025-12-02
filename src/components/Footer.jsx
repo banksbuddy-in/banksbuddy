@@ -4,6 +4,34 @@ import { MdArrowOutward } from "react-icons/md";
 import { FaPhoneVolume } from "react-icons/fa6";
 
 export const Footer = () => {
+    const productName = "Loan Support";
+  const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
+
+  const body = `Hello BanksBuddy Team,
+
+[your message here]
+
+Name: [Full Name]
+Email: [your.email@example.com]
+Phone Number: [Country code + number]
+Location: [City, State, Country]
+Product / Service: ${productName}
+Employment Status: [Salaried / Self-employed / Other]
+If Loan — Loan Amount Required: [Amount or N/A]
+Preferred Contact Method: [Email / Phone]
+Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
+
+Brief Message / Additional Details:
+[Short paragraph describing purpose / urgency / additional context]
+
+
+Thank you for your time.
+Warm regards,
+[Your Full Name]`;
+
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
   return (
     <footer className="foot">
       <img src="onlyi.png" alt="BanksBuddy Logo" />
@@ -18,7 +46,7 @@ export const Footer = () => {
             <FaPhoneVolume /> +91-63779 56633
           </p>
           <div className="btns">
-            <a className="chat" href="https://wa.me/+917723926058">
+            <a className="chat" href="https://wa.me/+916377956633">
               Chat with us
             </a>
             <a
@@ -72,7 +100,7 @@ export const Footer = () => {
             Trusted Partners
           </a>
 
-          <a href="/https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!" className="fct">
+          <a href={gmailHref} target="_blank" className="fct">
             Contact Us
           </a>
         </div>

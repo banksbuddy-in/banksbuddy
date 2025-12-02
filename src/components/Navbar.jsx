@@ -2,6 +2,35 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+  const productName = "Loan Support";
+  const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
+
+  const body = `Hello BanksBuddy Team,
+
+[your message here]
+
+Name: [Full Name]
+Email: [your.email@example.com]
+Phone Number: [Country code + number]
+Location: [City, State, Country]
+Product / Service: ${productName}
+Employment Status: [Salaried / Self-employed / Other]
+If Loan — Loan Amount Required: [Amount or N/A]
+Preferred Contact Method: [Email / Phone]
+Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
+
+Brief Message / Additional Details:
+[Short paragraph describing purpose / urgency / additional context]
+
+
+Thank you for your time.
+Warm regards,
+[Your Full Name]`;
+
+  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+
   return (
     <nav className="navbar">
       <a href="/" className="logo">
@@ -9,25 +38,53 @@ export const Navbar = () => {
       </a>
       <ul className="navlist">
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/">Home</Link>
+          <Link className="nvanime" style={{ color: "black" }} to="/">
+            Home
+          </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/about-us">About</Link>
+          <Link className="nvanime" style={{ color: "black" }} to="/about-us">
+            About
+          </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/services">Services</Link>
+          <Link className="nvanime" style={{ color: "black" }} to="/services">
+            Services
+          </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/careers">Careers</Link>
+          <Link className="nvanime" style={{ color: "black" }} to="/careers">
+            Careers
+          </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/trusted-partner">Partners</Link>
+          <Link
+            className="nvanime"
+            style={{ color: "black" }}
+            to="/trusted-partner"
+          >
+            Partners
+          </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!">Contact Us</Link>
+          <a
+            className="nvanime"
+            style={{ color: "black" }}
+            href={gmailHref}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contact Us
+          </a>
         </li>
         <li>
-          <Link className="nvanime" style={{color:"black"}} to="/emi-calculator">EMI Calculator</Link>
+          <Link
+            className="nvanime"
+            style={{ color: "black" }}
+            to="/emi-calculator"
+          >
+            EMI Calculator
+          </Link>
         </li>
         <li className="nbtn" style={{ color: "white" }}>
           <Link className="btns" to="https://wa.me/+916377956633">
