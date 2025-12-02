@@ -8,6 +8,9 @@ import ServicePage from "./components/ServicePage";
 import { TrustedPartner } from "./components/TrustedPartner";
 import { AddCareer } from "./components/AddCareer";
 import { Careers } from "./components/Careers";
+import { ConsulatationForm } from "./components/ConsulatationForm";
+import AdminTable from "./components/AdminTable";
+import { AdminReviews } from "./components/AdminReviews";
 
 export const Dat = [
   {
@@ -55,4 +58,17 @@ export const Dat = [
     label: "Add Career",
     element: <AddCareer />,
   },
+  {
+    path: "/consultation",
+    element: <ConsulatationForm />,
+  },
+  {
+    path: "/admintable",
+    label: "Admin Table",
+    element: <AdminTable />,
+  },{
+    path: "/admin-reviews",
+    label: "Admin Reviews",
+    element: <AdminReviews />,
+  }
 ];

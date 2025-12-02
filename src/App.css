@@ -387,3 +387,24 @@ div#partner {
   padding: 3%;
   background: #ffc0cb52;
 }
+
+/* reviews */
+.revslist button {
+    filter: invert(1);
+}
+.revslist button {
+    filter: invert(1);
+}
+
+.revcardsa {
+    padding: 3% 12%;
+    cursor: grab;
+}
+
+.revslist p {
+    text-align: justify;
+    margin-bottom: 2%;
+}
+.revslist h1 {
+    color: var(--bl);
+}

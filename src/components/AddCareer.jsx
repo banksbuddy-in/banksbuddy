@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { db } from "../firebase";
 import { ref, push } from "firebase/database";
+import './AddCareer.css'
 
 export const AddCareer = () => {
   const [title, setTitle] = useState("");
@@ -35,12 +36,13 @@ export const AddCareer = () => {
   };
 
   return (
-    <div id="ADMINFORCAREERS">
-      <h2>Add New Career</h2>
+    <div className="add-career">
+      <h2 className="ac-title">Add New Career</h2>
 
-      <form onSubmit={handleSubmit}>
-        <label>Job Title</label>
+      <form className="ac-form" onSubmit={handleSubmit}>
+        <label className="ac-label">Job Title</label>
         <input
+          className="ac-input"
           type="text"
           placeholder="e.g. Frontend Developer"
           value={title}
@@ -48,16 +50,18 @@ export const AddCareer = () => {
           required
         />
 
-        <label>Job Description</label>
+        <label className="ac-label">Job Description</label>
         <textarea
+          className="ac-textarea"
           placeholder="Describe roles and responsibilities..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
 
-        <label>Skills Required</label>
+        <label className="ac-label">Skills Required</label>
         <input
+          className="ac-input"
           type="text"
           placeholder="React, JS, API handling"
           value={skills}
@@ -65,19 +69,20 @@ export const AddCareer = () => {
           required
         />
 
-        <label>Message from Recruiter</label>
+        <label className="ac-label">Message from Recruiter</label>
         <textarea
+          className="ac-textarea"
           placeholder="What would you like to tell applicants?"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <button type="submit" className="BUTTOn">
+        <button type="submit" className="ac-button">
           Add Career
         </button>
       </form>
 
-      {status && <p>{status}</p>}
+      {status && <p className="ac-status">{status}</p>}
     </div>
   );
 };

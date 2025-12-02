@@ -48,6 +48,11 @@ Warm regards,
           </Link>
         </li>
         <li>
+          <Link className="nvanime" to="/consultation" style={{color:"black"}}>
+          Consultation
+          </Link>
+        </li>
+        <li>
           <Link className="nvanime" style={{ color: "black" }} to="/services">
             Services
           </Link>

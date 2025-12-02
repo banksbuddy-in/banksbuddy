@@ -1,0 +1,66 @@
+.add-career {
+  max-width: 760px;
+  margin: 18px auto;
+  padding: 14px;
+}
+.ac-title {
+  margin-bottom: 12px;
+}
+.ac-form {
+  display: grid;
+  gap: 10px;
+}
+.ac-label {
+  font-weight: 600;
+}
+.ac-input,
+.ac-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.ac-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.ac-button {
+  display: inline-block;
+  padding: 10px 14px;
+  background: #0b78e3;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ac-button:hover {
+  opacity: 0.95;
+}
+.ac-status {
+  margin-top: 10px;
+  font-weight: 600;
+}
+h2.ac-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 2% 0;
+  color: var(--bl);
+}
+
+form.ac-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+button.ac-button {
+  padding: 3% 6%;
+  border-radius: 3rem;
+  width: 26%;
+}
+
+.ac-form label {
+  font-size: 14px;
+  font-weight: 300;
+}
