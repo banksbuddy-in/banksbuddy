@@ -10,7 +10,7 @@ import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
 import { MainServices } from "./components/MainServices";
 import { TrustedPartner } from "./components/TrustedPartner";
-import { AddCareer } from "./components/addCareer";
+import { AddCareer } from "./components/AddCareer";
 import { Careers } from "./components/Careers";
 
 export const Dat = [
