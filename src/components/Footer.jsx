@@ -117,11 +117,11 @@ Warm regards,
               <FaInstagram />
             </a>
           </li>
-          {/* <li>
-            <a href="/">
+          <li>
+            <a href="https://www.facebook.com/share/1AJUxAHeHV/">
               <FaFacebook />
             </a>
-          </li> */}
+          </li>
           <li>
             <a href="https://wa.me/+916377956633">
               <FaWhatsapp />

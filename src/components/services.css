@@ -98,7 +98,7 @@ div#services {
 
 #services h1 {
   font-size: 4rem;
-  color: var(--bl);
+  color: var(--darkbl);
 }
 
 a.service-card {
@@ -138,7 +138,7 @@ div#services {
 
 #services h1 {
   font-size: 4rem;
-  color: var(--bl);
+  color: var(--darkbl);
 }
 
 a.service-card {
@@ -306,4 +306,31 @@ a.apply-btn {
   border-left: none;
   border-radius: 0rem 7rem 7rem 0rem;
   box-shadow: 98px 0px 0px 0px var(--bl);
+}
+.scont div,
+.div1,
+.div2 {
+  display: flex;
+  justify-content: center;
+}
+.service-card video,
+.service-card img {
+  width: 100%;
+  border-radius: 2rem;
+  margin-bottom: 4%;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0em;
+  justify-content: center;
+}
+.service-card.spec {
+  max-width: 22%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }

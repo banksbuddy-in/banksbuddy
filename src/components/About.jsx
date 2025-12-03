@@ -29,7 +29,7 @@ export const About = () => {
         <img src="ab1.jpg" alt="About BanksBuddy" />
       </div>
       <div className="a2">
-        <img src="/vision.avif" alt="vison" />
+        <video src="/mnv.mp4" autoPlay muted loop />
         <div className="a2ct">
           <p className="a2cts">Our Guiding Principles</p>
           <h4>Mission and Vision</h4>
@@ -62,7 +62,7 @@ export const About = () => {
         <div className="a3imgs">
           {[
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23, 24, 25, 26,
+            20, 21, 22, 23, 24, 25, 26,27,28
           ].map((num) => (
             <img key={num} src={`a${num}.webp`} alt={`Partner ${num}`} />
           ))}

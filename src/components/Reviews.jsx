@@ -40,7 +40,7 @@ export const Reviews = () => {
 
   return (
     <div id="review">
-      <h1 className="rehed">Reviews & Testimonials</h1>
+      <h1 className="rehed">Testimonials</h1>
       <p className="repd">
         Our financial services empower individuals and businesses to achieve
         their dreams with expert financial solutions.

@@ -60,7 +60,7 @@ img.rhrimg {
 }
 
 h4.hr {
-  font-weight: 100;
+  font-weight: 200;
   font-size: 22px;
   font-style: italic;
 }
@@ -460,7 +460,9 @@ div#emicalc {
   transition: all ease 0.2s;
 }
 
-.emic1.emic1inactive div {
+.memiint,
+.memitenu,
+.memiprin {
   display: flex;
   gap: 0.25em;
   align-items: center;
@@ -517,7 +519,9 @@ div#emicalc {
   transition: all ease 0.2s;
 }
 
-.emic1 div {
+.memiint,
+.memiprin,
+.memitenu {
   display: flex;
   gap: 0.25em;
   align-items: center;
@@ -536,7 +540,6 @@ div#emicalc {
   color: white;
   font-size: 1.25rem;
   border: 1px solid transparent;
-  margin-top: 9%;
 }
 
 .emic1 button:hover {
@@ -578,7 +581,9 @@ div#emicalc {
   transition: all ease 0.2s;
 }
 
-.emic1 div {
+.memiint,
+.memiprin,
+.memitenu {
   display: flex;
   gap: 0.25em;
   align-items: center;
@@ -597,7 +602,7 @@ div#emicalc {
   color: white;
   font-size: 1.25rem;
   border: 1px solid transparent;
-  margin-top: 9%;
+  margin-top: 2%;
 }
 
 .emic1 button:hover {
@@ -691,5 +696,101 @@ div#emicalc {
   font-weight: 400;
 }
 div#emicalc {
-    gap: 1em;
+  gap: 1em;
+}
+/* improvments */
+ul.navlist {
+  position: relative;
+  z-index: 34;
+}
+ul.navlist {
+  position: relative;
+  color: white;
+  z-index: 34;
+}
+
+.navlist.suv {
+  position: absolute;
+  top: 0;
+  width: 52%;
+  height: 19%;
+  background: var(--darkbl);
+  right: 6%;
+  border-radius: 8rem;
+}
+
+.navlist.suv::after {
+  content: "";
+  display: block;
+  background: var(--darkbl);
+  height: 7rem;
+  width: 28%;
+  border-radius: 0rem;
+  position: absolute;
+  rotate: -19deg;
+  top: -29%;
+  left: -2.09899898%;
+}
+a.nvanime {
+  color: white;
+}
+
+a.btns {
+  color: black;
+  font-weight: 500;
+}
+.scont div video {
+  width: 20rem;
+}
+
+.scont div img {
+  width: 20rem;
+}
+.hel p {
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-align: justify;
+}
+.scont div,
+.div1,
+.div2 {
+  display: flex;
+  justify-content: center;
+}
+/* Experimental EMI */
+section.smemi1,
+section.smemi2 {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  flex-direction: row;
+}
+
+.memiprin {
+  justify-content: flex-start;
+  gap: 2em;
+}
+
+.range-row input[type="number"] {
+  height: 4em;
+  padding-left: 36%;
+}
+.memiint,
+.memitenu {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.emic1 input[type="range"] {
+  padding: 1%;
+  width: 49%;
+  height: 1em;
+}
+.emic1 input[type="range"] {
+  padding: 0;
+  width: 53%;
+}
+
+/* experimental about */
+.a2 video {
+    width: 45%;
 }

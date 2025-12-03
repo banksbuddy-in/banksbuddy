@@ -1,9 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import "./components.css";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Dat } from "./Route";
+import { FaWhatsapp } from "react-icons/fa6";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path={e.path} element={e.element} key={e.label} />
           ))}
         </Routes>
+        <Link to="https://wa.me/+916377956633" className="ablink"><FaWhatsapp /></Link>
         <Footer />
       </BrowserRouter>
     </div>

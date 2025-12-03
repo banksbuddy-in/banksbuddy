@@ -146,7 +146,7 @@ Careers container .careers-container {
 #about h1 {
   text-align: center;
   font-size: 7rem;
-  color: var(--bl);
+  color: var(--darkbl);
 }
 
 div#about {

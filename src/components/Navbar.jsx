@@ -33,39 +33,39 @@ Warm regards,
 
   return (
     <nav className="navbar">
+      <div className="navlist suv"></div>
       <a href="/" className="logo">
         <img src="/logo1.png" alt="Banks Buddy" />
       </a>
       <ul className="navlist">
         <li>
-          <Link className="nvanime" style={{ color: "black" }} to="/">
+          <Link className="nvanime"  to="/">
             Home
           </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{ color: "black" }} to="/about-us">
+          <Link className="nvanime"  to="/about-us">
             About
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link className="nvanime" to="/consultation" style={{color:"black"}}>
           Consultation
           </Link>
-        </li>
+        </li> */}
         <li>
-          <Link className="nvanime" style={{ color: "black" }} to="/services">
+          <Link className="nvanime"  to="/services">
             Services
           </Link>
         </li>
         <li>
-          <Link className="nvanime" style={{ color: "black" }} to="/careers">
+          <Link className="nvanime"  to="/careers">
             Careers
           </Link>
         </li>
         <li>
           <Link
             className="nvanime"
-            style={{ color: "black" }}
             to="/trusted-partner"
           >
             Partners
@@ -74,7 +74,6 @@ Warm regards,
         <li>
           <a
             className="nvanime"
-            style={{ color: "black" }}
             href={gmailHref}
             target="_blank"
             rel="noopener noreferrer"
@@ -82,7 +81,7 @@ Warm regards,
             Contact Us
           </a>
         </li>
-        <li>
+        {/* <li>
           <Link
             className="nvanime"
             style={{ color: "black" }}
@@ -90,8 +89,8 @@ Warm regards,
           >
             EMI Calculator
           </Link>
-        </li>
-        <li className="nbtn" style={{ color: "white" }}>
+        </li> */}
+        <li className="nbtn" style={{ color: "black" }}>
           <Link className="btns" to="https://wa.me/+916377956633">
             Chat with us
           </Link>

@@ -53,7 +53,7 @@ export const Careers = () => {
               onClick={() => setSelectedJob(job)}
               className="job-card"
             >
-              <img src="./onlyicon.png" alt="onlyicon" />
+              {/* <img src="./onlyicon.png" alt="onlyicon"   /> */}
               <div className="cnt">
                 {" "}
                 <h2>{job.title}</h2>

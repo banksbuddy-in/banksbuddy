@@ -2,6 +2,7 @@ const services = [
 	{
 		id: "personal_loan",
 		title: "Personal Loan",
+		svimage:"/d1.mp4",
 		overview: "Unsecured personal loans for salaried and certain self-employed profiles.",
 		eligibility: [
 			"Age: 21-80 Years",
@@ -31,6 +32,7 @@ const services = [
 	{
 		id: "home_loan",
 		title: "Home Loan",
+		svimage:"/d6.jpg",
 		overview: "Loans for purchase, construction, balance transfer, self-construction, refinance and builder funding.",
 		eligibility: {
 			salaried: ["Age: 21 to 65 years", "Minimum salary: ₹10,000 p.m.", "Cash salary accepted / Non-income proof accepted"],
@@ -78,6 +80,7 @@ const services = [
 	{
 		id: "business_loan",
 		title: "Business Loan",
+		svimage:"/d2.jpg",
 		overview: "Working capital and term loans for businesses (manufacturing, trading, services).",
 		eligibility: [
 			"Self-employed individuals, proprietors, private ltd. companies and partnership firms",
@@ -95,6 +98,7 @@ const services = [
 	{
 		id: "auto_loan",
 		title: "Auto Loan (and Refinance)",
+		svimage:"/d5.jpg",
 		overview: "Loans for new/used vehicles and refinance of existing vehicle loans.",
 		eligibility: [
 			"Age: 21 to below 65 years",
@@ -121,6 +125,7 @@ const services = [
 		id: "loan_against_property",
 		title: "Loan Against Property (LAP)",
 		overview: "Secured loan against residential or commercial property.",
+		svimage:"/d3.jpg",
 		documents: {
 			salaried: [
 				"Aadhar Card, PAN Card",
@@ -141,6 +146,7 @@ const services = [
 	{
 		id: "education_loan",
 		title: "Education Loan (Domestic & International)",
+		svimage:"/d4.jpg",
 		overview: "Finance for students pursuing domestic or international courses.",
 		studentChecklist: [
 			"ID proof (PAN, Driving License, Voter ID, Aadhar). Passport mandatory for abroad courses. Form 60 if PAN not available.",

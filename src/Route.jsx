@@ -11,6 +11,8 @@ import { Careers } from "./components/Careers";
 import { ConsulatationForm } from "./components/ConsulatationForm";
 import AdminTable from "./components/AdminTable";
 import { AdminReviews } from "./components/AdminReviews";
+import { Insurance } from "./components/Insurance";
+import { CibilScoreCheck } from "./components/CibilScoreCheck";
 
 export const Dat = [
   {
@@ -54,7 +56,7 @@ export const Dat = [
     element: <Careers />,
   },
   {
-    path: "/admin",
+    path: "/admin-career",
     label: "Add Career",
     element: <AddCareer />,
   },
@@ -70,5 +72,15 @@ export const Dat = [
     path: "/admin-reviews",
     label: "Admin Reviews",
     element: <AdminReviews />,
+  },
+  {
+    path:"/insurance-assistance",
+    label:"Insurance Assistance",
+    element:<Insurance/>
+  },
+  {
+    path:"/cibil-score-check",
+    label:"CiBil Score Check",
+    element:<CibilScoreCheck/>
   }
 ];
