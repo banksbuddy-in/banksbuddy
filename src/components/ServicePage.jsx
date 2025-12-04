@@ -42,10 +42,10 @@ export const ServicePage = () => {
 
   if (!svc) {
     return (
-      <div className="service-page">
-        <h2>Service not found</h2>
-        <p>No service matches the requested page.</p>
-        <Link to="/services">Back to Services</Link>
+      <div className="service-page not-found">
+        <h2 className="service-not-foundh">Service not found</h2>
+        <p className="service-not-foundp">No service matches the requested page.</p>
+        <Link className="Svnf" to="/services">Back to Services</Link>
       </div>
     );
   }

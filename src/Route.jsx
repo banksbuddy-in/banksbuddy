@@ -14,6 +14,7 @@ import { AdminReviews } from "./components/AdminReviews";
 import { Insurance } from "./components/Insurance";
 import { CibilScoreCheck } from "./components/CibilScoreCheck";
 import { UnderDev } from "./components/UnderDev";
+import { Admin } from "./components/Admin";
 
 export const Dat = [
   {
@@ -66,7 +67,7 @@ export const Dat = [
     element: <ConsulatationForm />,
   },
   {
-    path: "/admintable",
+    path: "/admin-table",
     label: "Admin Table",
     element: <AdminTable />,
   },
@@ -89,5 +90,9 @@ export const Dat = [
     path: "/udc",
     label: "Under Development",
     element: <UnderDev />,
-  },
+  },{
+    path: "/admin",
+    label: "Admin",
+    element: <Admin />,
+  }
 ];

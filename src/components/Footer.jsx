@@ -90,22 +90,22 @@ Warm regards,
           <p className="fct">Special Services</p>
           <ul>
             <li>
-              <Link className="fct" to="/services/personal-loan">
-                Personal Loan
+              <Link className="fct" to="/consultation">
+                Financial Consultation
               </Link>
             </li>
             <li>
-              <Link className="fct" to="/services/personal-loan">
-                Personal Loan
+              <Link className="fct" to="/insurance-assistance">
+                Insurance Assistance
               </Link>
             </li>
             <li>
-              <Link className="fct" to="/services/personal-loan">
-                Personal Loan
+              <Link className="fct" to="/emi-calculator">
+                EMI Calculator
               </Link>
             </li>
             <li>
-              <Link className="fct" to="/services/cibil-score-check">
+              <Link className="fct" to="/cibil-score-check">
                 Cibil Check
               </Link>
             </li>

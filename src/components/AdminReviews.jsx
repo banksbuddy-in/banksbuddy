@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { db } from '../firebase'
 import { ref, push } from 'firebase/database'
 import './AddCareer.css'
+import { useNavigate } from 'react-router-dom'
 
 export const AdminReviews = () => {
   const [name, setName] = useState('')
@@ -30,7 +31,7 @@ export const AdminReviews = () => {
       setStatus('Failed to submit review.')
     }
   }
-
+  const n = useNavigate();
   return (
     <div className="add-career">
       <h2 className="ac-title">Add Review</h2>
@@ -43,6 +44,9 @@ export const AdminReviews = () => {
         <textarea className="ac-textarea" value={review} onChange={e => setReview(e.target.value)} required />
 
         <button className="ac-button" type="submit">Submit Review</button>
+         <button className="btn" onClick={() => n("/admin")}>
+          Back to Admin
+        </button>
       </form>
 
       {status && <p className="ac-status">{status}</p>}

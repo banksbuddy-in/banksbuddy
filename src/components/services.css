@@ -335,5 +335,23 @@ a.apply-btn {
   justify-content: center;
 }
 .service-card {
-    justify-content: flex-end;
+  justify-content: flex-end;
+}
+a.Svnf {
+  border-radius: 5rem;
+  margin-top: 4%;
+}
+
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  flex-direction: column;
+  padding: 5% 0;
+}
+
+h2.service-not-foundh {
+  font-size: 3rem;
+  line-height: 100%;
 }

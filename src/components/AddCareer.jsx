@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../firebase";
 import { ref, push } from "firebase/database";
 import './AddCareer.css'
+import { useNavigate } from "react-router-dom";
 
 export const AddCareer = () => {
   const [title, setTitle] = useState("");
@@ -34,7 +35,7 @@ export const AddCareer = () => {
       setStatus("Error adding career!");
     }
   };
-
+const n = useNavigate();
   return (
     <div className="add-career">
       <h2 className="ac-title">Add New Career</h2>
@@ -79,6 +80,9 @@ export const AddCareer = () => {
 
         <button type="submit" className="ac-button">
           Add Career
+        </button>
+         <button className="btn" onClick={() => n("/admin")}>
+          Back to Admin
         </button>
       </form>
 
