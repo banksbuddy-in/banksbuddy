@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom'
-import servicesData from './Data_Services'
 import './services.css'
 import { specSv } from './Data_Special'
+import NewServices from './Data_Services'
 
 const toSlug = str => {
   if (!str) return ''
@@ -19,7 +19,7 @@ export const MainServices = () => {
   const hanService = (e) => {
     navigate(e);
   }
-  const [services] = useState(servicesData)
+  const [services] = useState(NewServices)
 
   return (
     <div id='services' className="main-services-container">
@@ -29,15 +29,15 @@ export const MainServices = () => {
         {services.map(s => (
           <div key={s.id} onClick={() => {hanService(`/services/${toSlug(s.id)}`)}} className="service-card">
             {
-              s.svimage.endsWith('.mp4') ? (
-                <video src={s.svimage} autoPlay muted loop/>
+              s.image.endsWith('.mp4') ? (
+                <video src={s.image} autoPlay muted loop/>
               ): (
-                <img src={s.svimage} alt={s.title} />
+                <img src={s.image} alt={s.Title} />
               )
             }
             {/* <img src={s.svimage} alt={s.title} /> */}
-            <div className="service-title">{s.title}</div>
-            <div className="service-overview">{s.overview}</div>
+            <div className="service-title">{s.Title}</div>
+            <div className="service-overview">{s.overview[2]}</div>
           </div>
         ))}
       </div>

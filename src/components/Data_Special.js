@@ -23,7 +23,8 @@ export const specSv = [
     {
         id:"CiBil Score Check",
         title:"CiBil Score Check",
-        URL:"/cibil-score-check",
+        // URL:"/cibil-score-check",
+        URL:"/udc",
         smg:"/ss4.jpg",        
         overview:"Service to check and understand your CiBil credit score.",
     }

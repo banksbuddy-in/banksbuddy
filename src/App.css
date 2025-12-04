@@ -474,3 +474,6 @@ div#about {
   line-height: 120%;
   margin-bottom: 3%;
 }
+.service-card {
+    justify-content: flex-end;
+}

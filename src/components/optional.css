@@ -266,3 +266,6 @@ p.a4ct {
 .mem {
   min-width: 15rem;
 }
+.service-card {
+    justify-content: flex-end;
+}

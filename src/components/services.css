@@ -334,3 +334,6 @@ a.apply-btn {
   flex-direction: column;
   justify-content: center;
 }
+.service-card {
+    justify-content: flex-end;
+}

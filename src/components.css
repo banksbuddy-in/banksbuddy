@@ -792,5 +792,98 @@ section.smemi2 {
 
 /* experimental about */
 .a2 video {
-    width: 45%;
+  width: 45%;
+}
+.service-card {
+  justify-content: flex-end;
+}
+
+/* experimental form */
+.namfrm {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+input.ac-input {
+  width: 20rem;
+}
+
+h1.tgfrm {
+  line-height: 92%;
+  font-size: 5rem;
+  width: 37%;
+  margin: 0% 0;
+}
+
+.adareer {
+  overflow: hidden;
+}
+
+form.ac-frm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.ac-frm input {
+  width: 17rem;
+}
+
+form.ac-frm {
+  padding: 4% 10%;
+}
+
+.hsoaiof {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+img.consult {
+  width: 42rem;
+  right: 0px;
+  position: absolute;
+}
+
+.hsoaiof {
+  position: relative;
+}
+
+h2.actitle {
+  font-weight: 100;
+  font-size: 2rem;
+  margin: 1% 0;
+}
+.fhrm {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fhrm input,
+.fhrm textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 3% 4%;
+  margin: 2% 0;
+}
+
+
+button.acbutton {
+  background: black;
+  padding: 1em 2em;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+button.acbutton:hover {
+  background: var(--bl);
+}
+
+.namfrm {
+  gap: 0.45em;
 }

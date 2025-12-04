@@ -1,7 +1,14 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import services from "./Data_Services";
 import "./services.css";
+import { MdOnlinePrediction } from "react-icons/md";
+import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
+import NewServices from "./Data_Services";
+import { FaHandHoldingUsd, FaWhatsapp } from "react-icons/fa";
+import { FaCalendarCheck } from "react-icons/fa";
+import "./newserv.css";
+import { PiChartLineDownFill } from "react-icons/pi";
+import { GoArrowLeft } from "react-icons/go";
 
 const toSlug = (str) => {
   if (!str) return "";
@@ -11,23 +18,6 @@ const toSlug = (str) => {
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "")
     .replace(/-+/g, "-");
-};
-
-const collectRequiredDocs = (svc) => {
-  // prefer checklist, then documents, then studentChecklist, then propertyDocuments
-  if (Array.isArray(svc.checklist))
-    return { type: "list", data: svc.checklist };
-  if (Array.isArray(svc.documents))
-    return { type: "list", data: svc.documents };
-  if (svc.documents && typeof svc.documents === "object") {
-    // return structured documents object so UI can label subsections (salaried/selfEmployed/etc.)
-    return { type: "grouped", data: svc.documents };
-  }
-  if (Array.isArray(svc.studentChecklist))
-    return { type: "list", data: svc.studentChecklist };
-  if (Array.isArray(svc.propertyDocuments))
-    return { type: "list", data: svc.propertyDocuments };
-  return null;
 };
 
 // const buildMailTo = svc => {
@@ -46,7 +36,7 @@ export const ServicePage = () => {
   const { slug } = useParams();
   if (!slug) return <div className="service-page">Service not found</div>;
 
-  const svc = services.find(
+  const svc = NewServices.find(
     (s) => toSlug(s.id) === slug || toSlug(s.title) === slug
   );
 
@@ -61,10 +51,10 @@ export const ServicePage = () => {
   }
 
   const gmailHref = (() => {
-    const subject = `SERVICE INQUIRY - ${svc.title} | BanksBuddy`;
+    const subject = `SERVICE INQUIRY - ${svc.Title} | BanksBuddy`;
 
     const plainBody = `Hello BanksBuddy Team,
-I am interested in your ${svc.title}. Please share the next steps, eligibility confirmation and estimated timelines. 
+I am interested in your ${svc.Title}. Please share the next steps, eligibility confirmation and estimated timelines. 
 Brief Message / Additional Details:
 [Short paragraph describing purpose / urgency / additional context]
 
@@ -72,7 +62,7 @@ Name: [Full Name]
 Email: [your.email@example.com]
 Phone Number: [Country code + number]
 Location: [City, State, Country]
-Product / Service: ${svc.title}
+Product / Service: ${svc.Title}
 Employment Status: [Salaried / Self-employed / Other]
 If Loan — Loan Amount Required: [Amount or N/A]
 Preferred Contact Method: [Email / Phone]
@@ -90,112 +80,139 @@ Warm regards,
     )}&body=${encodeURIComponent(plainBody)}`;
   })();
 
-  const docsFound = collectRequiredDocs(svc);
-
-  const humanizeKey = (k) => {
-    if (!k) return "";
-    // split camelCase or snake_case into words
-    const fromCamel = k.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
-    const fromSnake = fromCamel.replace(/[_-]/g, " ");
-    return fromSnake
-      .split(" ")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-  };
+  const txtarr = [
+    "Max Loan Amount",
+    "Max Loan Tenure",
+    "Interest Rate",
+    "Processing Fees",
+  ];
+  const textarr2 = [
+    { elm: <FaHandHoldingUsd />, txt: "No Collateral Required" },
+    { elm: <MdOnlinePrediction />, txt: "Simple, Easy Online Process" },
+    { elm: <PiChartLineDownFill />, txt: "Low Interest Rates" },
+    { elm: <HiMiniClipboardDocumentCheck />, txt: "Transparent Terms" },
+    { elm: <FaCalendarCheck />, txt: "Flexible Tenure" },
+  ];
 
   return (
-    <div className="service-page">
-      <Link to="/services">← Back to Services</Link>
-      <div className="servcescntent">
-        <h1>{svc.title}</h1>
-        {svc.overview && <p className="overview">{svc.overview}</p>}
+    <div id="ServicePage">
+      <div className="se1">
+        <img src={svc.image} alt={svc.Title} />
+        <section className="hro">
+          <Link className="backtoser" to="/services">
+            <span>
+              <GoArrowLeft />
+            </span>{" "}
+            Back to Services
+          </Link>
+          <h1>{svc.Title}</h1>
+          <p className="tg">{svc.tagline}</p>
+          <p className="ovi">{svc.overview[0]}</p>
 
-        {svc.eligibility && (
-          <section className="modaldetailsmore">
-            <h3>Eligibility</h3>
-            {Array.isArray(svc.eligibility) ? (
-              <ul>
-                {svc.eligibility.map((e, i) => (
-                  <li key={i}><strong>{i+1}</strong>. {e}</li>
-                ))}
-              </ul>
-            ) : (
-              <div>
-                {Object.entries(svc.eligibility).map(([k, v]) => (
-                  <div key={k}>
-                    <strong>{k}:</strong>
-                    <ul>
-                      {v.map((item, idx) => (
-                        <li key={idx}><strong>{idx+1}</strong>. {item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
+          <section className="se1se">
+            <Link className="alyn" to={gmailHref}>
+              Apply Now
+            </Link>
+            <a
+              className="alynwp"
+              target="_blank"
+              href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
+                svc.Title
+              )}%20service%20offered%20by%20BanksBuddy.`}
+            >
+              <FaWhatsapp /> Whatsapp
+            </a>
           </section>
-        )}
-        {svc.features && (
-          <section>
-            <h3>Features</h3>
+        </section>
+      </div>
+      <div className="se2">
+        <div className="se2c1">
+          <p className="abtg">{svc.tagline}</p>
+          <h2>About {svc.Title}</h2>
+          {/* <p className="svpp">{svc.overview[0]}</p> */}
+          <p className="svpp">{svc.overview[1]}</p>
+        </div>
+        <div className="se2c2">
+          <h3>{svc.Title} Details</h3>
+          <ul className="svtb">
+            {txtarr.map((k, i) => (
+              <li key={i} className={i % 2 == 0 ? "drk" : "plain"}>
+                <p>{k}</p>
+                <span>{svc.TbData[i]}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="seconstantdom">
+        <h1>{svc.Title} Online Features</h1>
+        <div className="secd">
+          {textarr2.map((io, i) => (
+            <div key={i} className="secdc">
+              <span>{io.elm}</span>
+              <p>{io.txt}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="se3">
+        <h1>Eligibility Criteria for {svc.Title}</h1>
+        <div className="se3m">
+          <div className="se3m1">
             <ul>
-              {svc.features.map((f, i) => (
-                <li key={i}><strong>{i+1}</strong>. {f}</li>
+              {svc.EliCr.map((elg, i) => (
+                <li key={i}>
+                  <strong>{i + 1}.</strong> {elg}
+                </li>
               ))}
             </ul>
-          </section>
-        )}
-<br />
-        {(svc.checklist ||
-          svc.documents ||
-          svc.studentChecklist ||
-          svc.propertyDocuments) && (
-          <section>
-            <h3>Required Documents</h3>
-            {docsFound ? (
-              docsFound.type === "list" ? (
-                <ul>
-                  {docsFound.data.map((d, i) => (
-                    <li key={i}><strong>{i+1}</strong>. {d}</li>
-                  ))}
-                </ul>
-              ) : (
-                <div>
-                  {Object.entries(docsFound.data).map(([k, v]) => (
-                    <div key={k} style={{ marginBottom: 8 }}>
-                      <strong>{humanizeKey(k)}</strong>
-                      {Array.isArray(v) ? (
-                        <ul>
-                          {v.map((item, idx) => (
-                            <li key={idx}><strong>{idx+1}</strong>. {item}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <pre>{String(v)}</pre>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )
-            ) : (
-              <pre>
-                {typeof svc.documents === "object"
-                  ? JSON.stringify(svc.documents, null, 2)
-                  : String(svc.documents)}
-              </pre>
-            )}
-          </section>
-        )}
+          </div>
+          <img
+            src="/se3m1.jpg"
+            alt="Eligibility Criteria Illustration"
+            className="se3m2"
+          />
+        </div>
       </div>
-
-        <a
-          className="apply-btn"
-          href={gmailHref}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Apply Now
-        </a>
+      <div className="se4">
+        <h1>Required Documents for {svc.Title}</h1>
+        <div className="chse4">
+          <div className="se4m">
+            <img
+              src="/se4m1.png"
+              alt="Documents Illustration"
+              className="se4mi"
+            />
+            <div className="se4m2">
+              {svc.Docs.map((doc, i) => (
+                <div key={i} className="se4mc">
+                  <p>
+                    <span>{i + 1}. </span>
+                    {doc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p className="nt">
+            <strong>Note:</strong> Eligibility and document required are
+            subjected to change depending on the individual
+          </p>
+        </div>
+      </div>
+      <Link className="alynse" to={gmailHref}>Apply Now</Link>
+      {/* <hr /> */}
+      <div className="se5">
+        <h1>Types of {svc.Title}</h1>
+        <div className="s25cs">
+          {svc.Types.map((type, i) => (
+            <div key={i} className="se5c">
+              <h2>{type.titl}</h2>
+              <p>{type.des}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
