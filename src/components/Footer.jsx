@@ -5,7 +5,7 @@ import { FaPhoneVolume } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
-    const productName = "Loan Support";
+  const productName = "Loan Support";
   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
 
   const body = `Hello BanksBuddy Team,
@@ -62,7 +62,7 @@ Warm regards,
           </div>
         </div>
         <div className="c2">
-          <p className="fct">Services</p>
+          <p className="fct">Our Services</p>
           <ul>
             <li>
               <Link to="/services/personal-loan">Personal Loan</Link>
@@ -80,33 +80,74 @@ Warm regards,
               <Link to="/services/machinery-loan">Auto/Machinery Loan</Link>
             </li>
             <li>
-              <Link to="/services/loan-against-property">Loan Against Property</Link>
+              <Link to="/services/loan-against-property">
+                Loan Against Property
+              </Link>
             </li>
           </ul>
         </div>
-        <div className="c3">
-          <a href="/" className="fct">
-            Home
-          </a>
-          <a href="/about-us" className="fct">
-            About
-          </a>
-          <a href="/services" className="fct">
-            Services
-          </a>
-          <a href="/emi-calculator" className="fct">
-            EMI Calculator
-          </a>
-          <a href="/emi-calculator" className="fct">
-            Careers
-          </a>
-          <a href="/trusted-partner" className="fct">
-            Trusted Partners
-          </a>
-
-          <a href={gmailHref} target="_blank" className="fct">
-            Contact Us
-          </a>
+        <div className="c2">
+          <p className="fct">Special Services</p>
+          <ul>
+            <li>
+              <Link className="fct" to="/services/personal-loan">
+                Personal Loan
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/services/personal-loan">
+                Personal Loan
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/services/personal-loan">
+                Personal Loan
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/services/cibil-score-check">
+                Cibil Check
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="c2">
+          <p className="fct">Resources</p>
+          <ul>
+            <ul>
+              <li>
+                <Link className="fct" to="/">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link className="fct" to="/about-us">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link className="fct" to="/services">
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link className="fct" to="/careers">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link className="fct" to="/trusted-partner">
+                  Trusted Partners
+                </Link>
+              </li>
+              <li>
+                <Link to={gmailHref} target="_blank" className="fct">
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </ul>
+          
         </div>
       </div>
       <div className="r2">

@@ -1,7 +1,8 @@
 import React from 'react'
+import { UnderDev } from './UnderDev'
 
 export const CibilScoreCheck = () => {
   return (
-    <div>CibilScoreCheck</div>
+    <UnderDev/>
   )
 }
