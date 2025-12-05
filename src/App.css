@@ -498,3 +498,14 @@ div#admin {
   padding: 1em 2em;
   cursor: pointer;
 }
+.job-list {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.job-card {
+  display: flex;
+  align-items: flex-start;
+}

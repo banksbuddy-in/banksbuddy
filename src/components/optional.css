@@ -267,5 +267,16 @@ p.a4ct {
   min-width: 15rem;
 }
 .service-card {
-    justify-content: flex-end;
+  justify-content: flex-end;
+}
+.job-list {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.job-card {
+  display: flex;
+  align-items: flex-start;
 }

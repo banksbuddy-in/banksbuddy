@@ -871,7 +871,6 @@ h2.actitle {
   margin: 2% 0;
 }
 
-
 button.acbutton {
   background: black;
   padding: 1em 2em;
@@ -886,4 +885,26 @@ button.acbutton:hover {
 
 .namfrm {
   gap: 0.45em;
+}
+
+.job-list {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.job-card {
+  display: flex;
+  align-items: flex-start;
+}
+.range-row input[type="number"] {
+  padding: 1em;
+}
+
+section.smemi1,
+section.smemi2 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

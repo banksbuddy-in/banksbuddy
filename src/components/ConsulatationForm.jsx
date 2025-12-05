@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../firebase";
 import { ref, push } from "firebase/database";
 import "./AddCareer.css";
+import { useNavigate } from "react-router-dom";
 
 export const ConsulatationForm = () => {
   const [Name, setName] = useState("");
@@ -33,6 +34,10 @@ export const ConsulatationForm = () => {
       setStatus("Failed to submit request. Please try again later.");
     }
   };
+  const na = useNavigate();
+  function n() {
+    na("/services");
+  }
 
   return (
     <div className="adareer">
@@ -80,9 +85,20 @@ export const ConsulatationForm = () => {
             />
           </div>
 
-          <button className="acbutton" type="submit">
-            Send Request
-          </button>
+          <div className="btnsc" style={{ display: "flex", gap: "1em" }}>
+            <button className="acbutton" type="submit">
+              Send Request
+            </button>
+            <button
+              className="acbutton"
+              type="button"
+              onClick={() => {
+                n();
+              }}
+            >
+              Back
+            </button>
+          </div>
         </form>
         <img src="/consult.png" alt="form" className="consult" />
       </div>

@@ -24,3 +24,6 @@
 :focus-visible,:focus {
   outline: none;
 }
+.App{
+  overflow-x: hidden;
+}

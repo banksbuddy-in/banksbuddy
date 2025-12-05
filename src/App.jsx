@@ -5,6 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Dat } from "./Route";
 import { FaWhatsapp } from "react-icons/fa6";
+import "./responsive.css"
 
 function App() {
   return (

@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { CgMenuRightAlt } from "react-icons/cg";
+import { RiMenuFold4Fill } from "react-icons/ri";
 
 export const Navbar = () => {
   const productName = "Loan Support";
@@ -31,40 +33,62 @@ Warm regards,
     subject
   )}&body=${encodeURIComponent(body)}`;
 
+  const [open, setOpen] = useState(false);
+
   return (
     <nav className="navbar">
       <div className="navlist suv"></div>
       <a href="/" className="logo">
         <img src="/logo1.png" alt="Banks Buddy" />
       </a>
-      <ul className="navlist">
+
+      <button
+        className="nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="burger" aria-hidden="true">
+          {open ? <RiMenuFold4Fill /> : <CgMenuRightAlt />}
+        </span>
+      </button>
+
+      <ul className={`navlist ${open ? "open" : ""}`}>
         <li>
-          <Link className="nvanime"  to="/">
+          <Link onClick={() => setOpen(false)} className="nvanime" to="/">
             Home
           </Link>
         </li>
         <li>
-          <Link className="nvanime"  to="/about-us">
+          <Link
+            onClick={() => setOpen(false)}
+            className="nvanime"
+            to="/about-us"
+          >
             About
           </Link>
         </li>
-        {/* <li>
-          <Link className="nvanime" to="/consultation" style={{color:"black"}}>
-          Consultation
-          </Link>
-        </li> */}
         <li>
-          <Link className="nvanime"  to="/services">
+          <Link
+            onClick={() => setOpen(false)}
+            className="nvanime"
+            to="/services"
+          >
             Services
           </Link>
         </li>
         <li>
-          <Link className="nvanime"  to="/careers">
+          <Link
+            onClick={() => setOpen(false)}
+            className="nvanime"
+            to="/careers"
+          >
             Careers
           </Link>
         </li>
         <li>
           <Link
+            onClick={() => setOpen(false)}
             className="nvanime"
             to="/trusted-partner"
           >
@@ -73,6 +97,7 @@ Warm regards,
         </li>
         <li>
           <a
+            onClick={() => setOpen(false)}
             className="nvanime"
             href={gmailHref}
             target="_blank"
@@ -81,16 +106,7 @@ Warm regards,
             Contact Us
           </a>
         </li>
-        {/* <li>
-          <Link
-            className="nvanime"
-            style={{ color: "black" }}
-            to="/emi-calculator"
-          >
-            EMI Calculator
-          </Link>
-        </li> */}
-        <li className="nbtn" style={{ color: "black" }}>
+        <li className="nbtn">
           <Link className="btns" to="https://wa.me/+916377956633">
             Chat with us
           </Link>
