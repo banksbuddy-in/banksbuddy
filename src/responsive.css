@@ -18,6 +18,9 @@
   div.navlist.suv {
     display: none;
   }
+  .scont div {
+    width: 100%;
+  }
   button.nav-toggle {
     padding: 1em;
     display: flex;
