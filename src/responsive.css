@@ -21,6 +21,17 @@
   .scont div {
     width: 100%;
   }
+
+  .memiprin input[type="number"] {
+    width: 100%;
+  }
+  .recharts-responsive-container {
+    scale: 0.8;
+  }
+
+  .emir1 {
+    padding: 7%;
+  }
   button.nav-toggle {
     padding: 1em;
     display: flex;
