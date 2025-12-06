@@ -49,7 +49,7 @@ export const ServicesCards = () => {
           </p>
           <a className="kn" onClick={() => BuddyNavigate("/services/home-loan")}>Know more</a>
         </div>
-        <div className="div5" onClick={() => BuddyNavigate("/services/machinery-loan")}>
+        <div className="div5" onClick={() => BuddyNavigate("/services/auto-loan")}>
 
           <img src="/d5.jpg" alt="d5.jpg" />
           <h1>Machinery Loan</h1>

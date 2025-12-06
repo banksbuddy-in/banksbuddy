@@ -908,3 +908,35 @@ section.smemi2 {
   justify-content: space-between;
   width: 100%;
 }
+
+.c2 ul li a {
+  font-weight: 400;
+  padding-left: 5px;
+}
+.frr2 li a:hover {
+  color: lightgrey;
+}
+.c2 p {
+  font-weight: 400;
+  letter-spacing: -1px;
+}
+
+h1.fhed {
+  font-weight: 600;
+}
+
+footer.foot {
+  background: #00265f;
+}
+
+.foot img {
+  display: none;
+  padding: 2%;
+}
+.btns a {
+  padding: 10%;
+  white-space: nowrap;
+}
+p.r3 {
+  color: #ffffff;
+}
