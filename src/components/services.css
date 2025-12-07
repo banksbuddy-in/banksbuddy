@@ -391,3 +391,7 @@ p.svpp {
 .seconstantdom {
   margin: 4% 0;
 }
+.revcardsa p {
+    text-align: justify;
+    word-spacing: 0px;
+}

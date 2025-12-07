@@ -1009,3 +1009,14 @@ p.abtdes {
 .service-card img {
   width: 60%;
 }
+p.fdes {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -2px;
+}
+
+.revcardsa p {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -1px;
+}

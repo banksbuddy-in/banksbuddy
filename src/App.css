@@ -555,4 +555,24 @@ h1.shead {
 }.shead span {
     padding: 0 28%;
     border: none;
+}p.fdes {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -2px;
 }
+
+.revcardsa p {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -1px;
+}p.fdes {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -2px;
+}
+
+.revcardsa p {
+    text-align: justify;
+    white-space: break-spaces;
+    word-spacing: -1px;
+} 

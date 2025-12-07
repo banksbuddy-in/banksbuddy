@@ -954,4 +954,7 @@
     width: 41%;
     align-self: flex-start;
   }
+.div1 video {
+    display: none;
+}
 }
