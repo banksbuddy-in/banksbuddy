@@ -204,7 +204,7 @@ div#about {
 
 p.a2cts {
   font-size: 21px;
-  font-weight: 200;
+  font-weight: 400;
   font-style: italic;
   border: 1px solid black;
   border-left: none;
@@ -279,4 +279,8 @@ p.a4ct {
 .job-card {
   display: flex;
   align-items: flex-start;
+}
+.a1ct p {
+    text-align: justify;
+    margin-left: 0;
 }

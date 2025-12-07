@@ -23,7 +23,7 @@ export const MainServices = () => {
 
   return (
     <div id='services' className="main-services-container">
-      <h1>Loan Consultancy Services</h1>
+      <h1>Loan Services</h1>
 
       <div className="services-list">
         {services.map(s => (
@@ -43,8 +43,8 @@ export const MainServices = () => {
       </div>
 
       <hr />
-      <h1>Special Services</h1>
-      <div className="services-list">
+      <h1>Core Services</h1>
+      <div className="services-list spec">
         {
           specSv.map((s, index) => (
             <div key={index} className="service-card spec" onClick={() => {hanService(s.URL)}}>

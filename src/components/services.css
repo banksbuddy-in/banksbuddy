@@ -21,6 +21,10 @@
 .service-overview {
   font-size: 0.95rem;
 }
+.shead span {
+  padding: 0 28%;
+  border: none;
+}
 
 /* Modal */
 .modal-overlay {
@@ -350,8 +354,40 @@ a.Svnf {
   flex-direction: column;
   padding: 5% 0;
 }
+.se3m {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
 
+.se3m1 {
+    align-self: flex-start;
+    padding-top: 2%;
+    margin-top: 2%;
+}
 h2.service-not-foundh {
   font-size: 3rem;
   line-height: 100%;
+}
+.service-card video,
+.service-card img {
+  width: 60%;
+}
+.service-title {
+  text-align: start;
+  align-self: flex-start;
+}
+p.svpp {
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: 1px;
+}
+
+.se3m1 li {
+  text-align: justify;
+  padding-right: 5%;
+}
+
+.seconstantdom {
+  margin: 4% 0;
 }

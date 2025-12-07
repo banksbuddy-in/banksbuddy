@@ -21,11 +21,18 @@ export const specSv = [
         overview:"Tool to calculate Equated Monthly Installments for loans.",
     },
     {
-        id:"CiBil Score Check",
-        title:"CiBil Score Check",
+        id:"CiBil Improvement",
+        title:"CiBil Improvement",
         // URL:"/cibil-score-check",
-        URL:"/udc",
+        URL:"/cibil-improvement",
         smg:"/ss4.jpg",        
-        overview:"Service to check and understand your CiBil credit score.",
-    }
+        overview:"Strategies to enhance your CIBIL score for better credit opportunities.",
+    },
+    {
+        id:"website_development",
+        title:"Website Development",
+        URL:"/website-development",
+        smg:"/ss5.jpg",
+        overview:"Custom financial Web solutions to streamline your operations.",
+    },
 ]

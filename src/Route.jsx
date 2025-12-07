@@ -15,6 +15,8 @@ import { Insurance } from "./components/Insurance";
 import { CibilScoreCheck } from "./components/CibilScoreCheck";
 import { UnderDev } from "./components/UnderDev";
 import { Admin } from "./components/Admin";
+import { Cibil } from "./components/Cibil";
+import { Development } from "./components/Development";
 
 export const Dat = [
   {
@@ -94,5 +96,14 @@ export const Dat = [
     path: "/admin",
     label: "Admin",
     element: <Admin />,
+  },{
+    path:"/cibil-improvement",
+    label:"Cibil Improvement",
+    element: <Cibil/>
+  }
+  ,{
+    path:"/website-development",
+    label:"Website Improvement",
+    element: <Development/>
   }
 ];

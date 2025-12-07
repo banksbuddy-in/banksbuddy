@@ -44,7 +44,7 @@ div#ServicePage {
 }
 
 p.tg {
-  font-weight: 200;
+  font-weight: 400;
   font-size: 20px;
 }
 
@@ -408,4 +408,22 @@ a.alynse {
 
 .UDC p:hover {
   background: var(--darkbl);
+}
+.service-card.spec {
+  justify-content: end;
+}
+.services-list.spec {
+  padding: 0 15%;
+}
+
+.service-card.spec {
+  max-width: 30%;
+}
+.se2c1 h2 {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+div#ServicePage {
+  gap: 1em;
 }

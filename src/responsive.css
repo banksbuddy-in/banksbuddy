@@ -897,4 +897,61 @@
     line-height: 100%;
     margin: 11% 0;
   }
+  .btns {
+    align-self: center;
+  }
+  .scont div img {
+    display: none;
+  }
+  .se4m2 {
+    align-self: center;
+  }
+
+  ul.svtb {
+    width: 100%;
+  }
+
+  .se2 {
+    width: 100%;
+  }
+
+  .se2c1 {
+    width: 100%;
+  }
+  .se2c1 h2 {
+    font-size: 2.75rem;
+  }
+  .se4mc p {
+    text-align: justify;
+  }
+  .se4mc p {
+    text-align: justify;
+  }
+
+  .se5 {
+    width: 100%;
+  }
+
+  .se5 h1 {
+    font-size: 2.75rem;
+  }
+  .scont div h1 {
+    font-size: 1.5em;
+  }
+  .scont div h1 {
+    font-size: 1.5em;
+  }
+
+  .scont div p {
+    text-align: center;
+  }
+
+  .scont div {
+    padding-top: 8%;
+  }
+
+  .spec img {
+    width: 41%;
+    align-self: flex-start;
+  }
 }

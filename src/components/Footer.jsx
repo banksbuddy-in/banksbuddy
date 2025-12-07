@@ -1,8 +1,9 @@
 import React from "react";
 import { FaInstagram, FaFacebook, FaWhatsapp } from "react-icons/fa";
-import { MdArrowOutward } from "react-icons/md";
+import { MdArrowOutward, MdEmail } from "react-icons/md";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import "./newserv.css";
 
 export const Footer = () => {
   const productName = "Loan Support";
@@ -51,18 +52,18 @@ Warm regards,
               Chat with us
             </a>
             <a
-              className="chata"
+              className="chat"
               href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
             >
-              Email us{" "}
               <span>
-                <MdArrowOutward />
+                <MdEmail />
               </span>
+              Email us{" "}
             </a>
           </div>
         </div>
         <div className="c2">
-          <p className="fct">Our Services</p>
+          <p className="fct">Loan Services</p>
           <ul>
             <li>
               <Link to="/services/personal-loan">Personal Loan</Link>
@@ -87,7 +88,7 @@ Warm regards,
           </ul>
         </div>
         <div className="c2">
-          <p className="fct">Special Services</p>
+          <p className="fct">Core Services</p>
           <ul>
             <li>
               <Link className="fct" to="/consultation">
@@ -106,7 +107,12 @@ Warm regards,
             </li>
             <li>
               <Link className="fct" to="/cibil-score-check">
-                Cibil Check
+                Cibil Improvement
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/website-development">
+                Website Development
               </Link>
             </li>
           </ul>
@@ -147,7 +153,6 @@ Warm regards,
               </li>
             </ul>
           </ul>
-          
         </div>
       </div>
       <div className="r2">

@@ -51,7 +51,7 @@ footer.foot {
 }
 
 h1.fhed {
-  font-weight: 100;
+  font-weight: 400;
   font-size: 4em;
 }
 
@@ -82,7 +82,7 @@ ul.frr2 {
 }
 
 p.fdes {
-  font-weight: 300;
+  font-weight: 400;
   color: white;
 }
 
@@ -97,12 +97,12 @@ p.fdes {
 
 .c2 p {
   font-size: 1.75em;
-  font-weight: 100;
+  font-weight: 400;
 }
 
 .c2 ul li a {
   color: white;
-  font-weight: 200;
+  font-weight: 400;
   font-size: medium;
   padding-left: 1.25em;
   transition: all ease 0.2s;
@@ -159,7 +159,7 @@ a.chata:hover {
 
 .flr2 {
   color: white;
-  font-weight: 200;
+  font-weight: 400;
   letter-spacing: 0.025em;
 }
 
@@ -186,7 +186,7 @@ p.r3 {
 
 .c3 a {
   color: white;
-  font-weight: 200;
+  font-weight: 400;
   transition: all ease 0.2s;
 }
 
@@ -314,7 +314,7 @@ div#partner {
 
 .phed p {
   font-size: 20px;
-  font-weight: 300;
+  font-weight: 400;
   font-style: italic;
 }
 
@@ -508,4 +508,51 @@ div#admin {
 .job-card {
   display: flex;
   align-items: flex-start;
+}
+a.chata {
+  font-weight: 700;
+}
+.a1ct p {
+  text-align: justify;
+}
+.a1ct p {
+  text-align: justify;
+  margin-left: 0;
+}
+a.hrc {
+  background: green;
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+.service-card.spec {
+  justify-content: end;
+}
+
+.frr2 li a {
+  font-size: 1.45em;
+}
+.scont {
+  display: flex;
+  justify-content: center;
+}
+.frr2 li a {
+    font-size: 1.45em;
+}
+
+.scont {
+    display: flex;
+    justify-content: center;
+}
+
+h1.shead {
+    text-align: center;
+}
+
+.shead span {
+    padding: 0 28%;
+    border: none;
+}.shead span {
+    padding: 0 28%;
+    border: none;
 }

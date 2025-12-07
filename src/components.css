@@ -17,7 +17,7 @@ img.rhrimg {
 }
 
 h4.hr {
-  font-weight: 100;
+  font-weight: 400;
   font-size: 22px;
   font-style: italic;
 }
@@ -60,7 +60,7 @@ img.rhrimg {
 }
 
 h4.hr {
-  font-weight: 200;
+  font-weight: 400;
   font-size: 22px;
   font-style: italic;
 }
@@ -134,7 +134,7 @@ a.hrc {
 a.hrc span {
   display: flex;
   font-size: 30px;
-  font-weight: 100;
+  font-weight: 400;
 }
 
 /* marquee */
@@ -192,7 +192,7 @@ video.abtl {
 
 p.abtdes {
   font-size: 17px;
-  font-weight: 300;
+  font-weight: 400;
   display: flex;
   padding: 2% 0 2%;
   flex-direction: row;
@@ -336,7 +336,7 @@ h1.shead {
 
 .shead span {
   font-size: 16px;
-  font-weight: 200;
+  font-weight: 400;
   color: black;
   font-style: italic;
   border-left: 1px solid var(--bl);
@@ -377,7 +377,7 @@ img.her {
 
 .hel p {
   font-size: 18px;
-  font-weight: 200;
+  font-weight: 400;
   border-left: 2px solid var(--rd);
   padding-left: 3%;
   margin: 2% 1%;
@@ -438,7 +438,7 @@ div#error404 {
 
 #error404 p {
   font-size: 18px;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* emi calculator */
@@ -852,7 +852,7 @@ img.consult {
 }
 
 h2.actitle {
-  font-weight: 100;
+  font-weight: 400;
   font-size: 2rem;
   margin: 1% 0;
 }
@@ -939,4 +939,73 @@ footer.foot {
 }
 p.r3 {
   color: #ffffff;
+}
+#partner h2,
+#partner h1 {
+  color: var(--darkbl);
+}
+.a1ct p {
+  text-align: justify;
+  margin-left: 0;
+}
+a.hrc {
+  color: white;
+  border: none;
+}
+
+a.hrc:hover {
+  color: white;
+}
+.scont div video {
+  width: 12rem;
+}
+
+.scont div img {
+  width: 12rem;
+}
+
+.scont div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 30%;
+  justify-content: flex-end;
+}
+
+.scont div p {
+  font-size: 15px;
+  text-align: justify;
+}
+
+h1.shead {
+  font-size: 3.75rem;
+}
+
+.shead span {
+  font-weight: 400;
+  padding-right: 57%;
+  line-height: 150%;
+  font-size: 1.25rem;
+  margin: 1% 0;
+}
+footer.foot {
+  padding-bottom: 8%;
+  background-image: url("../public/footbg.jpg");
+}
+.shead span {
+  padding: 0 28%;
+  border: none;
+}
+p.abtdes {
+  letter-spacing: 0.5px;
+}
+.herocont {
+  padding: 3% 10%;
+}
+p.abtdes {
+  word-spacing: -2px;
+}
+.service-card video,
+.service-card img {
+  width: 60%;
 }
