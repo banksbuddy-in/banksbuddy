@@ -395,3 +395,8 @@ p.svpp {
     text-align: justify;
     word-spacing: 0px;
 }
+.job-card {max-width: 100%;}
+
+.service-card.spec {
+    max-width: 30%;
+}

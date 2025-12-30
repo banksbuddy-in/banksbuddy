@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Services } from "./Services";
 import { HeroEMI } from "./HeroEMI";
 import { Reviews } from "./Reviews";
+import { Counters } from "./Counters";
 
 export const Hero = () => {
   const images = Array.from({ length: 10 }, (_, i) => `b${i + 1}.webp`);
@@ -26,7 +27,7 @@ export const Hero = () => {
           </h1>
           <p className="hdes">Your trusted partner in loans</p>
           <p className="abtdes">
-            Banksbuddy Finance is committed to uplifting small, micro, and
+            BanksBuddy Finance is committed to uplifting small, micro, and
             medium enterprises that often struggle to secure financial support
             due to market constraints. Our platform is designed to provide
             accessible personal and business loans, ensuring that entrepreneurs
@@ -92,6 +93,7 @@ export const Hero = () => {
         </Marquee>
       </div>
       <ShortAbout />
+      <Counters />
       <Services />
       <HeroEMI />
       <Reviews />

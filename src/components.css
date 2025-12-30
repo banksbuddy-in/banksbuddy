@@ -990,7 +990,7 @@ h1.shead {
 }
 footer.foot {
   padding-bottom: 8%;
-  background-image: url("../public/footbg.jpg");
+  background-image: url("../footbg.jpg");
 }
 .shead span {
   padding: 0 28%;
@@ -1019,4 +1019,8 @@ p.fdes {
     text-align: justify;
     white-space: break-spaces;
     word-spacing: -1px;
+}.job-card {max-width: 100%;}
+
+.service-card.spec {
+    max-width: 30%;
 }

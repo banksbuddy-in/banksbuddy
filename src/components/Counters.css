@@ -1,0 +1,140 @@
+.counters-section {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+}
+
+.counters-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.counters-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.counter-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2rem 2.5rem;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  min-width: 280px;
+}
+
+/* .counter-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+} */
+
+.counter-icon {
+  font-size: 3.5rem;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* .counter-card:hover .counter-icon {
+  transform: scale(1.1) rotate(5deg);
+  background: rgba(255, 255, 255, 0.25);
+} */
+
+.counter-content {
+  text-align: left;
+}
+
+.counter-number {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.counter-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0.5rem 0 0 0;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .counters-section {
+    padding: 3rem 1rem;
+  }
+
+  .counters-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .counters-container {
+    gap: 1.5rem;
+    flex-direction: column;
+  }
+
+  .counter-card {
+    min-width: auto;
+    width: 100%;
+    max-width: 350px;
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+  }
+
+  .counter-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+  }
+
+  .counter-number {
+    font-size: 2.5rem;
+  }
+
+  .counter-label {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .counters-title {
+    font-size: 1.5rem;
+  }
+
+  .counter-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .counter-content {
+    text-align: center;
+  }
+
+  .counter-number {
+    font-size: 2rem;
+  }
+}

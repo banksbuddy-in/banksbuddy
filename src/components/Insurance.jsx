@@ -21,7 +21,7 @@ const InsuranceData = [
       "Major insurance categories include life insurance, health insurance, motor insurance, travel insurance, home insurance, and personal accident insurance. Each type offers specialized coverage based on your lifestyle, needs, and financial goals.",
     ],
     tagline: "Your Shield Against Life’s Uncertainties",
-    image: "/ss2.jpg",
+    image: "/insurn.jpg",
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months",
@@ -127,7 +127,7 @@ export const Insurance = () => {
   return (
     <div id="ServicePage">
       <div className="se1">
-        <img src={svc.image} alt={svc.Title} />
+        <img style={{borderRadius:"35rem"}} src={svc.image} alt={svc.Title} />
         <section className="hro">
           <Link className="backtoser" to="/services">
             <span>
@@ -141,7 +141,7 @@ export const Insurance = () => {
 
           <section className="se1se">
             <Link className="alyn" to={gmailHref}>
-              Apply Now
+              Get A Quote
             </Link>
             <a
               className="alynwp"
@@ -231,7 +231,7 @@ export const Insurance = () => {
         </div>
       </div>
       <Link className="alynse" to={gmailHref}>
-        Apply Now
+        Get a Quote
       </Link>
       {/* <hr /> */}
       <div className="se5">

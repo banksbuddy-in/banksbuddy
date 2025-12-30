@@ -1,5 +1,5 @@
 import React from "react";
-import { FaInstagram, FaFacebook, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import { MdArrowOutward, MdEmail } from "react-icons/md";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -78,7 +78,7 @@ Warm regards,
               <Link to="/services/business-loan">Business Loan</Link>
             </li>
             <li>
-              <Link to="/services/machinery-loan">Auto/Machinery Loan</Link>
+              <Link to="/services/auto-loan">Auto/Machinery Loan</Link>
             </li>
             <li>
               <Link to="/services/loan-against-property">
@@ -159,18 +159,28 @@ Warm regards,
         <div className="flr2">© 2025 BanksBuddy, Inc. All rights reserved.</div>
         <ul className="frr2">
           <li>
-            <a href="https://www.instagram.com/banksbuddy2023/">
+            <a target="_blank" href="https://www.instagram.com/banksbuddy2023/">
               <FaInstagram />
             </a>
           </li>
           <li>
-            <a href="https://www.facebook.com/share/1AJUxAHeHV/">
+            <a target="_blank" href="https://www.facebook.com/share/1AJUxAHeHV/">
               <FaFacebook />
             </a>
           </li>
           <li>
-            <a href="https://wa.me/+916377956633">
+            <a target="_blank" href="https://wa.me/+916377956633">
               <FaWhatsapp />
+            </a>
+          </li>
+          <li>
+            <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!">
+              <MdEmail />
+            </a>
+          </li>
+          <li>
+            <a target="_blank" href="https://wa.me/+916377956633">
+              <FaLinkedin />
             </a>
           </li>
         </ul>

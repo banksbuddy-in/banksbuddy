@@ -283,4 +283,8 @@ p.a4ct {
 .a1ct p {
     text-align: justify;
     margin-left: 0;
+}.job-card {max-width: 100%;}
+
+.service-card.spec {
+    max-width: 30%;
 }

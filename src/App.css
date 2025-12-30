@@ -575,4 +575,8 @@ h1.shead {
     text-align: justify;
     white-space: break-spaces;
     word-spacing: -1px;
-} 
+} .job-card {max-width: 100%;}
+
+.service-card.spec {
+    max-width: 30%;
+}

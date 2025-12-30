@@ -130,7 +130,7 @@ p.svpp {
   color: var(--rd);
   font-size: 2em;
 }
-
+/* 
 ul.svtb {
   border: 1px solid black;
   padding: 0%;
@@ -141,9 +141,9 @@ ul.svtb {
 .svtb li {
   padding: 0% 5%;
   border-right: 1px solid black;
-}
+} */
 
-.svtb li p {
+/* .svtb li p {
   border-right: 1px solid black;
   padding-right: 7%;
   padding: 10% 0;
@@ -151,7 +151,7 @@ ul.svtb {
 
 .svtb li span {
   padding: 0% 9%;
-}
+} */
 
 .se2c1 h2::after {
   content: "";
@@ -183,7 +183,7 @@ ul.svtb {
 
 .secdc {
   color: white;
-  background: var(--bl);
+  background: var(--darkbl);
   display: flex;
   border-radius: 4rem;
   text-align: center;
@@ -426,4 +426,9 @@ a.alynse {
 
 div#ServicePage {
   gap: 1em;
+}
+.job-card {max-width: 100%;}
+
+.service-card.spec {
+    max-width: 30%;
 }
