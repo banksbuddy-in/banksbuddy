@@ -28,6 +28,7 @@ export const Counters = () => {
 
     return () => {
       if (counterRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(counterRef.current);
       }
     };
