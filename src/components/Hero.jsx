@@ -8,7 +8,7 @@ import { Services } from "./Services";
 import { HeroEMI } from "./HeroEMI";
 import { Reviews } from "./Reviews";
 import { Counters } from "./Counters";
-import { EdgeDesign } from "./edgeDesign";
+import { EdgeDesign } from "./EdgeDesign";
 import { NewsnOffers } from "./NewsnOffers";
 
 export const Hero = () => {
