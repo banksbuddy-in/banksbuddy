@@ -1,12 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./optional.css";
-import { Data_Team } from "./Data_team";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { db } from '../firebase';
+import { ref, get } from 'firebase/database';
 
 export const About = () => {
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const snapshot = await get(ref(db, 'team'));
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          setTeamMembers(Object.keys(data).map(key => ({ id: key, ...data[key] })));
+        }
+      } catch (error) {
+        console.error('Error fetching team:', error);
+      }
+    };
+    fetchTeam();
+  }, []);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <div id="about">
-      <h1>ABOUT US</h1>
-      <div className="a1">
+      <motion.h1
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
+        ABOUT US
+      </motion.h1>
+      <motion.div 
+        className="a1"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <div className="a1ct">
           <h3>Company History</h3>
           <p>
@@ -27,8 +67,15 @@ export const About = () => {
           </p>
         </div>
         <img src="ab1.jpg" alt="About BanksBuddy" />
-      </div>
-      <div className="a2">
+      </motion.div>
+      <motion.div 
+        className="a2"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <video src="/mnv.mp4" autoPlay muted loop />
         <div className="a2ct">
           <p className="a2cts">Our Guiding Principles</p>
@@ -52,8 +99,15 @@ export const About = () => {
             where anyone can access the financial support they need to thrive.
           </p>
         </div>
-      </div>
-      <div className="a3">
+      </motion.div>
+      <motion.div 
+        className="a3"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>Our Partners</h1>
         <p>
           BanksBuddy is proud to be partnered with the top financial
@@ -67,23 +121,38 @@ export const About = () => {
             <img key={num} src={`a${num}.webp`} alt={`Partner ${num}`} />
           ))}
         </div>
-      </div>
-      <div className="a4">
+      </motion.div>
+      <motion.div 
+        className="a4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>Our Team</h1>
         <p className="a4ct">
           Growth is never by mere chance, it is the result of forces working
           together
         </p>
         <div className="memcards">
-          {Data_Team.map((member, index) => (
-            <div key={index} className="mem">
-              <img src={`m${member.id}.jpg`} alt={member.name} />
+          {teamMembers.map((member, index) => (
+            <motion.div 
+              key={member.id} 
+              className="mem"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+              variants={fadeUp}
+            >
+              <img src={member.image} alt={member.name} />
               <h3>{member.name}</h3>
               <p>{member.role}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -181,6 +181,22 @@ a.service-card {
   border: 1px solid var(--bl);
 }
 
+/* Override for spec cards */
+.service-card.spec {
+  border-radius: 5rem;
+  padding: 2rem 2rem;
+  max-width: 320px;
+}
+
+@media (max-width: 1024px) {
+  .service-card.spec {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 3rem;
+    padding: 2rem 1.5rem;
+  }
+}
+
 .service-overview {
   padding-left: 4%;
   border-left: 3px solid rgb(239 183 171);
@@ -336,7 +352,50 @@ a.apply-btn {
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 2rem 1.5rem;
+  min-height: auto;
+  height: auto;
+}
+
+/* Mobile and Tablet specific styles for spec cards */
+@media (max-width: 1024px) {
+  .service-card.spec {
+    max-width: 100%;
+    width: 100%;
+    padding: 2rem 1.5rem;
+    min-height: 300px;
+    max-height: 450px;
+    height: auto;
+    justify-content: center;
+  }
+
+  .service-card.spec .service-overview {
+    text-align: center;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    padding-left: 0;
+    border-left: none;
+    max-width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+  }
+
+  .service-card.spec .service-title {
+    text-align: center;
+    align-self: center;
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+  }
+
+  .service-card.spec .service-icon {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .service-card {
   justify-content: flex-end;
@@ -355,15 +414,15 @@ a.Svnf {
   padding: 5% 0;
 }
 .se3m {
-    display: flex;
-    align-items: center;
-    position: relative;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .se3m1 {
-    align-self: flex-start;
-    padding-top: 2%;
-    margin-top: 2%;
+  align-self: flex-start;
+  padding-top: 2%;
+  margin-top: 2%;
 }
 h2.service-not-foundh {
   font-size: 3rem;
@@ -392,11 +451,44 @@ p.svpp {
   margin: 4% 0;
 }
 .revcardsa p {
-    text-align: justify;
-    word-spacing: 0px;
+  text-align: justify;
+  word-spacing: 0px;
 }
-.job-card {max-width: 100%;}
+.job-card {
+  max-width: 100%;
+}
 
 .service-card.spec {
-    max-width: 30%;
+  max-width: 30%;
+}
+.media {
+  width: auto;
+
+  height: 100px;
+  object-fit: cover;
+}
+.scont div p {
+  padding: 2% 4%;
+}
+.service-card.spec {
+  text-align: center;
+}
+
+.service-title {
+  text-align: center;
+  width: 100%;
+}
+
+.service-overview {
+  border-left: 0;
+}
+
+.service-card img {
+  height: 100px;
+  width: auto;
+}
+
+.media {
+  margin: 5%;
+  margin-bottom: 0;
 }

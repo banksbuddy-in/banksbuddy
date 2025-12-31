@@ -5,6 +5,7 @@ import "./AdminTable.css";
 import { useNavigate } from "react-router-dom";
 
 export const AdminTable = () => {
+  const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -74,10 +75,10 @@ export const AdminTable = () => {
     a.remove();
     URL.revokeObjectURL(url);
   };
-  const n = useNavigate();
 
   return (
     <div className="admin-table">
+      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
       <h2>Consultations</h2>
       <div className="admin-actions" style={{ display: "flex", gap: "1em" }}>
         <button
@@ -86,9 +87,6 @@ export const AdminTable = () => {
           disabled={rows.length === 0}
         >
           Download CSV
-        </button>
-        <button className="btn" onClick={() => n("/admin")}>
-          Back to Admin
         </button>
       </div>
 

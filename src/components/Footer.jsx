@@ -6,40 +6,41 @@ import { Link } from "react-router-dom";
 import "./newserv.css";
 
 export const Footer = () => {
-  const productName = "Loan Support";
-  const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
+  // const productName = "Loan Support";
+//   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
 
-  const body = `Hello BanksBuddy Team,
+//   const body = `Hello BanksBuddy Team,
 
-[your message here]
+// [your message here]
 
-Name: [Full Name]
-Email: [your.email@example.com]
-Phone Number: [Country code + number]
-Location: [City, State, Country]
-Product / Service: ${productName}
-Employment Status: [Salaried / Self-employed / Other]
-If Loan — Loan Amount Required: [Amount or N/A]
-Preferred Contact Method: [Email / Phone]
-Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
+// Name: [Full Name]
+// Email: [your.email@example.com]
+// Phone Number: [Country code + number]
+// Location: [City, State, Country]
+// Product / Service: ${productName}
+// Employment Status: [Salaried / Self-employed / Other]
+// If Loan — Loan Amount Required: [Amount or N/A]
+// Preferred Contact Method: [Email / Phone]
+// Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
 
-Brief Message / Additional Details:
-[Short paragraph describing purpose / urgency / additional context]
+// Brief Message / Additional Details:
+// [Short paragraph describing purpose / urgency / additional context]
 
 
-Thank you for your time.
-Warm regards,
-[Your Full Name]`;
+// Thank you for your time.
+// Warm regards,
+// [Your Full Name]`;
 
-  const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-    subject
-  )}&body=${encodeURIComponent(body)}`;
+//   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+//     subject
+//   )}&body=${encodeURIComponent(body)}`;
   return (
     <footer className="foot">
       <img src="onlyi.png" alt="BanksBuddy Logo" />
+      {/* <video className="fbg" src="fbg.mp4" autoPlay muted loop></video> */}
       <div className="r1">
         <div className="c1">
-          <h1 className="fhed">BanksBuddy</h1>
+          <h1 className="fhed">Banks<span>Buddy</span></h1>
           <p className="fdes">
             BanksBuddy provides customized loans and funding solutions to
             individuals and businesses, helping them grow and succeed.
@@ -96,11 +97,6 @@ Warm regards,
               </Link>
             </li>
             <li>
-              <Link className="fct" to="/insurance-assistance">
-                Insurance Assistance
-              </Link>
-            </li>
-            <li>
               <Link className="fct" to="/emi-calculator">
                 EMI Calculator
               </Link>
@@ -113,6 +109,26 @@ Warm regards,
             <li>
               <Link className="fct" to="/website-development">
                 Website Development
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="c2">
+          <p className="fct">Insurance</p>
+          <ul>
+            <li>
+              <Link className="fct" to="/insurance/life-insurance">
+                Life Insurance
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/insurance/health-insurance">
+                Health Insurance
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/insurance/general-insurance">
+                General Insurance
               </Link>
             </li>
           </ul>
@@ -132,11 +148,6 @@ Warm regards,
                 </Link>
               </li>
               <li>
-                <Link className="fct" to="/services">
-                  Services
-                </Link>
-              </li>
-              <li>
                 <Link className="fct" to="/careers">
                   Careers
                 </Link>
@@ -147,7 +158,7 @@ Warm regards,
                 </Link>
               </li>
               <li>
-                <Link to={gmailHref} target="_blank" className="fct">
+                <Link to="/contact-banksbuddy" target="_blank" className="fct">
                   Contact Us
                 </Link>
               </li>

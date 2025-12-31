@@ -5,6 +5,7 @@ import './AddCareer.css'
 import { useNavigate } from "react-router-dom";
 
 export const AddCareer = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [skills, setSkills] = useState("");
@@ -38,6 +39,7 @@ export const AddCareer = () => {
 const n = useNavigate();
   return (
     <div className="add-career">
+      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
       <h2 className="ac-title">Add New Career</h2>
 
       <form className="ac-form" onSubmit={handleSubmit}>

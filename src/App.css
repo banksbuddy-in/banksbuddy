@@ -477,27 +477,7 @@ div#about {
 .service-card {
   justify-content: flex-end;
 }
-.admmn {
-  display: flex;
-  text-align: center;
-  align-items: center;
-  flex-direction: row;
-  gap: 1em;
-  justify-content: center;
-}
-
-div#admin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 6% 5%;
-}
-
-.admmn button {
-  padding: 1em 2em;
-  cursor: pointer;
-}
+/* Admin styles moved to Admin.css */
 .job-list {
   display: flex;
   flex-direction: row;

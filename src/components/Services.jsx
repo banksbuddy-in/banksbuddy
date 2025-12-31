@@ -2,44 +2,107 @@ import React from "react";
 import { ServicesCards } from "./ServicesCards";
 import { specSv } from "./Data_Special";
 import { useNavigate } from "react-router-dom";
+import { SpecInsur } from "./SpecInsur";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export const Services = () => {
   const navigate = useNavigate();
   const hanService = (e) => {
     navigate(e);
   };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div id="Services">
-      <h1 className="shead">
-        OUR SERVICES <br />{" "}
+      <motion.h1
+        className="shead"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
+        Loan Services <br />{" "}
         <span>
           Catering your needs with tailored products for financial
           actualization.
         </span>
-      </h1>
+      </motion.h1>
       <ServicesCards />
-      <h1 className="shead" style={{ marginTop: "5%" }}>
-        Core Services
+
+      <motion.h1
+        className="shead"
+        style={{ marginTop: "5%" }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
+        Insurance Services
+        <span>
+          Comprehensive insurance solutions to protect what matters most to you.
+        </span>
+      </motion.h1>
+      <SpecInsur />
+      <motion.h1
+        className="shead"
+        style={{ marginTop: "5%" }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
+        Other Services
         <span>
           We offer our core financial services tailored to your needs. Secure
           and reliable solutions for your financial growth.
         </span>
-      </h1>
+      </motion.h1>
       <div className="services-list">
         {specSv.map((s, index) => (
-          <div
+          <motion.div
             key={index}
             className="service-card spec"
             onClick={() => {
               hanService(s.URL);
             }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+            variants={fadeUp}
           >
             <img src={s.smg} alt={s.title} />
             <div className="service-title">{s.title}</div>
             <div className="service-overview">{s.overview}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
   );
 };
+
+/**
+ * client:815  GET http://localhost:5173/src/components/ServicesCards.jsx?t=1767158162060 net::ERR_ABORTED 500 (Internal Server Error)
+importUpdatedModule @ client:815
+fetchUpdate @ client:210
+queueUpdate @ client:189
+(anonymous) @ client:839
+handleMessage @ client:838
+await in handleMessage
+(anonymous) @ client:458
+dequeue @ client:480
+(anonymous) @ client:472
+enqueue @ client:466
+(anonymous) @ client:458
+onMessage @ client:305
+(anonymous) @ client:413Understand this error
+installHook.js:1 [vite] Failed to reload /src/components/ServicesCards.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+ */

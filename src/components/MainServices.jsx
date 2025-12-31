@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom'
 import './services.css'
-import { specSv } from './Data_Special'
+import { SpecInsur } from './SpecInsur'
 import NewServices from './Data_Services'
 
 const toSlug = str => {
@@ -44,17 +44,7 @@ export const MainServices = () => {
 
       <hr />
       <h1>Core Services</h1>
-      <div className="services-list spec">
-        {
-          specSv.map((s, index) => (
-            <div key={index} className="service-card spec" onClick={() => {hanService(s.URL)}}>
-              <img src={s.smg}  alt={s.title} />
-              <div className="service-title">{s.title}</div>
-              <div className="service-overview">{s.overview}</div>
-            </div>
-          ))
-        }
-      </div>
+      <SpecInsur />
     </div>
   )
 }

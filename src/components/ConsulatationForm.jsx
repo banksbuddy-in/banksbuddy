@@ -3,19 +3,26 @@ import { db } from "../firebase";
 import { ref, push } from "firebase/database";
 import "./AddCareer.css";
 import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export const ConsulatationForm = () => {
   const [Name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [reason, setReason] = useState("");
-  const [location, setLocation] = useState("");
-  const [otherLocation, setOtherLocation] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const [serviceType, setServiceType] = useState("");
   const [loanType, setLoanType] = useState("");
   const [employmentType, setEmploymentType] = useState("");
   const [income, setIncome] = useState("");
   const [status, setStatus] = useState("");
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +32,8 @@ export const ConsulatationForm = () => {
       email,
       phone,
       reason,
-      location: location === "Other" ? otherLocation : location,
+      state,
+      city,
       serviceType,
       ...(serviceType === "Loan" && { loanType }),
       employmentType,
@@ -40,8 +48,8 @@ export const ConsulatationForm = () => {
       setEmail("");
       setPhone("");
       setReason("");
-      setLocation("");
-      setOtherLocation("");
+      setState("");
+      setCity("");
       setServiceType("");
       setLoanType("");
       setEmploymentType("");
@@ -57,7 +65,14 @@ export const ConsulatationForm = () => {
   }
 
   return (
-    <div className="adareer">
+    <motion.div 
+      className="adareer"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      variants={fadeUp}
+    >
       <div className="hsoaiof">
         <form className="ac-frm" onSubmit={handleSubmit}>
           <h1 className="tgfrm">Grow with our Assistance.</h1>
@@ -91,34 +106,60 @@ export const ConsulatationForm = () => {
               placeholder="Email Address"
             />
 
-            {/* Location Dropdown */}
+            {/* State Dropdown */}
             <select
               className="a-input"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              value={state}
+              onChange={(e) => setState(e.target.value)}
               required
             >
-              <option value="">Select Location</option>
-              <option value="Mumbai">Mumbai</option>
+              <option value="">Select State</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Goa">Goa</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="West Bengal">West Bengal</option>
+              <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+              <option value="Chandigarh">Chandigarh</option>
+              <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
               <option value="Delhi">Delhi</option>
-              <option value="Bangalore">Bangalore</option>
-              <option value="Hyderabad">Hyderabad</option>
-              <option value="Chennai">Chennai</option>
-              <option value="Kolkata">Kolkata</option>
-              <option value="Pune">Pune</option>
-              <option value="Ahmedabad">Ahmedabad</option>
-              <option value="Jaipur">Jaipur</option>
-              <option value="Other">Other</option>
+              <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+              <option value="Ladakh">Ladakh</option>
+              <option value="Lakshadweep">Lakshadweep</option>
+              <option value="Puducherry">Puducherry</option>
             </select>
 
-            {/* Conditional Other Location Input */}
-            {location === "Other" && (
+            {/* Conditional City Input */}
+            {state && (
               <input
                 className="a-input"
-                value={otherLocation}
-                onChange={(e) => setOtherLocation(e.target.value)}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 required
-                placeholder="Please specify your location"
+                placeholder="Enter City Name"
               />
             )}
 
@@ -189,7 +230,7 @@ export const ConsulatationForm = () => {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               required
-              placeholder="Reason for Consultation"
+              placeholder="Mention your message for us here..."
             />
           </div>
 
@@ -211,7 +252,7 @@ export const ConsulatationForm = () => {
         <img src="/consult.png" alt="form" className="consult" />
       </div>
       {status && <p className="sactatus">{status}</p>}
-    </div>
+    </motion.div>
   );
 };
 

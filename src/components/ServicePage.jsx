@@ -9,6 +9,7 @@ import { FaCalendarCheck } from "react-icons/fa";
 import "./newserv.css";
 import { PiChartLineDownFill } from "react-icons/pi";
 import { GoArrowLeft } from "react-icons/go";
+import { motion } from "framer-motion";
 
 const toSlug = (str) => {
   if (!str) return "";
@@ -94,9 +95,21 @@ Warm regards,
     { elm: <FaCalendarCheck />, txt: "Flexible Tenure" },
   ];
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <div id="ServicePage">
-      <div className="se1">
+      <motion.div 
+        className="se1"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <img src={svc.image} alt={svc.Title} />
         <section className="hro">
           <Link className="backtoser" to="/services">
@@ -124,8 +137,15 @@ Warm regards,
             </a>
           </section>
         </section>
-      </div>
-      <div className="se2">
+      </motion.div>
+      <motion.div 
+        className="se2"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <div className="se2c1">
           <p className="abtg">{svc.tagline}</p>
           <h2>About {svc.Title}</h2>
@@ -143,8 +163,15 @@ Warm regards,
             ))}
           </ul>
         </div>
-      </div>
-      <div className="seconstantdom">
+      </motion.div>
+      <motion.div 
+        className="seconstantdom"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>{svc.Title} Online Features</h1>
         <div className="secd">
           {textarr2.map((io, i) => (
@@ -154,8 +181,15 @@ Warm regards,
             </div>
           ))}
         </div>
-      </div>
-      <div className="se3">
+      </motion.div>
+      <motion.div 
+        className="se3"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>Eligibility Criteria for {svc.Title}</h1>
         <div className="se3m">
           <div className="se3m1">
@@ -173,8 +207,15 @@ Warm regards,
             className="se3m2"
           />
         </div>
-      </div>
-      <div className="se4">
+      </motion.div>
+      <motion.div 
+        className="se4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>Required Documents for {svc.Title}</h1>
         <div className="chse4">
           <div className="se4m">
@@ -199,10 +240,17 @@ Warm regards,
             subjected to change depending on the individual
           </p>
         </div>
-      </div>
+      </motion.div>
       <Link className="alynse" to={gmailHref}>Apply Now</Link>
       {/* <hr /> */}
-      <div className="se5">
+      <motion.div 
+        className="se5"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <h1>Types of {svc.Title}</h1>
         <div className="s25cs">
           {svc.Types.map((type, i) => (
@@ -212,7 +260,7 @@ Warm regards,
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

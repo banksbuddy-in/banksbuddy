@@ -1,0 +1,99 @@
+.news-card {
+  display: flex;
+  background: #d8e3ff;
+  margin: 1%;
+  gap: 1em;
+  padding: 2.75% 1%;
+  border-radius: 2rem;
+}
+
+img.news-image {
+  width: 122px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.news-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0em;
+  align-content: flex-start;
+}
+
+div#NewsnOffers {
+  padding: 1% 10%;
+}
+
+.nnf {
+  display: flex;
+  gap: 2rem;
+}
+
+.news {
+  flex: 2;
+}
+
+.offers {
+  flex: 1;
+}
+
+.offers h2 {
+  font-weight: 900;
+  margin: 3%;
+  color: var(--bl);
+}
+
+.offers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.offer-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* .offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+} */
+
+.offer-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.offer-name {
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.no-offers {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+
+@media (max-width: 968px) {
+  .nnf {
+    flex-direction: column;
+  }
+}
+img.offer-image {
+  padding: 7%;
+  border-radius: 4rem;
+}
+
+.offer-card {
+  padding: 0;
+  border-radius: 4rem;
+}

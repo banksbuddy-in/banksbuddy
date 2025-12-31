@@ -1,0 +1,143 @@
+#admin-team {
+  padding: 2rem 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  background: white;
+  border: 2px solid var(--darkbl);
+  color: var(--darkbl);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.back-btn:hover {
+  background: var(--darkbl);
+  color: white;
+  transform: translateX(-5px);
+}
+
+#admin-team h1 {
+  text-align: center;
+  color: var(--darkbl);
+  margin-bottom: 2rem;
+}
+
+.team-container {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 2rem;
+}
+
+.team-form, .team-list {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.team-form h2, .team-list h2 {
+  margin-bottom: 1rem;
+  color: var(--darkbl);
+}
+
+.team-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.preview {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.form-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-btns button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--darkbl);
+  color: white;
+}
+
+.form-btns button[type="button"] {
+  background: #6c757d;
+}
+
+.member-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.member-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-info h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.member-info p {
+  margin: 0;
+  color: #666;
+}
+
+.member-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.member-btns button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.member-btns button:first-child {
+  background: #ffc107;
+}
+
+.member-btns button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+@media (max-width: 968px) {
+  .team-container {
+    grid-template-columns: 1fr;
+  }
+}

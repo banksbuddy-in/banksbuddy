@@ -954,7 +954,24 @@
     width: 41%;
     align-self: flex-start;
   }
-.div1 video {
+  .div1 video {
     display: none;
+  }
 }
+@media (max-width: 1024px) {
+  .subcategory-header {
+    flex-direction: column;
+  }
+
+  .subcategory-header img {
+    display: none;
+  }
+
+  .subcont h1 {
+    line-height: 100%;
+    padding: 9% 0;
+  }
+  ul.navlist.open {
+    align-items: flex-start;
+  }
 }

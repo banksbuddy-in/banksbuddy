@@ -1,0 +1,301 @@
+.shortAbt {
+  padding: 2% 10%;
+}
+
+div#hero {
+  padding: 1% 10%;
+}
+
+div#review {
+  padding: 3% 10%;
+}
+button.active {
+  font-weight: 900;
+}
+a.btns:hover {
+  background: var(--bl);
+  box-shadow: none;
+}
+a.ablink {
+  background: green;
+}
+
+a.ablink:hover {
+  border: 1px solid green;
+  color: green;
+}
+.se3m1 {
+  border: none;
+  margin: 2% 0;
+  padding: 0;
+  font-size: 1rem;
+}
+.se3m1 {
+  border: none;
+  margin: 2% 0;
+  padding: 0;
+  font-size: 1rem;
+}
+
+ul.navlist li span {
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  gap: 3px;
+  display: flex;
+}
+.subcategory-header {
+  display: flex;
+  width: 100%;
+  margin: 5%;
+  justify-content: center;
+}
+
+.subcategory-header img {
+  width: 60%;
+}
+
+.insurance-subcategory-container {
+  width: 100%;
+}
+
+.subcont {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  text-align: start;
+  justify-content: center;
+  padding: 0;
+}
+
+.subcont p {
+  padding-right: 24%;
+}
+@media (max-width: 1024px) {
+  .subcategory-header {
+    flex-direction: column;
+  }
+
+  .subcategory-header img {
+    display: none;
+  }
+
+  .subcont h1 {
+    line-height: 100%;
+    padding: 9% 0;
+  }
+  ul.navlist.open {
+    align-items: flex-start;
+  }
+}
+.c2 ul li a {
+  font-size: 0.85rem;
+}
+
+p.fct {
+  font-size: 1.35em;
+}
+a.hrca {
+  background: var(--darkbl);
+}
+video.fbg {
+  position: absolute;
+  left: 0;
+  filter: brightness(0.85) contrast(1.5);
+  top: 0;
+}
+
+.r1 {
+  filter: drop-shadow(0px 0px 7px #00000065);
+}
+a.chat:hover {
+  background: var(--darkbl);
+}
+video.fbg {
+  position: absolute;
+  left: 0;
+  filter: brightness(0.85) contrast(1.5);
+  top: 0;
+  z-index: 0;
+}
+
+.r1 {
+  filter: drop-shadow(0px 0px 7px #00000065);
+}
+
+a.chat:hover {
+  background: var(--darkbl);
+}
+video.fbg {
+  position: absolute;
+  left: 0;
+  filter: brightness(0.85) contrast(1.5);
+  top: 0;
+  z-index: 0;
+}
+
+.r1 {
+  filter: drop-shadow(0px 0px 7px #00000065);
+}
+
+a.chat:hover {
+  background: var(--darkbl);
+}
+
+.r2,
+.r3 {
+  z-index: 9;
+  position: relative;
+  filter: drop-shadow(2px 4px 6px #00000075);
+}
+a.hrca:hover {
+  background: var(--bl);
+  filter: invert(0);
+}
+
+a.hrc:hover {
+  background: #00bd00;
+}
+h2.counters-title {
+  font-weight: 900;
+}
+
+.abtr h1 {
+  font-weight: 900;
+}
+
+h1.shead,
+.hel h1,
+h1.rehed {
+  font-weight: 900;
+}
+h3.counter-number {
+  color: var(--bl);
+}
+
+p.counter-label {
+  color: var(--darkbl);
+}
+.service-card.spec {
+  text-align: center;
+}
+
+.service-title {
+  text-align: center;
+  width: 100%;
+}
+
+.service-overview {
+  border-left: 0;
+}
+
+.service-card img {
+  height: 100px;
+  width: auto;
+}
+
+.media {
+  margin: 5%;
+  margin-bottom: 0;
+}
+
+h1.fhed {
+  font-size: 3em;
+}
+
+footer.foot {
+  padding: 6% 10%;
+}
+h1.fhed {
+  font-weight: 800;
+  color: var(--rd);
+  font-size: 3.2em;
+}
+
+h1.fhed span {
+  color: var(--bl);
+}
+.revcardsa p {
+  text-align: center;
+  margin: 3%;
+}
+
+.reli1 {
+  display: flex;
+  justify-content: space-around;
+  font-size: 3rem;
+}
+
+.stars {
+  color: var(--rd);
+  font-size: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+}
+
+.revslist h1 {
+  text-align: center;
+  background: var(--rd);
+  color: white;
+  padding: 2% 3%;
+  border-radius: 3rem;
+  margin: 3% 32%;
+}
+
+div#review {
+  position: relative;
+  background: #ff0000;
+}
+
+p.repd {
+  position: relative;
+  z-index: 3;
+}
+
+.whitis {
+  width: 100%;
+  z-index: 0;
+  height: 94%;
+  background: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 30rem 30rem 2rem 2rem;
+}
+
+h1.rehed {
+  position: relative;
+  z-index: 5;
+  margin: 3% 0;
+  margin-bottom: 0%;
+}
+.revslist h1 {
+  font-size: 1.5rem;
+}
+.slick-next:before,
+.slick-prev:before {
+  font-size: 2.75rem;
+  padding: 0;
+  filter: invert(1);
+  background: var(--rd);
+  border-radius: 3rem;
+}
+.revslist h1 {
+  background: var(--bl);
+}
+div#review {
+  position: relative;
+  background: url(https://i0.wp.com/picjumbo.com/wp-content/uploads/red-and-blue-pillars-wallpaper-abstract-background-free-image.jpeg?w=2210&quality=70);
+}
+.revcardsa {
+  cursor: grab;
+}
+
+.revcardsa p {
+  cursor: grab;
+}
+#designDat h1 {
+    margin: 3%;
+}

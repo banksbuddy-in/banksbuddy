@@ -3,6 +3,26 @@
   margin: 18px auto;
   padding: 14px;
 }
+
+.back-btn {
+  background: white;
+  border: 2px solid var(--darkbl);
+  color: var(--darkbl);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.back-btn:hover {
+  background: var(--darkbl);
+  color: white;
+  transform: translateX(-5px);
+}
+
 .ac-title {
   margin-bottom: 12px;
 }

@@ -11,12 +11,16 @@ import { Careers } from "./components/Careers";
 import { ConsulatationForm } from "./components/ConsulatationForm";
 import AdminTable from "./components/AdminTable";
 import { AdminReviews } from "./components/AdminReviews";
+import { AdminOffers } from "./components/AdminOffers";
+import { AdminTeam } from "./components/AdminTeam";
 import { Insurance } from "./components/Insurance";
 import { CibilScoreCheck } from "./components/CibilScoreCheck";
 import { UnderDev } from "./components/UnderDev";
 import { Admin } from "./components/Admin";
 import { Cibil } from "./components/Cibil";
 import { Development } from "./components/Development";
+import { ContactForm } from "./components/ContactForm";
+import { InsuranceSubCategory } from "./components/InsuranceSubCategory";
 
 export const Dat = [
   {
@@ -79,6 +83,16 @@ export const Dat = [
     element: <AdminReviews />,
   },
   {
+    path: "/admin-offers",
+    label: "Admin Offers",
+    element: <AdminOffers />,
+  },
+  {
+    path: "/admin-team",
+    label: "Admin Team",
+    element: <AdminTeam />,
+  },
+  {
     path: "/insurance-assistance",
     label: "Insurance Assistance",
     element: <Insurance />,
@@ -92,18 +106,30 @@ export const Dat = [
     path: "/udc",
     label: "Under Development",
     element: <UnderDev />,
-  },{
+  },
+  {
     path: "/admin",
     label: "Admin",
     element: <Admin />,
-  },{
-    path:"/cibil-improvement",
-    label:"Cibil Improvement",
-    element: <Cibil/>
-  }
-  ,{
-    path:"/website-development",
-    label:"Website Improvement",
-    element: <Development/>
-  }
+  },
+  {
+    path: "/cibil-improvement",
+    label: "Cibil Improvement",
+    element: <Cibil />,
+  },
+  {
+    path: "/website-development",
+    label: "Website Improvement",
+    element: <Development />,
+  },
+  {
+    path:"/contact-banksbuddy",
+    label: "Contact Us",
+    element: <ConsulatationForm />,
+  },
+  {
+    path: "/insurance/:category",
+    label: "Insurance Category",
+    element: <InsuranceSubCategory />,
+  },
 ];

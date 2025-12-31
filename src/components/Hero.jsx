@@ -2,16 +2,33 @@ import Marquee from "react-fast-marquee";
 import React from "react";
 import { MdArrowOutward, MdWhatsapp } from "react-icons/md";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { Services } from "./Services";
 import { HeroEMI } from "./HeroEMI";
 import { Reviews } from "./Reviews";
 import { Counters } from "./Counters";
+import { EdgeDesign } from "./edgeDesign";
+import { NewsnOffers } from "./NewsnOffers";
 
 export const Hero = () => {
   const images = Array.from({ length: 10 }, (_, i) => `b${i + 1}.webp`);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   const ShortAbout = () => {
     return (
-      <div className="shortAbt">
+      <motion.div
+        className="shortAbt"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 1.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
         <video
           src="/shortabt.mp4"
           autoPlay
@@ -23,7 +40,7 @@ export const Hero = () => {
         {/* <img src="/shortabt.jpg" alt="shortabout" className="abtl" /> */}
         <div className="abtr">
           <h1>
-            ABOUT <span style={{ color: "#ff451f" }}>US</span>
+            About <span style={{ color: "#ff451f" }}>Us</span>
           </h1>
           <p className="hdes">Your trusted partner in loans</p>
           <p className="abtdes">
@@ -45,13 +62,20 @@ export const Hero = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   };
   return (
     <div id="Hero">
       <div className="herocont">
-        <div className="lhr">
+        <motion.div
+          className="lhr"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, ease: "easeOut" }}
+          variants={fadeUp}
+        >
           <h4 className="hr">BanksBuddy your financial partner</h4>
           <h1>
             Banks<span>Buddy</span>
@@ -62,10 +86,7 @@ export const Hero = () => {
             individuals and businesses, helping them grow and succeed.
           </p>
           <div className="btnss">
-            <Link
-              className="hrca"
-              to="/consultation"
-            >
+            <Link className="hrca" to="/consultation">
               Book a Consultation
             </Link>
             <a className="hrc" href="https://wa.me/+917723926058">
@@ -75,10 +96,17 @@ export const Hero = () => {
               WhatsApp
             </a>
           </div>
-        </div>
-        <div className="rhr">
+        </motion.div>
+        <motion.div
+          className="rhr"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, ease: "easeOut", delay: 1.2 }}
+          variants={fadeUp}
+        >
           <img className="rhrimg" src="heroman.png" alt="Hero Image" />
-        </div>
+        </motion.div>
       </div>
       <div className="marquee-container">
         <Marquee className="Maq">
@@ -94,6 +122,8 @@ export const Hero = () => {
       </div>
       <ShortAbout />
       <Counters />
+      <NewsnOffers />
+      <EdgeDesign />
       <Services />
       <HeroEMI />
       <Reviews />
