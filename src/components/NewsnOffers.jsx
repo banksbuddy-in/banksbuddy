@@ -35,16 +35,30 @@ export const NewsnOffers = () => {
 
   const fetchFinancialNews = async () => {
     try {
-      // Using GNews API - Get your free API key from https://gnews.io/
-      const API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
-      const response = await fetch(
-        `https://gnews.io/api/v4/search?q=finance OR banking OR investment OR stock market&country=in&lang=en&max=4&apikey=${API_KEY}`
-      );
-      const data = await response.json();
+      // Check if running in production (Vercel) or development
+      const isDevelopment = window.location.hostname === 'localhost';
       
-      if (data.articles) {
-        setNews(data.articles);
+      if (isDevelopment) {
+        // Development: Direct API call (will work with local proxy if needed)
+        const API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
+        const response = await fetch(
+          `https://gnews.io/api/v4/search?q=finance OR banking OR investment OR stock market&country=in&lang=en&max=4&apikey=${API_KEY}`
+        );
+        const data = await response.json();
+        
+        if (data.articles) {
+          setNews(data.articles);
+        }
+      } else {
+        // Production: Use serverless function to avoid CORS
+        const response = await fetch('/api/news');
+        const data = await response.json();
+        
+        if (data.articles) {
+          setNews(data.articles);
+        }
       }
+      
       setLoading(false);
     } catch (error) {
       console.error('Error fetching news:', error);
