@@ -122,11 +122,11 @@ export const Hero = () => {
       </div>
       <ShortAbout />
       <Counters />
-      <NewsnOffers />
       <EdgeDesign />
       <Services />
       <HeroEMI />
       <Reviews />
+      <NewsnOffers />
     </div>
   );
 };

@@ -957,6 +957,29 @@
   .div1 video {
     display: none;
   }
+  #designDat {
+    display: none;
+  }
+  .service-card.spec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .revslist h1 {
+    text-align: center;
+    margin: 0 9%;
+  }
+  .spec img {
+    align-self: center;
+  }
+  h1.rehed {
+    margin-top: 36%;
+  }
+
+  .revslist h1 {
+    padding: 7% 0;
+  }
 }
 @media (max-width: 1024px) {
   .subcategory-header {
@@ -973,5 +996,28 @@
   }
   ul.navlist.open {
     align-items: flex-start;
+  }
+  #designDat {
+    display: none;
+  }
+  .service-card.spec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .revslist h1 {
+    text-align: center;
+    margin: 0 9%;
+  }
+  .spec img {
+    align-self: center;
+  }
+  h1.rehed {
+    margin-top: 36%;
+  }
+
+  .revslist h1 {
+    padding: 7% 0;
   }
 }
