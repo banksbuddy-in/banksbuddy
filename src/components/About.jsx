@@ -2,22 +2,26 @@ import React, { useState, useEffect } from "react";
 import "./optional.css";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { db } from '../firebase';
-import { ref, get } from 'firebase/database';
+import { db } from "../firebase";
+import { ref, get } from "firebase/database";
+import { Awards } from "./Awards";
 
 export const About = () => {
   const [teamMembers, setTeamMembers] = useState([]);
+  const [expandPartners, setExpandPartners] = useState(false);
 
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const snapshot = await get(ref(db, 'team'));
+        const snapshot = await get(ref(db, "team"));
         if (snapshot.exists()) {
           const data = snapshot.val();
-          setTeamMembers(Object.keys(data).map(key => ({ id: key, ...data[key] })));
+          setTeamMembers(
+            Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+          );
         }
       } catch (error) {
-        console.error('Error fetching team:', error);
+        console.error("Error fetching team:", error);
       }
     };
     fetchTeam();
@@ -25,7 +29,7 @@ export const About = () => {
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
@@ -39,7 +43,7 @@ export const About = () => {
       >
         ABOUT US
       </motion.h1>
-      <motion.div 
+      <motion.div
         className="a1"
         initial="hidden"
         whileInView="visible"
@@ -68,7 +72,7 @@ export const About = () => {
         </div>
         <img src="ab1.jpg" alt="About BanksBuddy" />
       </motion.div>
-      <motion.div 
+      <motion.div
         className="a2"
         initial="hidden"
         whileInView="visible"
@@ -100,7 +104,7 @@ export const About = () => {
           </p>
         </div>
       </motion.div>
-      <motion.div 
+      <motion.div
         className="a3"
         initial="hidden"
         whileInView="visible"
@@ -113,16 +117,35 @@ export const About = () => {
           BanksBuddy is proud to be partnered with the top financial
           institutions to provide unparalleled services to our customers.
         </p>
-        <div className="a3imgs">
+        <div className={`a3imgs ${!expandPartners ? "collapsed" : ""}`}>
           {[
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23, 24, 25, 26,27,28
-          ].map((num) => (
-            <img key={num} src={`a${num}.webp`} alt={`Partner ${num}`} />
-          ))}
+            20, 21, 22, 23, 24, 25, 26, 27, 28,
+          ]
+            .slice(0, expandPartners ? 28 : 12)
+            .map((num) => (
+              <img key={num} src={`a${num}.webp`} alt={`Partner ${num}`} />
+            ))}
+        </div>
+        <div className="a3-buttons">
+          {!expandPartners ? (
+            <button
+              className="view-all-btn"
+              onClick={() => setExpandPartners(true)}
+            >
+              View All
+            </button>
+          ) : (
+            <button
+              className="view-less-btn"
+              onClick={() => setExpandPartners(false)}
+            >
+              View Less
+            </button>
+          )}
         </div>
       </motion.div>
-      <motion.div 
+      <motion.div
         className="a4"
         initial="hidden"
         whileInView="visible"
@@ -137,13 +160,17 @@ export const About = () => {
         </p>
         <div className="memcards">
           {teamMembers.map((member, index) => (
-            <motion.div 
-              key={member.id} 
+            <motion.div
+              key={member.id}
               className="mem"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut",
+                delay: index * 0.1,
+              }}
               variants={fadeUp}
             >
               <img src={member.image} alt={member.name} />
@@ -153,6 +180,7 @@ export const About = () => {
           ))}
         </div>
       </motion.div>
+      <Awards />
     </div>
   );
 };

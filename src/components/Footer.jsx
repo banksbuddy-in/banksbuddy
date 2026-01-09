@@ -136,7 +136,6 @@ export const Footer = () => {
         <div className="c2">
           <p className="fct">Resources</p>
           <ul>
-            <ul>
               <li>
                 <Link className="fct" to="/">
                   Home
@@ -162,7 +161,6 @@ export const Footer = () => {
                   Contact Us
                 </Link>
               </li>
-            </ul>
           </ul>
         </div>
       </div>

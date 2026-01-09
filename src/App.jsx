@@ -15,6 +15,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 import "./change.css";
 import "./change2.css";
 import "./responsive.css";
+import "./components/r.css";
 import { Cursor } from "./components/Cursor";
 
 function ScrollToTop() {

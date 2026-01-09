@@ -980,6 +980,145 @@
   .revslist h1 {
     padding: 7% 0;
   }
+  h1.shead {
+    font-size: 3rem;
+  }
+  .news-card {
+    padding: 7% 8%;
+    font-size: 87%;
+  }
+  .crds {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .crdsss {
+    width: 100%;
+    gap: 0;
+  }
+
+  .reviews-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .news-content {
+    text-align: center;
+  }
+
+  img.news-image {
+    display: block;
+  }
+
+  .news-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  img.news-image {
+    width: 79%;
+  }
+
+  .no-carousel-track {
+    display: flex;
+    align-items: stretch;
+  }
+  .news-content {
+    text-align: center;
+  }
+
+  img.news-image {
+    display: block;
+  }
+
+  .news-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  img.news-image {
+    width: 79%;
+  }
+
+  .no-carousel-track {
+    display: flex;
+    align-items: stretch;
+  }
+
+  footer.foot {
+    margin-top: 9%;
+  }
+
+  .r1 h1 {
+    text-align: center;
+  }
+
+  p.fdes {
+    text-align: center;
+  }
+
+  p.number {
+    text-align: center;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .c2 {
+    text-align: center;
+    width: 100%;
+  }
+
+  .c2 ul li {
+    width: 100%;
+  }
+  .hel p {
+    text-align: center;
+    border: none;
+    padding-left: 0;
+  }
+
+  .hel h1 {
+    text-align: center;
+    line-height: 100%;
+    margin: 0;
+  }
+  h2.counters-title {
+    line-height: 100%;
+    margin-bottom: 10%;
+  }
+  div#awards {
+    width: 100%;
+  }
+
+  #awards h1 {
+    line-height: 100%;
+    margin: 2%;
+  }
+
+  p.awards-subtitle {
+    text-align: center;
+    font-size: 0.98rem;
+  }
+  #awards h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: var(--darkbl);
+    font-weight: 900;
+  }
+
+  div#awards {
+    background: none;
+  }
 }
 @media (max-width: 1024px) {
   .subcategory-header {
@@ -1019,5 +1158,144 @@
 
   .revslist h1 {
     padding: 7% 0;
+  }
+  h1.shead {
+    font-size: 3rem;
+  }
+  .news-card {
+    padding: 7% 8%;
+    font-size: 87%;
+  }
+  .crds {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .crdsss {
+    width: 100%;
+    gap: 0;
+  }
+  .news-content {
+    text-align: center;
+  }
+
+  img.news-image {
+    display: block;
+  }
+
+  .news-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  img.news-image {
+    width: 79%;
+  }
+
+  .no-carousel-track {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .reviews-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .news-content {
+    text-align: center;
+  }
+
+  img.news-image {
+    display: block;
+  }
+
+  .news-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  img.news-image {
+    width: 79%;
+  }
+
+  .no-carousel-track {
+    display: flex;
+    align-items: stretch;
+  }
+
+  footer.foot {
+    margin-top: 9%;
+  }
+
+  .r1 h1 {
+    text-align: center;
+  }
+
+  p.fdes {
+    text-align: center;
+  }
+
+  p.number {
+    text-align: center;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .c2 {
+    text-align: center;
+    width: 100%;
+  }
+
+  .c2 ul li {
+    width: 100%;
+  }
+  .hel p {
+    text-align: center;
+    border: none;
+    padding-left: 0;
+  }
+
+  .hel h1 {
+    text-align: center;
+    line-height: 100%;
+    margin: 0;
+  }
+  h2.counters-title {
+    line-height: 100%;
+    margin-bottom: 10%;
+  }
+  div#awards {
+    width: 100%;
+  }
+
+  #awards h1 {
+    line-height: 100%;
+    margin: 2%;
+  }
+
+  p.awards-subtitle {
+    text-align: center;
+    font-size: 0.98rem;
+  }
+  #awards h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: var(--darkbl);
+    font-weight: 900;
+  }
+
+  div#awards {
+    background: none;
   }
 }

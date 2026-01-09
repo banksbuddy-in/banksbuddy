@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Marquee from "react-fast-marquee";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { reviewData } from "./Data_Reviews";
-import Slider from "react-slick";
 import { db } from "../firebase";
 import { ref, onValue, off } from "firebase/database";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
-import { FaQuoteLeft, FaQuoteRight, FaStar } from "react-icons/fa";
-import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
+import { FaStar } from "react-icons/fa";
+import "./r.css";
 
 export const Reviews = () => {
-  var settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    // autoplay: true,
-    // autoplaySpeed: 2000,
-    pauseOnHover: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   const [reviews, setReviews] = useState([]);
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [enableTransition, setEnableTransition] = useState(true);
+  const intervalRef = useRef(null);
+  const trackRef = useRef(null);
 
   useEffect(() => {
     const reviewsRef = ref(db, "reviews");
-    // eslint-disable-next-line no-unused-vars
     const unsub = onValue(reviewsRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) {
@@ -48,46 +36,192 @@ export const Reviews = () => {
   }, []);
 
   const display = reviews.length ? reviews : reviewData;
+  const totalCards = display.length;
+
+  // Create extended array: [clone of last few] + [original] + [clone of first few]
+  // This allows smooth infinite scrolling
+  const getExtendedCards = useCallback(() => {
+    if (totalCards === 0) return [];
+    const cloneCount = cardsPerView;
+    const lastCards = display.slice(-cloneCount); // Last N cards for start
+    const firstCards = display.slice(0, cloneCount); // First N cards for end
+    return [...lastCards, ...display, ...firstCards];
+  }, [display, cardsPerView, totalCards]);
+
+  const extendedCards = getExtendedCards();
+  const cloneOffset = cardsPerView; // Offset to skip the cloned cards at start
+
+  // Always show 1 card per view in this section
+  useEffect(() => {
+    setCardsPerView(1);
+  }, []);
+
+  // Handle infinite loop jump
+  useEffect(() => {
+    if (!enableTransition) {
+      // Re-enable transition after instant jump
+      const timer = setTimeout(() => {
+        setEnableTransition(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [enableTransition]);
+
+  const handleTransitionEnd = useCallback(() => {
+    // If we've scrolled past the end, jump to the real start
+    if (currentIndex >= totalCards) {
+      setEnableTransition(false);
+      setCurrentIndex(0);
+    }
+    // If we've scrolled before the start, jump to the real end
+    if (currentIndex < 0) {
+      setEnableTransition(false);
+      setCurrentIndex(totalCards - 1);
+    }
+  }, [currentIndex, totalCards]);
+
+  const nextSlide = useCallback(() => {
+    setEnableTransition(true);
+    setCurrentIndex((prev) => prev + 1);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setEnableTransition(true);
+    setCurrentIndex((prev) => prev - 1);
+  }, []);
+
+  const goToSlide = (index) => {
+    setEnableTransition(true);
+    setCurrentIndex(index);
+  };
+
+  // Get current dot index (normalized)
+  const getCurrentDotIndex = () => {
+    const normalized = ((currentIndex % totalCards) + totalCards) % totalCards;
+    return normalized;
+  };
+
+  // Auto-slide every 2 seconds
+  useEffect(() => {
+    if (!isDragging) {
+      intervalRef.current = setInterval(() => {
+        nextSlide();
+      }, 2000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [nextSlide, isDragging]);
+
+  // Drag handlers
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
+    const diff = clientX - dragStartX;
+    setDragOffset(diff);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    const threshold = 50;
+    if (dragOffset > threshold) {
+      prevSlide();
+    } else if (dragOffset < -threshold) {
+      nextSlide();
+    }
+    setDragOffset(0);
+  };
+
+  // Calculate the transform position
+  // Each card takes (100 / cardsPerView)% of the viewport
+  const cardWidthPercent = 100 / cardsPerView;
+  const translateX = -((currentIndex + cloneOffset) * cardWidthPercent);
 
   return (
-    <motion.div
-      id="review"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      variants={fadeUp}
-    >
-      <h1 className="rehed">Testimonials</h1>
-      <p className="repd">
-        Our financial services empower individuals and businesses to achieve
-        their dreams with expert financial solutions.
-      </p>
-      <div className="whitis"></div>
-      <div className="revslist">
-        <Slider {...settings}>
-          {display.map((review, index) => (
-            <div key={index} className="revcardsa">
-              <div className="whitish"></div>
-              <div className="msgbox">
-                <div className="reli1">
-                  <RiDoubleQuotesL className="qot" />
-                  <RiDoubleQuotesR className="qot" />
-                </div>
-                <p>{review.review}</p>
-                <div className="stars">
-                  <span><FaStar/></span>
-                  <span><FaStar/></span>
-                  <span><FaStar/></span>
-                  <span><FaStar/></span>
-                  <span><FaStar/></span>
-                </div>
+    <section id="review">
+      <div className="reviews-container">
+        <div className="reviews-header">
+          <span className="reviews-badge">Testimonials</span>
+          <h2 className="reviews-title">What Our Clients Say</h2>
+          <p className="reviews-subtitle">
+            Trusted by thousands of individuals and businesses across India
+          </p>
+        </div>
+
+        <div className="crdsss">
+          <video className="crdsvid" src="rvc1.mp4" autoPlay loop muted playsInline />
+          <div className="crds">
+            <div className="reviews-carousel-viewport">
+              <div
+                ref={trackRef}
+                className="reviews-carousel-track"
+                style={{
+                  transform: `translateX(calc(${translateX}% + ${dragOffset}px))`,
+                  transition:
+                    enableTransition && !isDragging
+                      ? "transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)"
+                      : "none",
+                  cursor: isDragging ? "grabbing" : "grab",
+                }}
+                onTransitionEnd={handleTransitionEnd}
+                onMouseDown={handleDragStart}
+                onMouseMove={handleDragMove}
+                onMouseUp={handleDragEnd}
+                onMouseLeave={handleDragEnd}
+                onTouchStart={handleDragStart}
+                onTouchMove={handleDragMove}
+                onTouchEnd={handleDragEnd}
+              >
+                {extendedCards.map((card, idx) => (
+                  <div
+                    key={`card-${idx}`}
+                    className="review-mini-card"
+                    style={{
+                      userSelect: "none",
+                      flex: `0 0 100%`,
+                    }}
+                  >
+                    <div className="mini-stars">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar key={i} />
+                      ))}
+                    </div>
+                    <p className="mini-text">
+                      "{card.review.substring(0, 150)}..."
+                    </p>
+                    <span className="mini-author">— {card.name}</span>
+                  </div>
+                ))}
               </div>
-              <h1>{review.name}</h1>
             </div>
-          ))}
-        </Slider>
+
+            <div className="reviews-dots">
+              {Array.from({ length: totalCards }).map((_, index) => (
+                <button
+                  key={index}
+                  className={`dot ${
+                    index === getCurrentDotIndex() ? "active" : ""
+                  }`}
+                  onClick={() => goToSlide(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-    </motion.div>
+    </section>
   );
 };

@@ -97,3 +97,80 @@ img.offer-image {
   padding: 0;
   border-radius: 4rem;
 }
+
+/* Carousel styles for mobile/tablet */
+.carousel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  padding: 0.25rem 0.5rem 1rem 0.5rem;
+}
+
+.carousel-item {
+  flex: 0 0 85%;
+  scroll-snap-align: start;
+}
+
+.carousel-item.offer-item {
+  flex-basis: 70%;
+}
+
+/* Optional: hide scrollbar on WebKit */
+.carousel::-webkit-scrollbar {
+  height: 6px;
+}
+.carousel::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+/* Mobile specific tweaks */
+@media (max-width: 1024px) {
+  .mobile-col {
+    flex-direction: column;
+  }
+  .news-card {
+    margin: 0.5rem;
+  }
+}
+
+/* Structured mobile carousel (similar to Reviews) */
+.no-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.no-carousel-track {
+  display: flex;
+  gap: 0;
+  will-change: transform;
+}
+
+.no-dots {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.no-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.no-dots .dot.active {
+  background: var(--darkbl);
+  transform: scale(1.1);
+}

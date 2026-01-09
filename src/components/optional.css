@@ -234,6 +234,94 @@ p.a2cts {
   padding: 2% 4%;
   align-items: center;
   justify-content: center;
+  max-height: 2000px;
+  overflow: hidden;
+  animation: expandPartners 0.6s ease-in-out forwards;
+}
+
+.a3imgs.collapsed {
+  max-height: 500px;
+  animation: collapsePartners 0.6s ease-in-out forwards;
+}
+
+@keyframes expandPartners {
+  from {
+    max-height: 500px;
+    opacity: 0.8;
+  }
+  to {
+    max-height: 2000px;
+    opacity: 1;
+  }
+}
+
+@keyframes collapsePartners {
+  from {
+    max-height: 2000px;
+    opacity: 1;
+  }
+  to {
+    max-height: 500px;
+    opacity: 0.8;
+  }
+}
+
+.a3-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  padding: 2% 0;
+  animation: slideInButtons 0.5s ease-out;
+}
+
+@keyframes slideInButtons {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.view-all-btn,
+.view-less-btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #007bff;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: buttonFadeIn 0.4s ease-out;
+}
+
+@keyframes buttonFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.view-all-btn:hover,
+.view-less-btn:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+.view-all-btn:active,
+.view-less-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
 
 .a3 p {
