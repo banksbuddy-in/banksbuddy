@@ -13,6 +13,7 @@ import AdminTable from "./components/AdminTable";
 import { AdminReviews } from "./components/AdminReviews";
 import { AdminOffers } from "./components/AdminOffers";
 import { AdminTeam } from "./components/AdminTeam";
+import { AdminPolicyReminder } from "./components/AdminPolicyReminder";
 import { Insurance } from "./components/Insurance";
 import { CibilScoreCheck } from "./components/CibilScoreCheck";
 import { UnderDev } from "./components/UnderDev";
@@ -91,6 +92,11 @@ export const Dat = [
     path: "/admin-team",
     label: "Admin Team",
     element: <AdminTeam />,
+  },
+  {
+    path: "/admin-policy-reminder",
+    label: "Policy Reminders",
+    element: <AdminPolicyReminder />,
   },
   {
     path: "/insurance-assistance",

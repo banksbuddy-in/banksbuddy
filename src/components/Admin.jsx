@@ -6,8 +6,9 @@ export const Admin = () => {
     const nv = useNavigate();
     
     const adminModules = [
+      { path: '/admin-policy-reminder', title: 'Policy Reminders', icon: '📋', desc: 'Track policy expirations' },
       { path: '/admin-career', title: 'Careers', icon: '💼', desc: 'Manage job postings' },
-      { path: '/admin-table', title: 'Consultations', icon: '📋', desc: 'View consultation requests' },
+      { path: '/admin-table', title: 'Consultations', icon: '📝', desc: 'View consultation requests' },
       { path: '/admin-reviews', title: 'Testimonials', icon: '⭐', desc: 'Manage customer reviews' },
       { path: '/admin-offers', title: 'Offers', icon: '🎁', desc: 'Manage special offers' },
       { path: '/admin-team', title: 'Team', icon: '👥', desc: 'Manage team members' },
