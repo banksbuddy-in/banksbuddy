@@ -1,24 +1,14 @@
-{
-  /*Secured personal loans for salaried and certain self-employed profiles.
-Loans for purchase, construction, balance transfer, self-construction, refinance and builder funding.
-Loans for new/used vehicles and refinance of existing vehicle loans.
-Secured loan against residential or commercial property.
-Finance for students pursuing domestic or international courses.
-Working capital and term loans for businesses (manufacturing, trading, services).*/
-}
-
 const NewServices = [
   {
     id: "personal_loan",
     Title: "Personal Loan",
-    image: "/d1.jpg",
+    image: "/ll1.avif", // Real image
     overview: [
       "A personal loan is your go-to solution for managing financial needs without hassle. Whether you’re planning a dream wedding, funding higher education, covering medical emergencies, or consolidating debts, our instant personal loan offers quick disbursal, minimal paperwork, and flexible repayment options.",
-      "With competitive interest rates and a hassle-free application process, we ensure you get the funds you need, exactly when you need them. No collateral required—just a simple and transparent way to achieve your financial goals with ease. Take the first step toward financial freedom today and experience the convenience of a personal loan tailored to your needs.",
+      "With competitive interest rates and a hassle-free application process, we ensure you get the funds you need, exactly when you need them. No collateral required—just a simple and transparent way to achieve your financial goals with ease.",
       "Secured personal loans for salaried and certain self-employed profiles.",
     ],
     tagline: "Unlock Financial Freedom",
-
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months",
@@ -34,12 +24,12 @@ const NewServices = [
       "Details Required: Email ID and Contact Number",
     ],
     Docs: [
-      "KYC of Applicant (Aadhar Card, Pan Card)",
-      "3 Months’ Salary Slip",
-      "6 Months Bank Statement",
-      "Service Certificate for Defence (Army, Navy, Air Force)",
-      "Passport Size Photo",
-      "Address Proof (Electricity Bill, Rent Agreement, Postpaid Bill, Gas Connection)",
+      "KYC (Aadhar & PAN)",
+      "Salary Slips (3 Months)",
+      "Bank Statements (6 Months)",
+      "Service Certificate (If Applicable)",
+      "Passport Photo",
+      "Address Proof",
     ],
     Types: [
       {
@@ -63,7 +53,7 @@ const NewServices = [
   {
     id: "home_loan",
     Title: "Home Loan",
-    image: "/d6.jpg",
+    image: "/ll2.avif", // Real image
     overview: [
       "A home loan is the perfect solution to turn your dream home into reality without financial strain. Whether you're buying your first home, upgrading to a bigger space, or investing in property, our home loan offers attractive interest rates, flexible repayment options, and easy approvals.",
       "With minimal paperwork, quick processing, and tailored loan amounts, we make homeownership simple and accessible. Secure your future with a hassle-free home loan and move into your dream home with confidence.",
@@ -84,13 +74,13 @@ const NewServices = [
       "Maximum Loan Term: 30 years",
     ],
     Docs: [
-      "KYC of applicant & co-applicant (Aadhar, PAN)",
-      "Passport size photo (Applicant & Co-applicant)",
-      "3 months’ salary slip",
-      "1 year bank statement",
-      "Address Proof – Electricity Bill / Postpaid Bill / Gas Connection",
-      "Property papers with chain documents / Allotment Letter / Payment receipts",
-      "Form 16 / ITR for past 2 financial years",
+      "KYC Documents",
+      "Passport Photos",
+      "Salary Slips (3 Months)",
+      "Bank Statement (1 Year)",
+      "Address Proof",
+      "Property Documents",
+      "Form 16 / ITR (2 Years)",
     ],
     Types: [
       {
@@ -114,14 +104,13 @@ const NewServices = [
   {
     id: "education_loan",
     Title: "Education Loan",
-    image: "/d4.jpg",
+    image: "/ll3.jpg", // Real image
     overview: [
       "An education loan helps you or your loved ones achieve academic dreams without financial worries. Whether it's higher education in India or abroad, our student-friendly loans cover tuition fees, living expenses, and other educational costs with low-interest rates and easy repayment plans.",
       "With a simple application process, quick disbursal, and no collateral for eligible students, we ensure uninterrupted learning. Focus on your studies while we take care of the finances.",
       "Finance for students pursuing domestic or international courses.",
     ],
     tagline: "Invest in Your Future",
-
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
@@ -136,13 +125,13 @@ const NewServices = [
       "Co-applicant must provide proof of regular income",
     ],
     Docs: [
-      "ID Proof: PAN, Driving License, Voter ID, Aadhar",
-      "Address Proof: Aadhar, Passport, Voter ID, DL",
-      "10th, 12th & Graduation mark sheets",
-      "Admission letter & fee schedule",
-      "Exam scorecards (CAT, GRE, SAT, etc.)",
-      "Co-applicant documents: PAN, Address Proof",
-      "Property documents (if required)",
+      "ID Proof",
+      "Address Proof",
+      "Academic Mark Sheets",
+      "Admission Letter",
+      "Entrance Exam Scorecards",
+      "Co-applicant Documents",
+      "Collateral Documents",
     ],
     Types: [
       {
@@ -166,14 +155,13 @@ const NewServices = [
   {
     id: "auto_loan",
     Title: "Machinery Loan",
-    image: "/d5.jpg",
+    image: "/ll4.jpg", // Real image (updated to Machinery/Construction relevant)
     overview: [
       "A machinery or auto loan helps businesses and individuals invest in the right equipment or vehicle without financial burden. Whether you need machinery for business or a vehicle for personal/commercial use, our loans offer competitive rates and convenient repayment plans.",
       "With fast approvals, minimal documentation, and flexible tenure, we make it easy to upgrade your assets and fuel your growth.",
       "Loans for new/used vehicles and refinance of existing vehicle loans.",
     ],
     tagline: "Power Your Growth",
-
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
@@ -186,11 +174,11 @@ const NewServices = [
       "Minimum business stability of 2–3 years",
     ],
     Docs: [
-      "KYC: Aadhar, PAN",
-      "Latest 3 months' salary slips / Form 16",
-      "6 months' bank statement",
-      "ITR for last 2 years / Audited P&L & Balance Sheet",
-      "Business ownership proof / Registration documents",
+      "KYC Documents",
+      "Income Proof",
+      "Bank Statements (6 Months)",
+      "ITR / Audited Financials",
+      "Business Registration Proof",
     ],
     Types: [
       { titl: "Car Loans", des: "Finance your new car with ease." },
@@ -208,14 +196,13 @@ const NewServices = [
   {
     id: "business_loan",
     Title: "Business Loan",
-    image: "/d2.jpg",
+    image: "/ll5.jpg", // Real image
     overview: [
       "A business loan empowers entrepreneurs and businesses with the capital they need to grow and scale. Whether you’re launching a startup, expanding operations, or managing working capital, our business loans provide quick funding with minimal hassle.",
       "Enjoy flexible repayment options, competitive interest rates, and fast approvals—designed to support your business vision.",
       "Working capital and term loans for businesses (manufacturing, trading, services).",
     ],
     tagline: "Expand & Succeed Without Limits",
-
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
@@ -228,11 +215,11 @@ const NewServices = [
       "Applicant age: 21 to 65 years",
     ],
     Docs: [
-      "Aadhar / Passport / Voter ID / PAN / Driving License",
-      "6 months' bank statement",
-      "Latest ITR + Audited financials (2 years)",
-      "Proof of business continuation",
-      "Mandatory documents: Partnership Deed, MOA/AOA, Board Resolution (as applicable)",
+      "KYC Documents",
+      "Bank Statements (6 Months)",
+      "ITR & Financials",
+      "Business Continuity Proof",
+      "Entity Proof (MOA/Deed)",
     ],
     Types: [
       {
@@ -256,14 +243,13 @@ const NewServices = [
   {
     id: "loan_against_property",
     Title: "Loan Against Property",
-    image: "/d3.jpg",
+    image: "/ll6.webp", // Real image
     overview: [
       "A Loan Against Property (LAP) helps you unlock the value of your residential or commercial property to meet major financial needs—business expansion, medical expenses, education, or personal requirements.",
       "Enjoy high loan amounts, lower interest rates, and long repayment tenure while keeping ownership of your property.",
       "Secured loan against residential or commercial property",
     ],
     tagline: "Unlock the Power of Your Property",
-
     TbData: [
       "₹40 Lakhs (may vary based on property value)",
       "Tenure up to 15 years (varies by lender)",
@@ -277,12 +263,12 @@ const NewServices = [
       "Age 21–65 years",
     ],
     Docs: [
-      "Aadhar Card & PAN Card",
-      "6 months bank statement / passbook",
-      "Salary slips (3 months) – For Salaried",
-      "Form 16 (Last 2 years) – For Salaried",
-      "Business Registration & ITR (2 years) – For Self-Employed",
-      "Complete Property Documents with chain",
+      "Aadhar & PAN",
+      "Bank Statements (6 Months)",
+      "Salary Slips (Salaried)",
+      "Form 16 (Salaried)",
+      "Business Proof (Self-Employed)",
+      "Property Documents",
     ],
     Types: [
       {
@@ -300,6 +286,152 @@ const NewServices = [
       {
         titl: "Residential Property LAP",
         des: "Borrow against self-owned residential property.",
+      },
+    ],
+  },
+  /* --- Added Other Services --- */
+  {
+    id: "cibil-improvement",
+    Title: "CIBIL Score Improvement Service",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80", // Finance/Graph image
+    overview: [
+      "Your CIBIL score is a critical factor that determines your loan and credit card approval chances. A strong credit score opens doors to better interest rates, higher loan amounts, and faster approvals from financial institutions.",
+      "Our CIBIL Score Improvement Service helps you identify credit report errors, rectify negative remarks, and implement strategies to boost your creditworthiness. We provide expert guidance on credit management and dispute resolution to enhance your financial profile.",
+      "Whether you're dealing with a low credit score, NPA issues, or incorrect reporting, our comprehensive service ensures your credit history is accurate and optimized for future financial opportunities.",
+    ],
+    tagline: "Rebuild Your Credit, Reclaim Your Financial Freedom",
+    TbLabels: ["Starting Score", "Duration", "Plan Type", "Service Variation"],
+    TbData: [
+      "Starting from 300 Score",
+      "Duration: 3 to 12 months",
+      "Customized Plan",
+      "Varies by Service Type",
+    ],
+    EliCr: [
+      "Active Mobile Number & Email ID",
+      "Details of existing Loans/Credit Cards",
+      "Access to latest Credit Report (CIBIL/Experian)",
+      "Commitment to follow financial discipline",
+    ],
+    Docs: [
+      "Aadhaar Card",
+      "PAN Card",
+      "Cancelled Cheque",
+      "Credit Report",
+      "Loan/Card Statements",
+      "Bank Statements (6 Months)",
+    ],
+    Types: [
+      {
+        titl: "Credit Score Enhancement",
+        des: "Comprehensive analysis and strategic actions to improve your CIBIL scores.",
+      },
+      {
+        titl: "CMR Rank Improvement",
+        des: "Upgrade your Credit Monitoring Rank to access better credit facilities.",
+      },
+      {
+        titl: "Error Rectification Service",
+        des: "Identify and remove incorrect entries from your credit report.",
+      },
+      {
+        titl: "NPA OTS & Closure",
+        des: "Negotiate settlement for non-performing assets and ensure proper closure.",
+      },
+    ],
+  },
+  {
+    id: "website-development",
+    Title: "Website Development",
+    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80", // Web dev image
+    overview: [
+      "Website development services are designed to help businesses build a strong online presence with modern, responsive, and high-performing websites.",
+      "Whether you're looking for a portfolio site, business website, e-commerce store, or a custom web application, development solutions are tailored to match your goals, branding, and functionality needs.",
+      "A well-developed website enhances credibility, increases customer engagement, and acts as a powerful digital asset to grow your business.",
+    ],
+    tagline: "Build Your Digital Presence with Modern Web Solutions",
+    TbLabels: ["Starting Price", "Timeline", "Responsiveness", "SEO Included"],
+    TbData: [
+      "Starts from ₹15,000",
+      "Timeline: 3 to 45 days",
+      "Fully Responsive",
+      "SEO-Optimized",
+    ],
+    EliCr: [
+      "Clear business or project requirements",
+      "Brand assets (logo, colors, content)",
+      "Domain & hosting details (if available)",
+    ],
+    Docs: [
+      "Business Profile",
+      "Website Content",
+      "Brand Assets",
+      "Hosting Details",
+    ],
+    Types: [
+      {
+        titl: "Responsive Business Website",
+        des: "Modern multi-page website built for businesses.",
+      },
+      {
+        titl: "E-Commerce Website",
+        des: "Complete online store with payment gateway and order system.",
+      },
+      {
+        titl: "Portfolio Website",
+        des: "Clean and professional portfolio for freelancers and creatives.",
+      },
+      {
+        titl: "Custom Web Application",
+        des: "Tailor-made solutions like CRMs or booking platforms.",
+      },
+    ],
+  },
+  {
+    id: "tax-services",
+    Title: "Tax Consultancy Services",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=80", // Tax image
+    overview: [
+      "Expert Guidance for Smart, Compliant, and Stress-Free Taxation. From proactive tax planning and accurate filing to notice handling and long-term tax optimization, our experienced tax consultants support you at every step.",
+      "We help you maximize exemptions, ensure compliance with the latest laws, and resolve any tax notices efficiently. Say goodbye to tax stress and fines.",
+      "Comprehensive solutions for Individuals, Freelancers, and Businesses.",
+    ],
+    tagline: "Smart Tax Planning for a Secure Future",
+    TbLabels: ["Service Cost", "Audit Support", "Consultation", "Turnaround Time"],
+    TbData: [
+      "ITR Filing: ₹500+",
+      "Audit Support: Varies",
+      "Consultation: Free Initial",
+      "Duration: 2-5 Days",
+    ],
+    EliCr: [
+      "Individuals (Salaried/Self-Employed)",
+      "Businesses & Freelancers",
+      "NRIs having Indian Income",
+    ],
+    Docs: [
+      "PAN & Aadhaar",
+      "Income Proof",
+      "Bank Statements",
+      "Investment Proofs",
+      "Capital Gains Info",
+    ],
+    Types: [
+      {
+        titl: "ITR Filing",
+        des: "Accurate filing for individuals and businesses.",
+      },
+      {
+        titl: "GST Services",
+        des: "Registration, filing, and compliance for businesses.",
+      },
+      {
+        titl: "Tax Planning",
+        des: "Strategic planning to minimize liability legally.",
+      },
+      {
+        titl: "Notice Handling",
+        des: "Expert resolution for Income Tax notices.",
       },
     ],
   },

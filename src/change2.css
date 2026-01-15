@@ -9,13 +9,16 @@ div#hero {
 div#review {
   padding: 3% 10%;
 }
+
 button.active {
   font-weight: 900;
 }
+
 a.btns:hover {
   background: var(--bl);
   box-shadow: none;
 }
+
 a.ablink {
   background: green;
 }
@@ -24,12 +27,14 @@ a.ablink:hover {
   border: 1px solid green;
   color: green;
 }
+
 .se3m1 {
   border: none;
   margin: 2% 0;
   padding: 0;
   font-size: 1rem;
 }
+
 .se3m1 {
   border: none;
   margin: 2% 0;
@@ -43,6 +48,7 @@ ul.navlist li span {
   gap: 3px;
   display: flex;
 }
+
 .subcategory-header {
   display: flex;
   width: 100%;
@@ -70,6 +76,7 @@ ul.navlist li span {
 .subcont p {
   padding-right: 24%;
 }
+
 @media (max-width: 1024px) {
   .subcategory-header {
     flex-direction: column;
@@ -83,10 +90,12 @@ ul.navlist li span {
     line-height: 100%;
     padding: 9% 0;
   }
+
   ul.navlist.open {
     align-items: flex-start;
   }
 }
+
 .c2 ul li a {
   font-size: 0.85rem;
 }
@@ -94,9 +103,11 @@ ul.navlist li span {
 p.fct {
   font-size: 1.35em;
 }
+
 a.hrca {
   background: var(--darkbl);
 }
+
 video.fbg {
   position: absolute;
   left: 0;
@@ -107,9 +118,11 @@ video.fbg {
 .r1 {
   filter: drop-shadow(0px 0px 7px #00000065);
 }
+
 a.chat:hover {
   background: var(--darkbl);
 }
+
 video.fbg {
   position: absolute;
   left: 0;
@@ -125,6 +138,7 @@ video.fbg {
 a.chat:hover {
   background: var(--darkbl);
 }
+
 video.fbg {
   position: absolute;
   left: 0;
@@ -147,6 +161,7 @@ a.chat:hover {
   position: relative;
   filter: drop-shadow(2px 4px 6px #00000075);
 }
+
 a.hrca:hover {
   background: var(--bl);
   filter: invert(0);
@@ -155,6 +170,7 @@ a.hrca:hover {
 a.hrc:hover {
   background: #00bd00;
 }
+
 h2.counters-title {
   font-weight: 900;
 }
@@ -168,6 +184,7 @@ h1.shead,
 h1.rehed {
   font-weight: 900;
 }
+
 h3.counter-number {
   color: var(--bl);
 }
@@ -175,6 +192,7 @@ h3.counter-number {
 p.counter-label {
   color: var(--darkbl);
 }
+
 .service-card.spec {
   text-align: center;
 }
@@ -205,6 +223,7 @@ h1.fhed {
 footer.foot {
   padding: 6% 10%;
 }
+
 h1.fhed {
   font-weight: 800;
   color: var(--rd);
@@ -214,6 +233,7 @@ h1.fhed {
 h1.fhed span {
   color: var(--bl);
 }
+
 .revcardsa p {
   text-align: center;
   margin: 3%;
@@ -271,9 +291,11 @@ h1.rehed {
   margin: 3% 0;
   margin-bottom: 0%;
 }
+
 .revslist h1 {
   font-size: 1.5rem;
 }
+
 .slick-next:before,
 .slick-prev:before {
   font-size: 2.75rem;
@@ -282,13 +304,16 @@ h1.rehed {
   background: var(--rd);
   border-radius: 3rem;
 }
+
 .revslist h1 {
   background: var(--bl);
 }
+
 div#review {
   position: relative;
   background: url(https://i0.wp.com/picjumbo.com/wp-content/uploads/red-and-blue-pillars-wallpaper-abstract-background-free-image.jpeg?w=2210&quality=70);
 }
+
 .revcardsa {
   cursor: grab;
 }
@@ -296,6 +321,78 @@ div#review {
 .revcardsa p {
   cursor: grab;
 }
+
 #designDat h1 {
-    margin: 3%;
+  margin: 3%;
+}
+
+h2.counters-title {
+  font-size: 2.5rem;
+}
+
+#designDat h1 {
+  font-size: 2.5rem;
+}
+
+.abtr h1 {
+  font-size: 3rem;
+}
+
+.se5 h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+.se5c h2 {
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.se5c p {
+  font-size: 0.9em;
+}
+
+h1.shead {
+  font-size: 2.5rem;
+}
+
+p.fct {
+  color: white;
+}
+
+section.sp-hero {
+  background: none;
+}
+
+p.sp-feature-text {
+  font-size: 15px;
+}
+
+.sp-feature-icon {
+  font-size: 23px;
+}
+
+p.sp-doc-text {
+  font-size: 15px;
+}
+
+.sp-doc-icon-wrapper {
+  font-size: 20px;
+}
+
+.sp-docs-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 7%;
+  flex-wrap: wrap;
+}
+
+.sp-doc-card.sp-doc-card-shadow {
+  max-width: 13rem;
+}
+
+.sp-note {
+  text-align: center;
+  border-left: 0;
 }

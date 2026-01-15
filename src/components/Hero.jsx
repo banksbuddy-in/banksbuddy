@@ -124,7 +124,7 @@ export const Hero = () => {
       <Counters />
       <EdgeDesign />
       <Services />
-      <HeroEMI />
+      {/* <HeroEMI /> */}
       <Reviews />
       <NewsnOffers />
     </div>

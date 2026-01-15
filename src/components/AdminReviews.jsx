@@ -4,7 +4,7 @@ import { ref, push, get, remove, update } from 'firebase/database'
 import './AddCareer.css'
 import { useNavigate } from 'react-router-dom'
 
-export const AdminReviews = () => {
+export const AdminReviews = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [name, setName] = useState('')
   const [review, setReview] = useState('')
@@ -97,8 +97,8 @@ export const AdminReviews = () => {
   }
 
   return (
-    <div className="add-career">
-      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
+    <div className={`add-career ${embedded ? 'embedded' : ''}`}>
+      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
       <h2 className="ac-title">{editingId ? 'Edit Review' : 'Add Review'}</h2>
 
       <form className="ac-form" onSubmit={handleSubmit}>

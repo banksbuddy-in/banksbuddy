@@ -6,7 +6,8 @@
 
 .svtb li {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* left column | right column */
+  grid-template-columns: 1fr 2fr;
+  /* left column | right column */
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   align-items: center;
@@ -22,6 +23,7 @@
   text-align: right;
   color: #444;
 }
+
 .se1 img {
   width: 44rem;
   padding: 5%;
@@ -38,9 +40,11 @@ div#ServicePage {
 }
 
 .hro h1 {
-  font-size: 3.25em;
-  line-height: 120%;
+  font-size: 2.5rem;
+  /* Reduced from 3.25em */
+  line-height: 1.2;
   color: var(--darkbl);
+  font-weight: 700;
 }
 
 p.tg {
@@ -99,11 +103,12 @@ p.abtg {
 }
 
 .se2c1 h2 {
-  font-size: 4em;
+  font-size: 2.5rem;
+  /* Reduced from 4em */
   color: var(--darkbl);
-  line-height: 100%;
+  line-height: 1.2;
   padding-bottom: 2%;
-  margin: 4% 0;
+  margin: 2% 0;
 }
 
 .se2 {
@@ -130,6 +135,7 @@ p.svpp {
   color: var(--rd);
   font-size: 2em;
 }
+
 /* 
 ul.svtb {
   border: 1px solid black;
@@ -232,6 +238,7 @@ img.se3m2 {
   border-left: 5px solid var(--bl);
   margin-left: 1%;
 }
+
 a.backtoser {
   display: flex;
   align-items: center;
@@ -262,6 +269,7 @@ section.hro {
   grid-template-columns: 1.5fr 2fr;
   border-bottom: 1px solid black;
 }
+
 .se4 {
   display: flex;
   flex-direction: column;
@@ -357,6 +365,7 @@ div#ServicePage {
   justify-content: center;
   flex-direction: column;
 }
+
 a.alynse {
   font-size: 1.25rem;
   background: black;
@@ -368,12 +377,15 @@ a.alynse {
 a.alynse:hover {
   background: var(--bl);
 }
+
 a.alynse {
   margin: 3% 0 0 0;
 }
+
 .service-card {
   justify-content: flex-end;
 }
+
 .service-card {
   justify-content: flex-end;
 }
@@ -381,11 +393,13 @@ a.alynse {
 .se4m {
   margin: 3% 0;
 }
+
 .s25cs {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .UDC h1 {
   font-size: 4rem;
   text-align: center;
@@ -409,9 +423,11 @@ a.alynse {
 .UDC p:hover {
   background: var(--darkbl);
 }
+
 .service-card.spec {
   justify-content: end;
 }
+
 .services-list.spec {
   padding: 0 15%;
 }
@@ -419,6 +435,7 @@ a.alynse {
 .service-card.spec {
   max-width: 30%;
 }
+
 .se2c1 h2 {
   padding-bottom: 0;
   margin-bottom: 0;
@@ -427,6 +444,7 @@ a.alynse {
 div#ServicePage {
   gap: 1em;
 }
+
 .job-card {
   max-width: 100%;
 }
@@ -437,7 +455,8 @@ div#ServicePage {
 
 /* Edge Design / Core Features Section */
 #designDat {
-  padding: 4rem 10%;
+  padding: 2rem 5%;
+  /* Reduced from 4rem 10% */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -447,7 +466,8 @@ div#ServicePage {
 }
 
 #designDat h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: 2.5rem;
+  /* Fixed elegant size */
   color: var(--bl);
   margin-bottom: 3rem;
   text-align: center;
@@ -493,8 +513,7 @@ div#ServicePage {
   cursor: pointer;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   margin: 0;
-  outline: 2px solid var(--bl);
-  outline-offset: -2px;
+  /* Removed outline, using filter/shadow approach if possible, but clip-path makes box-shadow tricky. keeping clean. */
   margin-left: -2px;
   margin-top: 0;
 }
@@ -567,6 +586,7 @@ div#ServicePage {
 .design-data-item:hover .design-feature {
   color: white;
 }
+
 .design-data-item:nth-child(7) {
   margin-left: 0;
 }
@@ -574,6 +594,7 @@ div#ServicePage {
 .design-data-item:nth-child(10) {
   margin-left: -1.8px;
 }
+
 .design-data-item:nth-child(7) {
   margin-left: 0;
 }
@@ -590,6 +611,7 @@ div#ServicePage {
   padding: 6% 0%;
   border-radius: 7rem;
 }
+
 .design-data-item:nth-child(7) {
   margin-left: 0;
 }
@@ -614,16 +636,19 @@ div#designDat {
 .counters-section {
   margin-bottom: 2%;
 }
+
 .design-data-grid {
   width: 100%;
 }
+
 div#Services {
-    padding-top: 5%;
+  padding-top: 5%;
 }
 
 #designDat h1 {
-    margin-bottom: 2%;
+  margin-bottom: 2%;
 }
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .design-data-item {

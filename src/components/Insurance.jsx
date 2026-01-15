@@ -10,6 +10,8 @@ import "./newserv.css";
 import { PiChartLineDownFill, PiLightning, PiLightningAFill } from "react-icons/pi";
 import { GoArrowLeft } from "react-icons/go";
 import { IoTimer } from "react-icons/io5";
+import { FAQ } from "./FAQ";
+import { insuranceFAQs } from "./Data_FAQs";
 
 const InsuranceData = [
   {
@@ -245,6 +247,13 @@ export const Insurance = () => {
           ))}
         </div>
       </div>
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={insuranceFAQs} 
+        title="Insurance - Frequently Asked Questions"
+        subtitle="Got Questions?"
+      />
     </div>
   );
 };

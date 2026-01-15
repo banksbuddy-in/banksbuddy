@@ -4,7 +4,7 @@ import { db } from '../firebase';
 import { ref, set, get, remove, update } from 'firebase/database';
 import './AdminPolicyReminder.css';
 
-export const AdminPolicyReminder = () => {
+export const AdminPolicyReminder = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [policies, setPolicies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -245,12 +245,14 @@ export const AdminPolicyReminder = () => {
   });
 
   return (
-    <div className="policy-reminder-container">
+    <div className={`policy-reminder-container ${embedded ? 'embedded' : ''}`}>
       {/* Header */}
       <div className="policy-header">
-        <button className="back-btn" onClick={() => navigate('/admin')}>
-          ← Back
-        </button>
+        {!embedded && (
+          <button className="back-btn" onClick={() => navigate('/admin')}>
+            ← Back
+          </button>
+        )}
         <div className="header-content">
           <h1>📋 Policy Reminders</h1>
           <p>Manage and track policy expirations</p>

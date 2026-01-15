@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Insur } from "./Data_Special";
 import "./services.css";
+import { FAQ } from "./FAQ";
+import { getFAQsByServiceId } from "./Data_FAQs";
 
 export const InsuranceSubCategory = () => {
   const { category } = useParams();
   const navigate = useNavigate();
+  const [faqCategory, setFaqCategory] = useState("Common");
 
   // Find the insurance data and the specific subcategory
   const insuranceData = Insur[0];
@@ -80,7 +83,7 @@ export const InsuranceSubCategory = () => {
         </div>
         <img
           src={subCategory.image}
-          style={{ borderRadius: "5rem"}}
+          style={{ borderRadius: "5rem" }}
           alt={subCategory.title}
         />
       </div>
@@ -343,6 +346,58 @@ export const InsuranceSubCategory = () => {
         >
           Book Free Consultation
         </button>
+      </div>
+      {/* FAQ Section with Categories */}
+      <div style={{ width: "100%", maxWidth: "1200px", marginTop: "2rem" }}>
+
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h2 style={{
+            fontSize: "2.5rem",
+            color: "var(--bl)",
+            marginBottom: "1.5rem"
+          }}>
+            {subCategory.title} FAQs
+          </h2>
+
+          <div className="sp-faq-tabs" style={{ justifyContent: "center", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            {["Common", "Informations", "Misc"].map((tab) => (
+              <button
+                key={tab}
+                className={`sp-faq-tab ${faqCategory === tab ? "active" : ""}`}
+                onClick={() => setFaqCategory(tab)}
+                style={{
+                  padding: "0.8rem 2rem",
+                  border: "none",
+                  borderRadius: "2rem",
+                  background: faqCategory === tab ? "#ff451f" : "#f0f0f0",
+                  color: faqCategory === tab ? "white" : "#333",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: faqCategory === tab ? "0 4px 12px rgba(255, 69, 31, 0.3)" : "none"
+                }}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <FAQ
+          faqs={(() => {
+            const allFaqs = getFAQsByServiceId(subCategory.id);
+            const commonFaqs = allFaqs.slice(0, 3);
+            const infoFaqs = allFaqs.slice(3, 6);
+            const miscFaqs = allFaqs.slice(6);
+
+            if (faqCategory === "Common") return commonFaqs;
+            if (faqCategory === "Informations") return infoFaqs;
+            return miscFaqs;
+          })()}
+          title=""
+          subtitle=""
+        />
       </div>
     </div>
   );

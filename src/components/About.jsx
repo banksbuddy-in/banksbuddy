@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./optional.css";
-// eslint-disable-next-line no-unused-vars
+import "./AboutRefactored.css";
 import { motion } from "framer-motion";
 import { db } from "../firebase";
 import { ref, get } from "firebase/database";
@@ -32,155 +31,150 @@ export const About = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  const staggerContainer = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
-    <div id="about">
-      <motion.h1
+    <div className="about-page-container">
+      {/* Hero Section */}
+      <motion.section
+        className="ab-hero"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
         variants={fadeUp}
       >
-        ABOUT US
-      </motion.h1>
-      <motion.div
-        className="a1"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        variants={fadeUp}
-      >
-        <div className="a1ct">
-          <h3>Company History</h3>
+        <div className="ab-hero-content">
+          <span className="ab-tagline">Who We Are</span>
+          <h1>Empowering Your <br /> Financial Journey</h1>
           <p>
-            BanksBuddy was founded by Ashwin Kumar Singh with the vision To be
-            the most trusted and innovative financial partner for individuals
-            and businesses worldwide From the very beginning, our goal has been
-            To provide exceptional financial services that empower our clients
-            to make informed decisions, achieve financial stability, and realize
-            their dreams through innovative solutions and personalized service.
-            <br />
-            Over time, BanksBuddy has expanded its services to include CIBIL
-            score improvement, education loans, and CA services like ITR filing
-            and business registrations. Today, we are proud to be one of the
-            fastest-growing platforms in the finance industry, dedicated to
-            offering personalized solutions that make financial dreams a reality
-            for everyone. From Education loan to Business loan we are here to be
-            your finance buddy
+            Your trusted partner for loans, insurance, and financial growth.
+            We make finance simple, transparent, and accessible for everyone.
           </p>
         </div>
-        <img src="ab1.jpg" alt="About BanksBuddy" />
-      </motion.div>
-      <motion.div
-        className="a2"
+      </motion.section>
+
+      {/* Story Section */}
+      <motion.section
+        className="ab-story-section"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6 }}
         variants={fadeUp}
       >
-        <video src="/mnv.mp4" autoPlay muted loop />
-        <div className="a2ct">
-          <p className="a2cts">Our Guiding Principles</p>
-          <h4>Mission and Vision</h4>
+        <div className="ab-story-content">
+          <h2>Our Story</h2>
           <p>
-            At BanksBuddy, our mission is to provide quick, reliable, and
-            personalized financial solutions that empower individuals and
-            businesses to achieve their dreams. We are dedicated to simplifying
-            financial decisions by offering accessible products and services,
-            such as loans, insurance, and CA services, ensuring that our clients
-            can focus on what matters most to them — growth, stability, and
-            success. Our core values are Integrity, Innovation, Customer Focus,
-            . Excellence
-            <br />
-            Our vision is to be the leading platform that transforms the
-            financial services landscape by continually innovating and evolving
-            our offerings. We aim to make financial freedom a reality for people
-            across the globe by delivering seamless, trustworthy, and
-            comprehensive financial solutions. By staying committed to
-            excellence and customer satisfaction, we strive to create a world
-            where anyone can access the financial support they need to thrive.
+            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide. From our humble beginnings, we have strived to provide exceptional services that empower our clients to make informed decisions.
+          </p>
+          <p>
+            Over time, we have expanded our portfolio to include CIBIL score improvement, education loans, and diverse CA services. Today, we stand proud as one of the fastest-growing platforms in the finance industry, turning financial dreams into reality—from education to enterprise.
           </p>
         </div>
-      </motion.div>
-      <motion.div
-        className="a3"
+        <div className="ab-story-image">
+          <img src="ab1.jpg" alt="BanksBuddy Story" />
+        </div>
+      </motion.section>
+
+      {/* Mission / Video Section */}
+      <motion.section
+        className="ab-mission-section"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6 }}
         variants={fadeUp}
       >
-        <h1>Our Partners</h1>
-        <p>
-          BanksBuddy is proud to be partnered with the top financial
-          institutions to provide unparalleled services to our customers.
-        </p>
-        <div className={`a3imgs ${!expandPartners ? "collapsed" : ""}`}>
+        <div className="ab-mission-content">
+          <span className="ab-mission-tag">Our Guiding Principles</span>
+          <h2>Mission & Vision</h2>
+          <p>
+            Our mission is to provide quick, reliable, and personalized financial solutions. We simplify complex decisions by offering accessible products like loans, insurance, and advisory services, allowing you to focus on growth and stability.
+          </p>
+          <p>
+            We envision a world where financial freedom is a reality for everyone. By staying committed to integrity, innovation, and excellence, we strive to be the leading platform that transforms the financial landscape, one success story at a time.
+          </p>
+        </div>
+        <div className="ab-video-wrapper">
+          <video src="/mnv.mp4" autoPlay muted loop playsInline />
+        </div>
+      </motion.section>
+
+      {/* Partners Section */}
+      <motion.section
+        className="ab-partners-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.6 }}
+        variants={fadeUp}
+      >
+        <div className="ab-section-header">
+          <h2>Our Trusted Partners</h2>
+          <p>We collaborate with top financial institutions to provide you with the best rates and services.</p>
+        </div>
+
+        <div className="ab-partners-grid">
           {[
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28,
           ]
             .slice(0, expandPartners ? 28 : 12)
             .map((num) => (
-              <img key={num} src={`a${num}.webp`} alt={`Partner ${num}`} />
+              <img
+                key={num}
+                src={`a${num}.webp`}
+                alt={`Partner ${num}`}
+                className="ab-partner-logo"
+              />
             ))}
         </div>
-        <div className="a3-buttons">
-          {!expandPartners ? (
-            <button
-              className="view-all-btn"
-              onClick={() => setExpandPartners(true)}
-            >
-              View All
-            </button>
-          ) : (
-            <button
-              className="view-less-btn"
-              onClick={() => setExpandPartners(false)}
-            >
-              View Less
-            </button>
-          )}
+
+        <button
+          className="ab-btn-outline"
+          onClick={() => setExpandPartners(!expandPartners)}
+        >
+          {expandPartners ? "View Less" : "View All Partners"}
+        </button>
+      </motion.section>
+
+      {/* Team Section */}
+      <section className="ab-team-section">
+        <div className="ab-section-header">
+          <h2>Meet Our Team</h2>
+          <p>Growth is the result of forces working together.</p>
         </div>
-      </motion.div>
-      <motion.div
-        className="a4"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        variants={fadeUp}
-      >
-        <h1>Our Team</h1>
-        <p className="a4ct">
-          Growth is never by mere chance, it is the result of forces working
-          together
-        </p>
-        <div className="memcards">
-          {teamMembers.map((member, index) => (
+
+        <motion.div
+          className="ab-team-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={staggerContainer}
+        >
+          {teamMembers.map((member) => (
             <motion.div
               key={member.id}
-              className="mem"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-                delay: index * 0.1,
-              }}
+              className="ab-team-card"
               variants={fadeUp}
             >
-              <img src={member.image} alt={member.name} />
+              <img src={member.image} alt={member.name} className="ab-team-img" />
               <h3>{member.name}</h3>
               <p>{member.role}</p>
             </motion.div>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </section>
+
       <Awards />
     </div>
   );
 };
+

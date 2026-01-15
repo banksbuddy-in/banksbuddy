@@ -10,6 +10,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { FAQ } from "./FAQ";
+import { emiFAQs } from "./Data_FAQs";
 
 export const EMI = () => {
   const [loanAmount, setLoanAmount] = useState(500000);
@@ -185,6 +187,13 @@ export const EMI = () => {
           </div>
         </div>
       )}
+
+      {/* FAQ Section */}
+      <FAQ 
+        faqs={emiFAQs} 
+        title="EMI Calculator - Frequently Asked Questions"
+        subtitle="Got Questions?"
+      />
     </div>
   );
 };

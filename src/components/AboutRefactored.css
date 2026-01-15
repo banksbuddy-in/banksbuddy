@@ -1,0 +1,337 @@
+/* About Page Refactored - Modern, Light, Fluent Design */
+
+.about-page-container {
+    width: 100%;
+    overflow-x: hidden;
+    background: #fff;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ==================== Hero Section ==================== */
+.ab-hero {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    padding: 4rem 10%;
+    overflow: hidden;
+}
+
+.ab-hero::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(8, 105, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.ab-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+.ab-tagline {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--bl);
+    margin-bottom: 1rem;
+    background: rgba(8, 105, 255, 0.1);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+}
+
+.ab-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--darkbl);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.ab-hero p {
+    font-size: 1.1rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* ==================== Story Section ==================== */
+.ab-story-section {
+    padding: 5rem 10%;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    position: relative;
+    background: #fff;
+}
+
+@media (max-width: 900px) {
+    .ab-story-section {
+        flex-direction: column;
+        padding: 3rem 6%;
+    }
+}
+
+.ab-story-content {
+    flex: 1;
+}
+
+.ab-story-content h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--darkbl);
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.ab-story-content p {
+    font-size: 1rem;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.ab-story-image {
+    flex: 1;
+    position: relative;
+}
+
+.ab-story-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.ab-story-image:hover img {
+    transform: rotate(0deg);
+}
+
+/* ==================== Mission / Video Section ==================== */
+.ab-mission-section {
+    padding: 5rem 10%;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 4rem;
+}
+
+@media (max-width: 900px) {
+    .ab-mission-section {
+        flex-direction: column;
+        padding: 3rem 6%;
+    }
+}
+
+.ab-mission-content {
+    flex: 1;
+}
+
+.ab-mission-tag {
+    color: var(--rd);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.ab-mission-content h2 {
+    font-size: 2.2rem;
+    color: var(--darkbl);
+    margin-bottom: 1.5rem;
+}
+
+.ab-mission-content p {
+    font-size: 1rem;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.ab-video-wrapper {
+    flex: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 57, 144, 0.1);
+    position: relative;
+}
+
+.ab-video-wrapper video {
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+}
+
+/* ==================== Partners Section ==================== */
+.ab-partners-section {
+    padding: 5rem 10%;
+    text-align: center;
+    background: #fff;
+}
+
+.ab-section-header {
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ab-section-header h2 {
+    font-size: 2.5rem;
+    color: var(--darkbl);
+    margin-bottom: 1rem;
+}
+
+.ab-section-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.ab-partners-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2%;
+    margin-bottom: 3rem;
+    transition: all 0.5s ease;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    align-items: center;
+}
+
+.ab-partner-cell {
+    /* (100% - (6 * 2%)) / 7 = (100 - 12) / 7 = 12.57% */
+    /* using 12.5% to be safe and allow for rounding errors */
+    flex: 0 0 12.5%;
+    max-width: 12.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+    .ab-partner-cell {
+        /* 4 columns: 3 gaps * 2% = 6% used. 94% / 4 = 23.5% */
+        flex: 0 0 23.5%;
+        max-width: 23.5%;
+    }
+}
+
+@media (max-width: 600px) {
+    .ab-partner-cell {
+        /* 2 columns: 1 gap * 2% = 2% used. 98% / 2 = 49% */
+        flex: 0 0 49%;
+        max-width: 49%;
+    }
+}
+
+.ab-partner-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 140px;
+    max-height: 80px;
+    object-fit: contain;
+    /* Removed grayscale and opacity to show original colors */
+    transition: transform 0.3s ease;
+}
+
+.ab-partner-cell:hover .ab-partner-logo {
+    transform: scale(1.1);
+}
+
+.ab-btn-outline {
+    background: transparent;
+    color: var(--bl);
+    border: 2px solid var(--bl);
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ab-btn-outline:hover {
+    background: var(--bl);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(8, 105, 255, 0.2);
+}
+
+/* ==================== Team Section ==================== */
+.ab-team-section {
+    padding: 5rem 10%;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.ab-team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.ab-team-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+    border: 1px solid #eef2f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ab-team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: var(--bl);
+}
+
+.ab-team-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    border: 4px solid #f0f7ff;
+}
+
+.ab-team-card h3 {
+    font-size: 1.2rem;
+    color: var(--darkbl);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.ab-team-card p {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+}

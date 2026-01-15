@@ -68,7 +68,7 @@ export const ServicesCards = () => {
     {
       id: 5,
       className: "div5",
-      url: "/services/machinery-loan",
+      url: "/services/auto-loan",
       media: <img src="/d5.jpg" className="media" alt="Machinery Loan" />,
       title: "Machinery Loan",
       description:
@@ -191,8 +191,8 @@ export const ServicesCards = () => {
               slidesToShow === 1
                 ? "0 40px"
                 : slidesToShow === 2
-                ? "0 50px"
-                : "0 80px",
+                  ? "0 50px"
+                  : "0 80px",
             transition: "transform 0.5s ease-in-out",
           }}
         >

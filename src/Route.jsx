@@ -22,6 +22,8 @@ import { Cibil } from "./components/Cibil";
 import { Development } from "./components/Development";
 import { ContactForm } from "./components/ContactForm";
 import { InsuranceSubCategory } from "./components/InsuranceSubCategory";
+import { Tax } from "./components/Tax";
+import { PartnerForm } from "./components/PartnerForm";
 
 export const Dat = [
   {
@@ -47,6 +49,11 @@ export const Dat = [
   {
     path: "/services/:slug",
     label: "Service Detail",
+    element: <ServicePage />,
+  },
+  {
+    path: "/tax-services",
+    label: "Tax Services",
     element: <ServicePage />,
   },
   {
@@ -121,15 +128,15 @@ export const Dat = [
   {
     path: "/cibil-improvement",
     label: "Cibil Improvement",
-    element: <Cibil />,
+    element: <ServicePage />, // Now handled by ServicePage's improved logic (requires ServicePage update)
   },
   {
     path: "/website-development",
     label: "Website Improvement",
-    element: <Development />,
+    element: <ServicePage />,
   },
   {
-    path:"/contact-banksbuddy",
+    path: "/contact-banksbuddy",
     label: "Contact Us",
     element: <ConsulatationForm />,
   },
@@ -137,5 +144,10 @@ export const Dat = [
     path: "/insurance/:category",
     label: "Insurance Category",
     element: <InsuranceSubCategory />,
+  },
+  {
+    path: "/partner-application",
+    label: "Partner Application",
+    element: <PartnerForm />,
   },
 ];

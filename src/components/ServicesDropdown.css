@@ -90,7 +90,8 @@
 .subcategory-link {
   display: block;
   padding: 0.75rem 1rem;
-  color: #555;
+  color: #333 !important;
+  /* Force dark gray */
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.2s ease;

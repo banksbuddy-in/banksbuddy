@@ -1,6 +1,7 @@
 /* Reviews Section - Elegant & Minimal */
 #review {
-  padding: 6rem 10%;
+  padding: 3rem 5%;
+  /* Reduced from 6rem 10% */
   background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
   position: relative;
   overflow: hidden;
@@ -30,11 +31,12 @@
 }
 
 .reviews-title {
-  font-size: 3.75rem;
-  font-weight: 900;
+  font-size: 2.5rem;
+  /* Reduced from 3.75rem */
+  font-weight: 800;
   color: var(--bl);
   margin: 2% 0;
-  line-height: 100%;
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
@@ -302,6 +304,7 @@
     min-height: 300px;
   }
 }
+
 .review-mini-card {
   border: 3px solid var(--bl);
   padding: 6% 4%;
@@ -411,6 +414,7 @@
   .crds {
     width: 100%;
   }
+
   h1.shead {
     font-size: 3rem;
   }
@@ -420,6 +424,7 @@
     margin: 3% 0;
     line-height: 100%;
   }
+
   h1.shead {
     font-size: 3rem;
   }
@@ -448,6 +453,7 @@
     align-items: center;
     text-align: center;
   }
+
   img.news-image {
     width: 83px;
     display: none;
@@ -485,6 +491,7 @@
   .crds .reviews-carousel-viewport {
     border-radius: 1rem;
   }
+
   h1.shead {
     font-size: 3rem;
   }
@@ -494,6 +501,7 @@
     margin: 3% 0;
     line-height: 100%;
   }
+
   h1.shead {
     font-size: 3rem;
   }
@@ -522,6 +530,7 @@
     align-items: center;
     text-align: center;
   }
+
   img.news-image {
     width: 83px;
     display: none;
@@ -532,6 +541,7 @@
     font-size: 87%;
   }
 }
+
 .crdsss {
   margin-top: 0%;
 }
@@ -539,6 +549,7 @@
 .reviews-header {
   margin-bottom: 1%;
 }
+
 .crdsss {
   margin-top: 0%;
 }
@@ -564,11 +575,13 @@ video.crdsvid {
   object-fit: contain;
   max-width: 100%;
 }
+
 video.crdsvid {
   max-width: 100%;
   overflow: hidden;
   border-radius: 7rem;
 }
+
 .crdsss {
   display: flex;
   flex-direction: row;

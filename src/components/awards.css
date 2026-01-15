@@ -1,5 +1,6 @@
 #awards {
-  padding: 3% 0;
+  padding: 3% 10%;
+  /* Increased horizontal padding */
   text-align: center;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   overflow: hidden;

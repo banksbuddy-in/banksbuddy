@@ -4,7 +4,7 @@ import { ref, onValue, off } from "firebase/database";
 import "./AdminTable.css";
 import { useNavigate } from "react-router-dom";
 
-export const AdminTable = () => {
+const AdminTable = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,8 +77,8 @@ export const AdminTable = () => {
   };
 
   return (
-    <div className="admin-table">
-      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
+    <div className={`admin-table ${embedded ? 'embedded' : ''}`}>
+      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
       <h2>Consultations</h2>
       <div className="admin-actions" style={{ display: "flex", gap: "1em" }}>
         <button

@@ -4,7 +4,7 @@ import { db } from '../firebase';
 import { ref, set, get, remove } from 'firebase/database';
 import './AdminTeam.css';
 
-export const AdminTeam = () => {
+export const AdminTeam = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]);
   const [name, setName] = useState('');
@@ -89,8 +89,8 @@ export const AdminTeam = () => {
   };
 
   return (
-    <div id="admin-team">
-      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
+    <div id="admin-team" className={embedded ? 'embedded' : ''}>
+      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
       <h1>Team Management</h1>
       
       <div className="team-container">

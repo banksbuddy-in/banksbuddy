@@ -14,9 +14,11 @@ ul.navlist {
   align-items: center;
 }
 
-ul.navlist li a {
+ul.navlist>li>a {
   font-weight: 500;
   letter-spacing: 0.015em;
+  font-size: 1rem;
+  color: white;
 }
 
 button.btns {
@@ -35,15 +37,18 @@ button.btns a {
 a.btns {
   padding: 11% 1em;
   background: white;
-  color: black;
+  color: black !important;
+  /* Force black text on white button */
 }
 
 .logo img {
   width: 200px;
 }
+
 .btns a {
   color: black;
 }
+
 footer.foot {
   background: black;
   padding: 7% 10%;
@@ -51,8 +56,12 @@ footer.foot {
 }
 
 h1.fhed {
-  font-weight: 400;
-  font-size: 4em;
+  font-weight: 700;
+  font-size: 3rem;
+  /* Reduced from 4em */
+  color: var(--darkbl);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .r1 {
@@ -96,8 +105,12 @@ p.fdes {
 }
 
 .c2 p {
-  font-size: 1.75em;
+  font-size: 1.15rem;
+  /* Reduced from 1.75em */
   font-weight: 400;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 90%;
 }
 
 .c2 ul li a {
@@ -140,6 +153,7 @@ a.chat:hover {
   border: 1px solid white;
   background: transparent;
 }
+
 a.chata {
   background: transparent;
   color: white;
@@ -205,6 +219,7 @@ p.r3 {
   align-items: flex-start;
   flex-direction: column;
 }
+
 a.btns {
   border-radius: 3rem;
   padding: 1.5em 2em;
@@ -218,6 +233,7 @@ a.btns:hover {
   box-shadow: 0 0 20px #e1e0ff75 inset;
   background: transparent;
 }
+
 footer.foot {
   position: relative;
   overflow: hidden;
@@ -230,11 +246,13 @@ footer.foot {
   filter: saturate(0) brightness(0.65) blur(21px);
   z-index: 0;
 }
+
 .btns {
   display: flex;
   gap: 10px;
   margin: 1.67% 0;
 }
+
 .btns {
   display: flex;
   gap: 10px;
@@ -248,13 +266,21 @@ footer.foot {
 .btns a {
   display: flex;
   align-items: center;
-  border-radius: 15rem;
-  gap: 0.25em;
-  padding: 2em 2.75em;
+  border-radius: 50px;
+  /* Modern pill shape, less bulky */
+  gap: 0.5em;
+  padding: 0.8rem 2rem;
+  /* Significantly reduced from 2em 2.75em */
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  color: black !important;
 }
+
 footer.foot {
   padding-bottom: 2%;
 }
+
 p.number {
   margin: 3% 0;
   margin-bottom: 0;
@@ -271,6 +297,7 @@ p.number {
   gap: 3px;
   flex-direction: column;
 }
+
 .nvanime:after {
   content: "";
   display: block;
@@ -279,10 +306,12 @@ p.number {
   background: white;
   transition: width 0.3s;
 }
+
 .nvanime:hover::after {
   background-color: white;
   width: 60%;
 }
+
 .herocont,
 .navbar {
   background: linear-gradient(270deg, #398cff75, #ffffff);
@@ -393,6 +422,7 @@ div#partner {
 .revslist button {
   filter: invert(1);
 }
+
 .revslist button {
   filter: invert(1);
 }
@@ -406,9 +436,11 @@ div#partner {
   text-align: justify;
   margin-bottom: 2%;
 }
+
 .revslist h1 {
   color: var(--bl);
 }
+
 a.ablink {
   color: white;
   background: blue;
@@ -425,6 +457,7 @@ a.ablink {
   border-radius: 2rem;
   font-size: 1.67rem;
 }
+
 a.ablink:hover {
   border: 1px solid blue;
   background: transparent;
@@ -444,6 +477,7 @@ a.ablink:hover {
   display: flex;
   align-items: flex-start;
 }
+
 p.abtdes {
   letter-spacing: 1px;
   font-weight: 400;
@@ -462,6 +496,7 @@ div#about {
   display: flex;
   flex-direction: column;
 }
+
 .scont div video {
   width: 20rem;
 }
@@ -469,14 +504,17 @@ div#about {
 .scont div img {
   width: 20rem;
 }
+
 .div6 h1 {
   text-align: start;
   line-height: 120%;
   margin-bottom: 3%;
 }
+
 .service-card {
   justify-content: flex-end;
 }
+
 /* Admin styles moved to Admin.css */
 .job-list {
   display: flex;
@@ -489,22 +527,27 @@ div#about {
   display: flex;
   align-items: flex-start;
 }
+
 a.chata {
   font-weight: 700;
 }
+
 .a1ct p {
   text-align: justify;
 }
+
 .a1ct p {
   text-align: justify;
   margin-left: 0;
 }
+
 a.hrc {
   background: green;
   color: white;
   border: none;
   font-weight: 600;
 }
+
 .service-card.spec {
   justify-content: end;
 }
@@ -512,51 +555,63 @@ a.hrc {
 .frr2 li a {
   font-size: 1.45em;
 }
+
 .scont {
   display: flex;
   justify-content: center;
 }
+
 .frr2 li a {
-    font-size: 1.45em;
+  font-size: 1.45em;
 }
 
 .scont {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 h1.shead {
-    text-align: center;
+  text-align: center;
 }
 
 .shead span {
-    padding: 0 28%;
-    border: none;
-}.shead span {
-    padding: 0 28%;
-    border: none;
-}p.fdes {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -2px;
+  padding: 0 28%;
+  border: none;
+}
+
+.shead span {
+  padding: 0 28%;
+  border: none;
+}
+
+p.fdes {
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -2px;
 }
 
 .revcardsa p {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -1px;
-}p.fdes {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -2px;
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -1px;
+}
+
+p.fdes {
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -2px;
 }
 
 .revcardsa p {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -1px;
-} .job-card {max-width: 100%;}
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -1px;
+}
+
+.job-card {
+  max-width: 100%;
+}
 
 .service-card.spec {
-    max-width: 30%;
+  max-width: 30%;
 }

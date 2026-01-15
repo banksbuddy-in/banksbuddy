@@ -4,7 +4,7 @@ import { db } from '../firebase';
 import { ref, set, get, remove } from 'firebase/database';
 import './AdminOffers.css';
 
-export const AdminOffers = () => {
+export const AdminOffers = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [offerName, setOfferName] = useState('');
@@ -100,8 +100,8 @@ export const AdminOffers = () => {
   };
 
   return (
-    <div id="admin-offers">
-      <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>
+    <div id="admin-offers" className={embedded ? 'embedded' : ''}>
+      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
       <h1>Manage Offers</h1>
       <p className="info-text">Maximum 2 offers allowed</p>
       
