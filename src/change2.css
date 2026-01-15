@@ -396,3 +396,88 @@ p.sp-doc-text {
   text-align: center;
   border-left: 0;
 }
+
+
+
+div#ServicePage {
+  position: relative;
+  overflow-y: clip;
+}
+
+section.sp-hero {
+  background: white;
+}
+
+section.sp-hero {
+  padding: 7%;
+  border-radius: 5rem;
+}
+
+.pgcntt {
+  border-radius: 4rem 5rem 0 0;
+  background: white;
+  position: relative;
+  z-index: 99;
+}
+
+.pgcntt {
+  margin-top: 30%;
+}
+
+img.cver {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+}
+
+div#cover {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  top: 0;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10% 20%;
+}
+
+#cover h1 {
+  display: flex;
+  flex-direction: column;
+  line-height: 100%;
+  color: var(--darkbl);
+}
+
+#cover h1 span {
+  color: var(--bl);
+}
+
+#cover p {
+  color: var(--darkbl);
+  width: 40%;
+  font-size: 14px;
+  padding: 1% 0% 2% 0%;
+}
+
+#cover button {
+  padding: 1% 4%;
+  border-radius: 1.25rem;
+  background: var(--darkbl);
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+#cover button:hover{
+  background-color: var(--bl);
+}
+
+section.sp-hero {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+}

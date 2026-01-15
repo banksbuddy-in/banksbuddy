@@ -12,6 +12,7 @@ import { FAQ } from "./FAQ";
 import { getFAQsByServiceId } from "./Data_FAQs";
 import EMICalculator from "./EMICalculator";
 import "./ServicePageRefactored.css";
+import { Cover } from "./Cover";
 const toSlug = (str) => {
   if (!str) return "";
   return String(str)
@@ -160,262 +161,282 @@ Warm regards,
     return 60;
   };
 
+  const serviceImageMap = {
+    "personal_loan": "/cc1.webp",
+    "home_loan": "/cc2.jpg",
+    "education_loan": "/cc3.jpeg",
+    "auto_loan": "/cc4.jpg",
+    "business_loan": "/cc5.jpg",
+    "loan_against_property": "/cc6.png"
+  };
+
+  const coverImage = serviceImageMap[svc.id] || svc.image;
+
   return (
     <div id="ServicePage" className="service-page-container">
       {/* Hero Section */}
-      <motion.section
-        className="sp-hero"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        variants={fadeUp}
-      >
-        <div className="sp-hero-content">
-          <span className="sp-hero-tagline">{svc.tagline}</span>
-          <h1>{svc.Title}</h1>
-          <p className="sp-hero-description">{svc.overview[0]}</p>
-
-          <div className="sp-hero-actions">
-            <Link className="sp-btn-primary" to="/contact-banksbuddy">
-              Apply Now <GoArrowRight />
-            </Link>
-            <a
-              className="sp-btn-whatsapp"
-              target="_blank"
-              rel="noreferrer"
-              href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
-                svc.Title
-              )}%20service%20offered%20by%20BanksBuddy.`}
-            >
-              <FaWhatsapp /> Whatsapp
-            </a>
-          </div>
-        </div>
-        <div className="sp-hero-image">
-          <img src={svc.image} alt={svc.Title} />
-        </div>
-      </motion.section>
-
-      {/* About & Details Section (Vertical Layout) */}
-      <section className="sp-section" style={{ background: '#fff' }}>
-        <motion.div
-          className="sp-about-centered"
+      <Cover
+        tagline={svc.tagline}
+        title={svc.Title} // Pass title to suppress default spam
+        description={`Get your ${svc.Title} with BanksBuddy.`}
+        image={coverImage}
+      />
+      {/* <img src="https://aadharhousing.com/storage/LoanProducts/9/62594398e1180.png" alt="cover" className="cver" /> */}
+      <div className="pgcntt">
+        <motion.section
+          className="sp-hero"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
         >
-          <span className="sp-section-tag">Overview</span>
-          <h2 className="sp-section-title">About {svc.Title}</h2>
-          <div className="sp-overview-text-wrapper">
-            {svc.overview.slice(1).map((para, idx) => (
-              <p key={idx} className="sp-text-block center-text">{para}</p>
-            ))}
-          </div>
-        </motion.div>
+          <div className="sp-hero-content">
+            <span className="sp-hero-tagline">{svc.tagline}</span>
+            <h1>{svc.Title}</h1>
+            <p className="sp-hero-description">{svc.overview[0]}</p>
 
-        <motion.div
-          className="sp-details-card full-width-table"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          variants={fadeUp}
-        >
-          <div className="sp-details-header">
-            <h3>Key Highlights of {svc.Title}</h3>
-          </div>
-          <div className="sp-details-list">
-            {txtarr.map((k, i) => (
-              <div key={i} className="sp-detail-item">
-                <span className="sp-detail-label">{k}</span>
-                <span className="sp-detail-value">{svc.TbData[i]}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* EMI Calculator Section - Hidden for Non-Loan Services */}
-      {!["cibil-improvement", "website-development", "tax-services"].includes(svc.id) && (
-        <section className="sp-section sp-section-alt">
-          <div className="sp-centered-header">
-            <span className="sp-section-tag">Plan Your Finances</span>
-            <h2 className="sp-section-title">EMI Calculator</h2>
-            <p className="sp-text-block" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>Calculate your monthly EMIs based on the loan amount and tenure.</p>
-          </div>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            variants={fadeUp}
-          >
-            <EMICalculator
-              defaultAmount={500000}
-              defaultInterest={getInterestRate()}
-              defaultTenure={getMaxTenureMonths()}
-              maxTenure={getMaxTenureMonths() > 60 ? getMaxTenureMonths() : 84}
-              title={svc.Title}
-            />
-          </motion.div>
-        </section>
-      )}
-
-      {/* Online Features Horizontal Grid */}
-      <section className="sp-section">
-        <div className="sp-centered-header">
-          <span className="sp-section-tag">Why Choose Us</span>
-          <h2 className="sp-section-title">{svc.Title} Features</h2>
-          <p className="sp-text-block" style={{ textAlign: 'center' }}>Experience the best in class service with our digital-first approach.</p>
-        </div>
-
-        <motion.div
-          className="sp-features-horizontal"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          variants={fadeUp}
-        >
-          {textarr2.map((io, i) => (
-            <div key={i} className="sp-feature-card">
-              <div className="sp-feature-icon">{io.elm}</div>
-              <p className="sp-feature-text">{io.txt}</p>
+            <div className="sp-hero-actions">
+              <Link className="sp-btn-primary" to="/contact-banksbuddy">
+                Apply Now <GoArrowRight />
+              </Link>
+              <a
+                className="sp-btn-whatsapp"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
+                  svc.Title
+                )}%20service%20offered%20by%20BanksBuddy.`}
+              >
+                <FaWhatsapp /> Whatsapp
+              </a>
             </div>
-          ))}
-        </motion.div>
-      </section>
+          </div>
+          <div className="sp-hero-image">
+            <img src={svc.image} alt={svc.Title} />
+          </div>
+        </motion.section>
 
-      {/* Eligibility Section (Split) */}
-      <section className="sp-section sp-section-alt">
-        <div className="sp-split-section">
+        {/* About & Details Section (Vertical Layout) */}
+        <section className="sp-section" style={{ background: '#fff' }}>
           <motion.div
-            className="sp-split-image"
+            className="sp-about-centered"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             variants={fadeUp}
           >
-            <img src="/se3m1.jpg" alt="Eligibility Criteria" />
+            <span className="sp-section-tag">Overview</span>
+            <h2 className="sp-section-title">About {svc.Title}</h2>
+            <div className="sp-overview-text-wrapper">
+              {svc.overview.slice(1).map((para, idx) => (
+                <p key={idx} className="sp-text-block center-text">{para}</p>
+              ))}
+            </div>
           </motion.div>
+
           <motion.div
-            className="sp-split-content"
+            className="sp-details-card full-width-table"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
             variants={fadeUp}
           >
-            <span className="sp-section-tag">Requirements</span>
-            <h2 className="sp-section-title">Eligibility Criteria</h2>
-            <div className="sp-check-list">
-              {svc.EliCr.map((elg, i) => (
-                <div key={i} className="sp-check-item">
-                  <FaCheckCircle className="sp-check-icon" />
-                  <p className="sp-check-text">{elg}</p>
+            <div className="sp-details-header">
+              <h3>Key Highlights of {svc.Title}</h3>
+            </div>
+            <div className="sp-details-list">
+              {txtarr.map((k, i) => (
+                <div key={i} className="sp-detail-item">
+                  <span className="sp-detail-label">{k}</span>
+                  <span className="sp-detail-value">{svc.TbData[i]}</span>
                 </div>
               ))}
             </div>
           </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* Documents Section (Full Width, No Image, Centered Header) */}
-      <section className="sp-section">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          variants={fadeUp}
-        >
-          <div className="sp-centered-header-small" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <span className="sp-section-tag">Documentation</span>
-            <h2 className="sp-section-title">Required Documents</h2>
+        {/* EMI Calculator Section - Hidden for Non-Loan Services */}
+        {!["cibil-improvement", "website-development", "tax-services"].includes(svc.id) && (
+          <section className="sp-section sp-section-alt">
+            <div className="sp-centered-header">
+              <span className="sp-section-tag">Plan Your Finances</span>
+              <h2 className="sp-section-title">EMI Calculator</h2>
+              <p className="sp-text-block" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>Calculate your monthly EMIs based on the loan amount and tenure.</p>
+            </div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              variants={fadeUp}
+            >
+              <EMICalculator
+                defaultAmount={500000}
+                defaultInterest={getInterestRate()}
+                defaultTenure={getMaxTenureMonths()}
+                maxTenure={getMaxTenureMonths() > 60 ? getMaxTenureMonths() : 84}
+                title={svc.Title}
+              />
+            </motion.div>
+          </section>
+        )}
+
+        {/* Online Features Horizontal Grid */}
+        <section className="sp-section">
+          <div className="sp-centered-header">
+            <span className="sp-section-tag">Why Choose Us</span>
+            <h2 className="sp-section-title">{svc.Title} Features</h2>
+            <p className="sp-text-block" style={{ textAlign: 'center' }}>Experience the best in class service with our digital-first approach.</p>
           </div>
 
-          <div className="sp-docs-grid">
-            {svc.Docs.map((doc, i) => (
-              <div key={i} className="sp-doc-card sp-doc-card-shadow">
-                <div className="sp-doc-icon-wrapper">
-                  {getDocIcon(doc)}
-                </div>
-                <p className="sp-doc-text">{doc}</p>
+          <motion.div
+            className="sp-features-horizontal"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            {textarr2.map((io, i) => (
+              <div key={i} className="sp-feature-card">
+                <div className="sp-feature-icon">{io.elm}</div>
+                <p className="sp-feature-text">{io.txt}</p>
               </div>
             ))}
-          </div>
-          <div className="sp-note">
-            <strong>Note:</strong> Eligibility and required documents are subject to change depending on the individual profile.
-          </div>
-        </motion.div>
-      </section>
+          </motion.div>
+        </section>
 
-      {/* Types Section (Horizontal) */}
-      <section className="sp-section sp-section-alt">
-        <div className="sp-centered-header">
-          <span className="sp-section-tag">Varieties</span>
-          <h2 className="sp-section-title">Types of {svc.Title}</h2>
-        </div>
+        {/* Eligibility Section (Split) */}
+        <section className="sp-section sp-section-alt">
+          <div className="sp-split-section">
+            <motion.div
+              className="sp-split-image"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              variants={fadeUp}
+            >
+              <img src="/se3m1.jpg" alt="Eligibility Criteria" />
+            </motion.div>
+            <motion.div
+              className="sp-split-content"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              variants={fadeUp}
+            >
+              <span className="sp-section-tag">Requirements</span>
+              <h2 className="sp-section-title">Eligibility Criteria</h2>
+              <div className="sp-check-list">
+                {svc.EliCr.map((elg, i) => (
+                  <div key={i} className="sp-check-item">
+                    <FaCheckCircle className="sp-check-icon" />
+                    <p className="sp-check-text">{elg}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Documents Section (Full Width, No Image, Centered Header) */}
+        <section className="sp-section">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            <div className="sp-centered-header-small" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <span className="sp-section-tag">Documentation</span>
+              <h2 className="sp-section-title">Required Documents</h2>
+            </div>
+
+            <div className="sp-docs-grid">
+              {svc.Docs.map((doc, i) => (
+                <div key={i} className="sp-doc-card sp-doc-card-shadow">
+                  <div className="sp-doc-icon-wrapper">
+                    {getDocIcon(doc)}
+                  </div>
+                  <p className="sp-doc-text">{doc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="sp-note">
+              <strong>Note:</strong> Eligibility and required documents are subject to change depending on the individual profile.
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Types Section (Horizontal) */}
+        <section className="sp-section sp-section-alt">
+          <div className="sp-centered-header">
+            <span className="sp-section-tag">Varieties</span>
+            <h2 className="sp-section-title">Types of {svc.Title}</h2>
+          </div>
+          <motion.div
+            className="sp-types-horizontal"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            {svc.Types.map((type, i) => (
+              <div key={i} className="sp-type-card">
+                <h3 className="sp-type-title">{type.titl}</h3>
+                <p className="sp-type-desc">{type.des}</p>
+              </div>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Bottom CTA */}
+        <section className="sp-bottom-cta">
+          <h2>Ready to get started with {svc.Title}?</h2>
+          <Link className="sp-btn-white" to="/contact-banksbuddy">
+            Apply Now <GoArrowRight />
+          </Link>
+        </section>
+
+        {/* FAQ Section with Categories */}
         <motion.div
-          className="sp-types-horizontal"
+          className="sp-section"
+          id="faq-section"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
         >
-          {svc.Types.map((type, i) => (
-            <div key={i} className="sp-type-card">
-              <h3 className="sp-type-title">{type.titl}</h3>
-              <p className="sp-type-desc">{type.des}</p>
+          <div className="sp-faq-header" style={{ marginBottom: '1rem' }}>
+            <h2 className="sp-section-title" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
+            <div className="sp-faq-tabs">
+              {["Common", "Informations", "Misc"].map((tab) => (
+                <button
+                  key={tab}
+                  className={`sp-faq-tab ${faqCategory === tab ? "active" : ""}`}
+                  onClick={() => setFaqCategory(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
             </div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="sp-bottom-cta">
-        <h2>Ready to get started with {svc.Title}?</h2>
-        <Link className="sp-btn-white" to="/contact-banksbuddy">
-          Apply Now <GoArrowRight />
-        </Link>
-      </section>
-
-      {/* FAQ Section with Categories */}
-      <motion.div
-        className="sp-section"
-        id="faq-section"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        variants={fadeUp}
-      >
-        <div className="sp-faq-header" style={{ marginBottom: '1rem' }}>
-          <h2 className="sp-section-title" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
-          <div className="sp-faq-tabs">
-            {["Common", "Informations", "Misc"].map((tab) => (
-              <button
-                key={tab}
-                className={`sp-faq-tab ${faqCategory === tab ? "active" : ""}`}
-                onClick={() => setFaqCategory(tab)}
-              >
-                {tab}
-              </button>
-            ))}
           </div>
-        </div>
 
-        <FAQ
-          faqs={getFilteredFaqs()}
-          title=""
-          subtitle=""
-        />
-      </motion.div>
+          <FAQ
+            faqs={getFilteredFaqs()}
+            title=""
+            subtitle=""
+          />
+        </motion.div>
+      </div>
     </div>
   );
 };

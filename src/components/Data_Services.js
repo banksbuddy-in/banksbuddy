@@ -2,7 +2,7 @@ const NewServices = [
   {
     id: "personal_loan",
     Title: "Personal Loan",
-    image: "/ll1.avif", // Real image
+    image: "/ll1.png", // Real image
     overview: [
       "A personal loan is your go-to solution for managing financial needs without hassle. Whether you’re planning a dream wedding, funding higher education, covering medical emergencies, or consolidating debts, our instant personal loan offers quick disbursal, minimal paperwork, and flexible repayment options.",
       "With competitive interest rates and a hassle-free application process, we ensure you get the funds you need, exactly when you need them. No collateral required—just a simple and transparent way to achieve your financial goals with ease.",
