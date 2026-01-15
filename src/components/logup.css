@@ -1,0 +1,299 @@
+/* Global Clean Reset for Auth Pages */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f9fafb;
+    /* Very light subtle grey */
+    font-family: 'Outfit', sans-serif;
+    padding: 20px;
+}
+
+.auth-card {
+    display: flex;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    min-height: 600px;
+}
+
+/* Left Side: Form */
+.auth-form-section {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.auth-error {
+    background: #fff0f0;
+    color: #e63946;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #ffe5e5;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    color: #333;
+    background: #f4f6f8;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    background: #fff;
+    border-color: #2563eb;
+    /* Elegant Blue */
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+/* Buttons */
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin-top: 1rem;
+}
+
+.auth-btn:hover {
+    background: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.auth-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.google-btn {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #333;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.google-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+/* Footer Section */
+.auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.auth-footer a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Right Side: Image */
+.auth-image-section {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+}
+
+.auth-image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+}
+
+.image-overlay h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-overlay p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* User Custom Overrides (Preserved) */
+.auth-card {
+    min-height: 0;
+    box-shadow: 0 24px 44px rgba(0, 0, 0, 0.20);
+    margin: 2% 7%;
+}
+
+.auth-wrapper {
+    padding: 1% 10%;
+    min-height: 0;
+}
+
+p.auth-subtitle {
+    font-size: 0.85rem;
+}
+
+.auth-form-section h2 {
+    margin: 0;
+}
+
+.form-group input {
+    border: 1px solid black;
+    border-radius: 0;
+}
+
+.form-group label {
+    margin: 0;
+}
+
+button.google-btn {
+    border: 2px solid black;
+    border-radius: 4rem;
+}
+
+.auth-form-section {
+    justify-content: flex-start;
+    padding: 3% 10%;
+}
+
+.form-group {
+    margin-bottom: 3%;
+}
+
+p.or {
+    text-align: center;
+    margin: 3%;
+    font-weight: 800;
+}
+
+.auth-image-section {
+    padding: 0%;
+    background: white;
+    border: 0.75em solid white;
+    border-radius: 2rem;
+}
+
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+    .auth-wrapper {
+        padding: 10px;
+        /* Reducing wrapper padding */
+    }
+
+    .auth-card {
+        flex-direction: column;
+        margin: 0;
+        /* Remove ample margins */
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        /* Simplify shadow on mobile */
+        border-radius: 0;
+    }
+
+    .auth-form-section {
+        padding: 30px 20px;
+        width: 100%;
+    }
+
+    .auth-image-section {
+        display: none;
+        /* Hide image on mobile as originally intended */
+    }
+
+    .auth-form-section h2 {
+        font-size: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    button.google-btn {
+        font-size: 0.9rem;
+    }
+
+    /* Reset borders for inputs if desired on mobile, or keep them consistent */
+    .form-group input {
+        border-radius: 0;
+    }
+}

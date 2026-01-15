@@ -471,7 +471,8 @@ div#cover {
   cursor: pointer;
   border: none;
 }
-#cover button:hover{
+
+#cover button:hover {
   background-color: var(--bl);
 }
 
@@ -480,4 +481,51 @@ section.sp-hero {
   flex-direction: row-reverse;
   align-items: center;
   justify-content: center;
+}
+
+a.aa.blink {
+  background: var(--darkbl);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: fit-content;
+  padding: 1%;
+  border-radius: 4rem;
+  display: flex;
+  color: white;
+  position: fixed;
+  z-index: 9999;
+  bottom: 5%;
+  left: 2%;
+}
+
+h1.shead {
+  margin-top: 4%;
+}
+
+.navlist.suv {
+  width: 54%;
+  border-radius: 4.2rem;
+}
+
+.navlist.suv {
+  width: 54%;
+  border-radius: 4.2rem;
+}
+
+
+button.lgout {
+  color: white;
+  background: var(--rd);
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  border-radius: 4rem;
+  justify-content: center;
+  cursor: pointer;
+}
+
+button.lgout:hover {
+  background: maroon;
 }

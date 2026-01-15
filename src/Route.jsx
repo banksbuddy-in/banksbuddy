@@ -24,12 +24,27 @@ import { ContactForm } from "./components/ContactForm";
 import { InsuranceSubCategory } from "./components/InsuranceSubCategory";
 import { Tax } from "./components/Tax";
 import { PartnerForm } from "./components/PartnerForm";
+import { Login } from "./components/Login";
+import { Signup } from "./components/Signup";
+import { Credit } from "./components/Credit";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { AdminRoute } from "./components/AdminRoute";
 
 export const Dat = [
   {
     path: "/",
     label: "Home",
     element: <Hero />,
+  },
+  {
+    path: "/login",
+    label: "Login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    label: "Signup",
+    element: <Signup />,
   },
   {
     path: "/about-us",
@@ -123,12 +138,12 @@ export const Dat = [
   {
     path: "/admin",
     label: "Admin",
-    element: <Admin />,
+    element: <AdminRoute><Admin /></AdminRoute>,
   },
   {
-    path: "/cibil-improvement",
-    label: "Cibil Improvement",
-    element: <ServicePage />, // Now handled by ServicePage's improved logic (requires ServicePage update)
+    path: "/cibil",
+    label: "Credit Improvement Service",
+    element: <PrivateRoute><Credit /></PrivateRoute>,
   },
   {
     path: "/website-development",

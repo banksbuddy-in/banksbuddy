@@ -5,6 +5,8 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { PrivateRoute } from "./components/PrivateRoute";
 import { useEffect } from "react";
 import "./App.css";
 import "./components.css";
@@ -18,6 +20,7 @@ import "./responsive.css";
 import "./components/r.css";
 import "./ch.css";
 import { Cursor } from "./components/Cursor";
+import { RiAdminFill } from "react-icons/ri";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,22 +31,45 @@ function ScrollToTop() {
 
   return null;
 }
+
+const AdminButton = () => {
+  const { userRole } = useAuth();
+  // Only show if userRole is explicitly 'admin'
+  if (userRole !== 'admin') return null;
+
+  return (
+    <Link to="/admin" className="aa blink">
+      <RiAdminFill />
+    </Link>
+  );
+};
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <ScrollToTop />
-        {/* <Cursor /> */}
-        <Navbar />
-        <Routes>
-          {Dat.map((e) => (
-            <Route path={e.path} element={e.element} key={e.label} />
-          ))}
-        </Routes>
-        <Link to="https://wa.me/+916377956633" className="ablink">
-          <FaWhatsapp />
-        </Link>
-        <Footer />
+        <AuthProvider>
+          <ScrollToTop />
+          {/* <Cursor /> */}
+          <Navbar />
+          <Routes>
+            {Dat.map((e) => {
+              const isPublic = e.path === "/login" || e.path === "/signup";
+              return (
+                <Route
+                  path={e.path}
+                  element={isPublic ? e.element : <PrivateRoute>{e.element}</PrivateRoute>}
+                  key={e.label || e.path}
+                />
+              );
+            })}
+          </Routes>
+          <Link to="https://wa.me/+916377956633" className="ablink">
+            <FaWhatsapp />
+          </Link>
+          <AdminButton />
+          <Footer />
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );

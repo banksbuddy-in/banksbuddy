@@ -167,7 +167,10 @@ Warm regards,
     "education_loan": "/cc3.jpeg",
     "auto_loan": "/cc4.jpg",
     "business_loan": "/cc5.jpg",
-    "loan_against_property": "/cc6.png"
+    "loan_against_property": "/cc6.png",
+    "cibil-improvement": "/cc7.png",
+    "website-development": "/cc8.png",
+    "tax-services": "/cc2.jpg" // Fallback/Default for tax if not strictly specified, or keep as is. User didn't ask for tax. I will just add the requested ones.
   };
 
   const coverImage = serviceImageMap[svc.id] || svc.image;

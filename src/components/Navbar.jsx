@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { CgMenuRightAlt } from "react-icons/cg";
 import { RiMenuFold4Fill } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useAuth } from "../context/AuthContext";
+import { RiLogoutBoxRLine } from "react-icons/ri"; // Import logout icon
 import "./ServicesDropdown.css";
 
 const servicesMenu = {
@@ -17,7 +19,15 @@ const servicesMenu = {
       { title: "Loan Against Property", slug: "/services/loan-against-property" }
     ]
   },
-  coreServices: {
+
+  insuranceServices: {
+    title: "Insurance Services",
+    items: [
+      { title: "Life Insurance", slug: "/insurance/life-insurance" },
+      { title: "Health Insurance", slug: "/insurance/health-insurance" },
+      { title: "General Insurance", slug: "/insurance/general-insurance" }
+    ]
+  }, coreServices: {
     title: "Other Services",
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
@@ -26,41 +36,47 @@ const servicesMenu = {
       { title: "Tax Services", slug: "/tax-services" }
     ]
   },
-  insuranceServices: {
-    title: "Insurance Services",
-    items: [
-      { title: "Life Insurance", slug: "/insurance/life-insurance" },
-      { title: "Health Insurance", slug: "/insurance/health-insurance" },
-      { title: "General Insurance", slug: "/insurance/general-insurance" }
-    ]
-  }
+};
+
+const LogoutButton = () => {
+  const { currentUser, logout } = useAuth();
+
+  if (!currentUser) return null;
+
+  return (
+    <li>
+      <button className="lgout" onClick={logout} >
+        <RiLogoutBoxRLine title="Logout" />
+      </button>
+    </li>
+  );
 };
 
 export const Navbar = () => {
   // const productName = "Loan Support";
-//   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
+  //   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
 
-//   const body = `Hello BanksBuddy Team,
+  //   const body = `Hello BanksBuddy Team,
 
-// [your message here]
+  // [your message here]
 
-// Name: [Full Name]
-// Email: [your.email@example.com]
-// Phone Number: [Country code + number]
-// Location: [City, State, Country]
-// Product / Service: ${productName}
-// Employment Status: [Salaried / Self-employed / Other]
-// If Loan — Loan Amount Required: [Amount or N/A]
-// Preferred Contact Method: [Email / Phone]
-// Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
+  // Name: [Full Name]
+  // Email: [your.email@example.com]
+  // Phone Number: [Country code + number]
+  // Location: [City, State, Country]
+  // Product / Service: ${productName}
+  // Employment Status: [Salaried / Self-employed / Other]
+  // If Loan — Loan Amount Required: [Amount or N/A]
+  // Preferred Contact Method: [Email / Phone]
+  // Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
 
-// Brief Message / Additional Details:
-// [Short paragraph describing purpose / urgency / additional context]
+  // Brief Message / Additional Details:
+  // [Short paragraph describing purpose / urgency / additional context]
 
 
-// Thank you for your time.
-// Warm regards,
-// [Your Full Name]`;
+  // Thank you for your time.
+  // Warm regards,
+  // [Your Full Name]`;
 
   // const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
   //   subject
@@ -132,9 +148,9 @@ export const Navbar = () => {
                 </span>
                 <div className="subcategory-menu">
                   {category.items.map((item, idx) => (
-                    <Link 
-                      key={idx} 
-                      to={item.slug} 
+                    <Link
+                      key={idx}
+                      to={item.slug}
                       onClick={handleLinkClick}
                       className="subcategory-link"
                     >
@@ -164,16 +180,16 @@ export const Navbar = () => {
                     onClick={() => toggleMobileSubMenu(key)}
                   >
                     {category.title}
-                    <MdKeyboardArrowRight 
-                      className={`mobile-arrow ${mobileSubMenuOpen === key ? 'rotate' : ''}`} 
+                    <MdKeyboardArrowRight
+                      className={`mobile-arrow ${mobileSubMenuOpen === key ? 'rotate' : ''}`}
                     />
                   </button>
                   {mobileSubMenuOpen === key && (
                     <div className="mobile-subcategory-menu">
                       {category.items.map((item, idx) => (
-                        <Link 
-                          key={idx} 
-                          to={item.slug} 
+                        <Link
+                          key={idx}
+                          to={item.slug}
                           onClick={handleLinkClick}
                           className="mobile-subcategory-link"
                         >
@@ -187,7 +203,7 @@ export const Navbar = () => {
             </div>
           )}
         </li>
-        
+
         <li>
           <Link
             onClick={handleLinkClick}
@@ -214,6 +230,7 @@ export const Navbar = () => {
             Chat with us
           </Link>
         </li>
+        <LogoutButton />
       </ul>
     </nav>
   );

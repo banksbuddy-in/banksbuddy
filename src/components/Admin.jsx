@@ -12,6 +12,7 @@ import { AdminOffers } from './AdminOffers'
 import { AdminTeam } from './AdminTeam'
 import { AddCareer } from './AddCareer'
 import { AdminPartners } from './AdminPartners'
+import { AdminManagement } from './AdminManagement'
 
 export const Admin = () => {
   const [activeModule, setActiveModule] = useState('dashboard');
@@ -24,11 +25,13 @@ export const Admin = () => {
     offers: 0,
     reviews: 0,
     careers: 0,
-    partners: 0
+    partners: 0,
+    admins: 0
   });
 
   const adminModules = [
     { id: 'dashboard', title: 'Dashboard', icon: HiOutlineHome, desc: 'Overview & Quick Stats' },
+    { id: 'admins', title: 'Admins', icon: HiOutlineUsers, desc: 'Manage Admin Users' },
     { id: 'partners', title: 'Partners', icon: HiOutlineBriefcase, desc: 'Manage partner applications' },
     { id: 'policy-reminder', title: 'Policy Reminders', icon: HiOutlineClipboardList, desc: 'Track policy expirations' },
     { id: 'careers', title: 'Careers', icon: HiOutlineBriefcase, desc: 'Manage job postings' },
@@ -77,6 +80,8 @@ export const Admin = () => {
     switch (activeModule) {
       case 'dashboard':
         return <DashboardContent stats={stats} setActiveModule={setActiveModule} adminModules={adminModules} />;
+      case 'admins':
+        return <AdminManagement embedded={true} />;
       case 'policy-reminder':
         return <AdminPolicyReminder embedded={true} />;
       case 'careers':
