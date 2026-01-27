@@ -103,6 +103,14 @@ export const Admin = () => {
 
   return (
     <section className="admin-section">
+      <div className="admin-mobile-restriction">
+        <div className="restriction-content">
+          <span className="restriction-icon">💻</span>
+          <h2>Top Secret Area</h2>
+          <p>Please use a PC or Laptop to access the Admin Portal.</p>
+          <a href="/" className="back-home-btn">Go Back Home</a>
+        </div>
+      </div>
       <div className={`admin-layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         {/* Mobile Header */}
         <div className="admin-mobile-header">

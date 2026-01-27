@@ -7,33 +7,33 @@ import "./newserv.css";
 
 export const Footer = () => {
   // const productName = "Loan Support";
-//   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
+  //   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
 
-//   const body = `Hello BanksBuddy Team,
+  //   const body = `Hello BanksBuddy Team,
 
-// [your message here]
+  // [your message here]
 
-// Name: [Full Name]
-// Email: [your.email@example.com]
-// Phone Number: [Country code + number]
-// Location: [City, State, Country]
-// Product / Service: ${productName}
-// Employment Status: [Salaried / Self-employed / Other]
-// If Loan — Loan Amount Required: [Amount or N/A]
-// Preferred Contact Method: [Email / Phone]
-// Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
+  // Name: [Full Name]
+  // Email: [your.email@example.com]
+  // Phone Number: [Country code + number]
+  // Location: [City, State, Country]
+  // Product / Service: ${productName}
+  // Employment Status: [Salaried / Self-employed / Other]
+  // If Loan — Loan Amount Required: [Amount or N/A]
+  // Preferred Contact Method: [Email / Phone]
+  // Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
 
-// Brief Message / Additional Details:
-// [Short paragraph describing purpose / urgency / additional context]
+  // Brief Message / Additional Details:
+  // [Short paragraph describing purpose / urgency / additional context]
 
 
-// Thank you for your time.
-// Warm regards,
-// [Your Full Name]`;
+  // Thank you for your time.
+  // Warm regards,
+  // [Your Full Name]`;
 
-//   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-//     subject
-//   )}&body=${encodeURIComponent(body)}`;
+  //   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+  //     subject
+  //   )}&body=${encodeURIComponent(body)}`;
   return (
     <footer className="foot">
       <img src="onlyi.png" alt="BanksBuddy Logo" />
@@ -102,8 +102,8 @@ export const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link className="fct" to="/cibil-score-check">
-                Cibil Improvement
+              <Link className="fct" to="/cibil">
+                CIBIL Improvement
               </Link>
             </li>
             <li>
@@ -136,31 +136,31 @@ export const Footer = () => {
         <div className="c2">
           <p className="fct">Resources</p>
           <ul>
-              <li>
-                <Link className="fct" to="/">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link className="fct" to="/about-us">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link className="fct" to="/careers">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link className="fct" to="/trusted-partner">
-                  Trusted Partners
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact-banksbuddy" target="_blank" className="fct">
-                  Contact Us
-                </Link>
-              </li>
+            <li>
+              <Link className="fct" to="/">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/about-us">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/careers">
+                Careers
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/trusted-partner">
+                Trusted Partners
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact-banksbuddy" target="_blank" className="fct">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

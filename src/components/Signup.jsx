@@ -25,7 +25,7 @@ export const Signup = () => {
             setError('');
             setLoading(true);
             await signup(email, password, name);
-            navigate('/');
+            navigate('/cibil');
         } catch (err) {
             setError('Failed to create an account: ' + err.message);
         }
@@ -38,7 +38,7 @@ export const Signup = () => {
             setError('');
             setLoading(true);
             await googleSignIn();
-            navigate('/');
+            navigate('/cibil');
         } catch (err) {
             setError('Failed to sign in with Google: ' + err.message);
         }

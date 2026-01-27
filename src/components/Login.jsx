@@ -19,7 +19,7 @@ export const Login = () => {
             setError('');
             setLoading(true);
             await login(email, password);
-            navigate('/'); // Redirect to home or dashboard
+            navigate('/cibil'); // Redirect to home or dashboard
         } catch (err) {
             setError('Failed to log in: ' + err.message);
         }
@@ -32,7 +32,7 @@ export const Login = () => {
             setError('');
             setLoading(true);
             await googleSignIn();
-            navigate('/');
+            navigate('/cibil');
         } catch (err) {
             setError('Failed to sign in with Google: ' + err.message);
         }

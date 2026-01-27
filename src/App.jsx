@@ -54,11 +54,10 @@ function App() {
           <Navbar />
           <Routes>
             {Dat.map((e) => {
-              const isPublic = e.path === "/login" || e.path === "/signup";
               return (
                 <Route
                   path={e.path}
-                  element={isPublic ? e.element : <PrivateRoute>{e.element}</PrivateRoute>}
+                  element={e.element}
                   key={e.label || e.path}
                 />
               );

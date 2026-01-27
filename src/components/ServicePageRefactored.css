@@ -20,6 +20,31 @@
     position: relative;
 }
 
+@media (max-width: 900px) {
+    .sp-hero {
+        flex-direction: column-reverse;
+        padding: 3rem 1.5rem;
+        text-align: center;
+    }
+
+    .sp-hero-content {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sp-hero-actions {
+        justify-content: center;
+    }
+
+    .sp-hero-image img {
+        max-width: 100%;
+        width: 300px;
+        /* Limit image size on mobile */
+    }
+}
+
 .sp-hero-content {
     flex: 1;
     max-width: 600px;
@@ -468,6 +493,7 @@
 /* Slider */
 .ned-slider {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 6px;
     background: #e2e8f0;

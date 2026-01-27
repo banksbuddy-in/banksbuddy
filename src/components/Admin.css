@@ -621,43 +621,78 @@
   z-index: 90;
 }
 
+/* Admin Restriction Styles */
+.admin-mobile-restriction {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  background: #1a1a2e;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.restriction-content {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.restriction-icon {
+  font-size: 4rem;
+}
+
+.restriction-content h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.restriction-content p {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  max-width: 400px;
+}
+
+.back-home-btn {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--bl);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.back-home-btn:hover {
+  background: white;
+  color: var(--bl);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
-  .admin-sidebar {
-    transform: translateX(-100%);
+
+  /* Hide main admin UI on tablet/mobile */
+  .admin-layout {
+    display: none !important;
   }
 
-  .admin-sidebar.mobile-open {
-    transform: translateX(0);
-  }
-
-  .admin-mobile-header {
+  /* Show restriction message */
+  .admin-mobile-restriction {
     display: flex;
   }
+}
 
-  .mobile-overlay {
-    display: block;
-  }
-
-  .admin-main {
-    margin-left: 0;
-  }
-
-  .sidebar-collapsed .admin-main {
-    margin-left: 0;
-  }
-
-  .sidebar-toggle {
-    display: none;
-  }
-
-  .admin-content-header {
-    display: none;
-  }
-
-  .admin-content-body {
-    padding: 1.5rem;
-    padding-top: 1rem;
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .admin-sidebar {
+    /* Some adjustments for smaller desktops if needed */
   }
 }
 
@@ -722,6 +757,7 @@
 .admin-content-body .back-btn {
   display: none;
 }
+
 .admin-sidebar {
   height: auto;
 }

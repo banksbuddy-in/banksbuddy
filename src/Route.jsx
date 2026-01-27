@@ -143,6 +143,11 @@ export const Dat = [
   {
     path: "/cibil",
     label: "Credit Improvement Service",
+    element: <PrivateRoute><Cibil /></PrivateRoute>,
+  },
+  {
+    path: "/credit-dashboard",
+    label: "Credit Dashboard",
     element: <PrivateRoute><Credit /></PrivateRoute>,
   },
   {

@@ -31,7 +31,7 @@ const servicesMenu = {
     title: "Other Services",
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
-      { title: "CIBIL Improvement", slug: "/cibil-improvement" },
+      { title: "CIBIL Improvement", slug: "/cibil" },
       { title: "Website Development", slug: "/website-development" },
       { title: "Tax Services", slug: "/tax-services" }
     ]
