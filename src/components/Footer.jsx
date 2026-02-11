@@ -1,9 +1,15 @@
 import React from "react";
-import { FaInstagram, FaFacebook, FaWhatsapp, FaLinkedin } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaWhatsapp,
+  FaLinkedin,
+} from "react-icons/fa";
 import { MdArrowOutward, MdEmail } from "react-icons/md";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import "./newserv.css";
+import { PayslipAd } from "./PayslipAd";
 
 export const Footer = () => {
   // const productName = "Loan Support";
@@ -26,7 +32,6 @@ export const Footer = () => {
   // Brief Message / Additional Details:
   // [Short paragraph describing purpose / urgency / additional context]
 
-
   // Thank you for your time.
   // Warm regards,
   // [Your Full Name]`;
@@ -40,7 +45,9 @@ export const Footer = () => {
       {/* <video className="fbg" src="fbg.mp4" autoPlay muted loop></video> */}
       <div className="r1">
         <div className="c1">
-          <h1 className="fhed">Banks<span>Buddy</span></h1>
+          <h1 className="fhed">
+            Banks<span>Buddy</span>
+          </h1>
           <p className="fdes">
             BanksBuddy provides customized loans and funding solutions to
             individuals and businesses, helping them grow and succeed.
@@ -173,7 +180,10 @@ export const Footer = () => {
             </a>
           </li>
           <li>
-            <a target="_blank" href="https://www.facebook.com/share/1AJUxAHeHV/">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/share/1AJUxAHeHV/"
+            >
               <FaFacebook />
             </a>
           </li>
@@ -183,7 +193,10 @@ export const Footer = () => {
             </a>
           </li>
           <li>
-            <a target="_blank" href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!">
+            <a
+              target="_blank"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
+            >
               <MdEmail />
             </a>
           </li>
@@ -199,6 +212,7 @@ export const Footer = () => {
         as a bridge between borrowers and authorized lending partners to
         facilitate seamless credit solutions.
       </p>
+      {/* <PayslipAd /> */}
     </footer>
   );
 };

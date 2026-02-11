@@ -154,7 +154,7 @@ export const Reviews = () => {
       <div className="reviews-container">
         <div className="reviews-header">
           <span className="reviews-badge">Testimonials</span>
-          <h2 className="reviews-title">What Our Clients Say</h2>
+          <h2 className="reviews-title shead">What Our Clients Say</h2>
           <p className="reviews-subtitle">
             Trusted by thousands of individuals and businesses across India
           </p>

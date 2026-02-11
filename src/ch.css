@@ -22,3 +22,33 @@ div#awards {
   padding: 1% 2%;
   font-weight: 700;
 }
+section.ab-team-section {
+  padding-bottom: 0%;
+}
+div#imggrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1%;
+}
+
+img.psa {
+  width: 104px;
+}
+
+img.consult.partner {
+  position: relative;
+}
+
+form.ac-frm.pt {
+  padding: 0;
+}
+
+.hsoaiof.pt {
+  display: flex;
+  flex-direction: row;
+  padding: 3% 10%;
+  justify-content: space-between;
+}

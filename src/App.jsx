@@ -21,6 +21,7 @@ import "./components/r.css";
 import "./ch.css";
 import { Cursor } from "./components/Cursor";
 import { RiAdminFill } from "react-icons/ri";
+import { PayslipAd } from "./components/PayslipAd";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -35,7 +36,7 @@ function ScrollToTop() {
 const AdminButton = () => {
   const { userRole } = useAuth();
   // Only show if userRole is explicitly 'admin'
-  if (userRole !== 'admin') return null;
+  if (userRole !== "admin") return null;
 
   return (
     <Link to="/admin" className="aa blink">
@@ -68,6 +69,8 @@ function App() {
           </Link>
           <AdminButton />
           <Footer />
+          <PayslipAd />
+          
         </AuthProvider>
       </BrowserRouter>
     </div>
