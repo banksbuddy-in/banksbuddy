@@ -14,6 +14,7 @@ import {
   FaGraduationCap,
   FaUser,
   FaCalendarCheck,
+  FaTimes,
 } from "react-icons/fa";
 import { BsBank2, BsFileEarmarkText } from "react-icons/bs";
 import { PiChartLineDownFill } from "react-icons/pi";
@@ -23,6 +24,8 @@ import { FAQ } from "./FAQ";
 import { cibilFAQs } from "./Data_FAQs";
 import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
+import { db } from "../firebase";
+import { ref, push } from "firebase/database";
 
 // Helper to select icon based on document text (Reusing logic from ServicePage)
 const getDocIcon = (docText) => {
@@ -190,10 +193,81 @@ const textarr2 = [
 
 export const Cibil = () => {
   const [faqCategory, setFaqCategory] = useState("Common");
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [hasPaid, setHasPaid] = useState(false);
+  const [formStatus, setFormStatus] = useState("");
 
-  // Logic to categorize FAQs (Assuming Cibil has a flat list for now or we just show all)
-  // For now, since cibilFAQs is imported, we can stick with standard FAQ rendering or split if needed
-  // Let's assume standard behavior for now.
+  // Form fields
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    state: "",
+    city: "",
+    employmentType: "",
+    income: "",
+    message: "",
+  });
+
+  const handleFormChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      phone: "",
+      email: "",
+      state: "",
+      city: "",
+      employmentType: "",
+      income: "",
+      message: "",
+    });
+    setFormStatus("");
+  };
+
+  const openRazorpay = () => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder",
+      amount: 20000, // ₹200 in paise
+      currency: "INR",
+      name: "BanksBuddy",
+      description: "CIBIL Score Improvement Service",
+      handler: async (response) => {
+        try {
+          await push(ref(db, "cibil_requests"), {
+            ...formData,
+            paymentId: response.razorpay_payment_id,
+            amount: 200,
+            status: "pending",
+            createdAt: new Date().toISOString(),
+          });
+          setHasPaid(true);
+          setShowFormModal(false);
+          setShowSuccessPopup(true);
+          resetForm();
+        } catch (err) {
+          console.error("Firebase save error:", err);
+          setFormStatus("Payment succeeded but save failed. Contact support.");
+        }
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        contact: formData.phone,
+      },
+      theme: { color: "#0047AB" },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    openRazorpay();
+  };
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -225,9 +299,21 @@ export const Cibil = () => {
             <p className="sp-hero-description">{svc.overview[0]}</p>
 
             <div className="sp-hero-actions">
-              <Link className="sp-btn-primary" to={gmailHref}>
-                Apply Now <GoArrowRight />
-              </Link>
+              {hasPaid ? (
+                <button
+                  className="sp-btn-primary cb-btn-report"
+                  onClick={() => setShowSuccessPopup(true)}
+                >
+                  Get a Report <GoArrowRight />
+                </button>
+              ) : (
+                <button
+                  className="sp-btn-primary"
+                  onClick={() => setShowFormModal(true)}
+                >
+                  Apply Now <GoArrowRight />
+                </button>
+              )}
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -409,9 +495,21 @@ export const Cibil = () => {
         {/* Bottom CTA */}
         <section className="sp-bottom-cta">
           <h2>Ready to improve your CIBIL Score?</h2>
-          <Link className="sp-btn-white" to={gmailHref}>
-            Apply Now <GoArrowRight />
-          </Link>
+          {hasPaid ? (
+            <button
+              className="sp-btn-white cb-btn-report"
+              onClick={() => setShowSuccessPopup(true)}
+            >
+              Get a Report <GoArrowRight />
+            </button>
+          ) : (
+            <button
+              className="sp-btn-white"
+              onClick={() => setShowFormModal(true)}
+            >
+              Apply Now — ₹200 <GoArrowRight />
+            </button>
+          )}
         </section>
 
         {/* FAQ Section */}
@@ -458,6 +556,171 @@ export const Cibil = () => {
           />
         </motion.div>
       </div>
+
+      {/* ─── Form Modal ─── */}
+      {showFormModal && (
+        <div
+          className="cb-modal-overlay"
+          onClick={() => setShowFormModal(false)}
+        >
+          <div
+            className="cb-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="cb-close-btn"
+              onClick={() => setShowFormModal(false)}
+            >
+              <FaTimes />
+            </button>
+            <h2 className="cb-modal-title">Apply for CIBIL Improvement</h2>
+            <p className="cb-modal-subtitle">
+              Fill your details below. Payment of ₹200 will follow.
+            </p>
+            <form className="cb-form" onSubmit={handleFormSubmit}>
+              <div className="cb-form-row">
+                <input
+                  className="cb-input"
+                  value={formData.name}
+                  onChange={(e) => handleFormChange("name", e.target.value)}
+                  required
+                  placeholder="Full Name"
+                />
+                <input
+                  className="cb-input"
+                  value={formData.phone}
+                  onChange={(e) => handleFormChange("phone", e.target.value)}
+                  required
+                  placeholder="Mobile Number"
+                />
+              </div>
+              <input
+                className="cb-input"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleFormChange("email", e.target.value)}
+                required
+                placeholder="Email Address"
+              />
+              <select
+                className="cb-select"
+                value={formData.state}
+                onChange={(e) => handleFormChange("state", e.target.value)}
+                required
+              >
+                <option value="">Select State</option>
+                {[
+                  "Andhra Pradesh",
+                  "Arunachal Pradesh",
+                  "Assam",
+                  "Bihar",
+                  "Chhattisgarh",
+                  "Goa",
+                  "Gujarat",
+                  "Haryana",
+                  "Himachal Pradesh",
+                  "Jharkhand",
+                  "Karnataka",
+                  "Kerala",
+                  "Madhya Pradesh",
+                  "Maharashtra",
+                  "Manipur",
+                  "Meghalaya",
+                  "Mizoram",
+                  "Nagaland",
+                  "Odisha",
+                  "Punjab",
+                  "Rajasthan",
+                  "Sikkim",
+                  "Tamil Nadu",
+                  "Telangana",
+                  "Tripura",
+                  "Uttar Pradesh",
+                  "Uttarakhand",
+                  "West Bengal",
+                  "Delhi",
+                  "Chandigarh",
+                  "Puducherry",
+                ].map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+              {formData.state && (
+                <input
+                  className="cb-input"
+                  value={formData.city}
+                  onChange={(e) => handleFormChange("city", e.target.value)}
+                  required
+                  placeholder="Enter City Name"
+                />
+              )}
+              <select
+                className="cb-select"
+                value={formData.employmentType}
+                onChange={(e) =>
+                  handleFormChange("employmentType", e.target.value)
+                }
+                required
+              >
+                <option value="">Select Employment Type</option>
+                <option value="Salaried">Salaried</option>
+                <option value="Self-Employed">Self-Employed</option>
+              </select>
+              {formData.employmentType === "Salaried" && (
+                <input
+                  className="cb-input"
+                  type="number"
+                  value={formData.income}
+                  onChange={(e) => handleFormChange("income", e.target.value)}
+                  required
+                  placeholder="Monthly Income (₹)"
+                />
+              )}
+              <textarea
+                className="cb-textarea"
+                value={formData.message}
+                onChange={(e) => handleFormChange("message", e.target.value)}
+                placeholder="Any additional details..."
+                rows={3}
+              />
+              <button className="cb-btn-submit" type="submit">
+                Proceed to Pay ₹200
+              </button>
+              {formStatus && <p className="cb-form-status">{formStatus}</p>}
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Success Popup ─── */}
+      {showSuccessPopup && (
+        <div
+          className="cb-success-overlay"
+          onClick={() => setShowSuccessPopup(false)}
+        >
+          <div className="cb-success-card" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="cb-close-btn"
+              onClick={() => setShowSuccessPopup(false)}
+            >
+              <FaTimes />
+            </button>
+            <div className="cb-success-icon">✅</div>
+            <h2 className="cb-success-title">Payment Successful!</h2>
+            <p className="cb-success-text">
+              You will receive a{" "}
+              <strong>detailed credit report analysis</strong> and be contacted
+              by the <strong>BanksBuddy team within 15–20 minutes</strong>.
+            </p>
+            <p className="cb-success-subtext">
+              Our credit expert will reach out to you on your registered phone
+              number.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

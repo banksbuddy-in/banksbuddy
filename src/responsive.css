@@ -1133,7 +1133,11 @@ p.fct {
     display: flex;
     align-items: center;
     flex-direction: column;
-}
+}#cover h1,
+  #cover p,
+  #cover button {
+    display: none;
+  }
 }
 
 

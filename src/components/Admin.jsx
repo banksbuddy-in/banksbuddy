@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import { HiOutlineClipboardList, HiOutlineBriefcase, HiOutlineDocumentText, HiOutlineStar, HiOutlineGift, HiOutlineUsers, HiOutlineMenu, HiOutlineX, HiOutlineHome } from 'react-icons/hi'
-import { db } from '../firebase'
-import { ref, get } from 'firebase/database'
-import './Admin.css'
+import React, { useState, useEffect } from "react";
+import {
+  HiOutlineClipboardList,
+  HiOutlineBriefcase,
+  HiOutlineDocumentText,
+  HiOutlineStar,
+  HiOutlineGift,
+  HiOutlineUsers,
+  HiOutlineMenu,
+  HiOutlineX,
+  HiOutlineHome,
+  HiOutlineCurrencyRupee,
+} from "react-icons/hi";
+import { db } from "../firebase";
+import { ref, get } from "firebase/database";
+import "./Admin.css";
 
 // Import Admin Components
-import { AdminPolicyReminder } from './AdminPolicyReminder'
-import AdminTable from './AdminTable'
-import { AdminReviews } from './AdminReviews'
-import { AdminOffers } from './AdminOffers'
-import { AdminTeam } from './AdminTeam'
-import { AddCareer } from './AddCareer'
-import { AdminPartners } from './AdminPartners'
-import { AdminManagement } from './AdminManagement'
+import { AdminPolicyReminder } from "./AdminPolicyReminder";
+import AdminTable from "./AdminTable";
+import { AdminReviews } from "./AdminReviews";
+import { AdminOffers } from "./AdminOffers";
+import { AdminTeam } from "./AdminTeam";
+import { AddCareer } from "./AddCareer";
+import { AdminPartners } from "./AdminPartners";
+import { AdminManagement } from "./AdminManagement";
+import { AdminCibil } from "./AdminCibil";
+import { AdminRevenue } from "./AdminRevenue";
 
 export const Admin = () => {
-  const [activeModule, setActiveModule] = useState('dashboard');
+  const [activeModule, setActiveModule] = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stats, setStats] = useState({
@@ -26,46 +39,133 @@ export const Admin = () => {
     reviews: 0,
     careers: 0,
     partners: 0,
-    admins: 0
+    admins: 0,
+    cibil: 0,
+    revenue: 0,
   });
 
   const adminModules = [
-    { id: 'dashboard', title: 'Dashboard', icon: HiOutlineHome, desc: 'Overview & Quick Stats' },
-    { id: 'admins', title: 'Admins', icon: HiOutlineUsers, desc: 'Manage Admin Users' },
-    { id: 'partners', title: 'Partners', icon: HiOutlineBriefcase, desc: 'Manage partner applications' },
-    { id: 'policy-reminder', title: 'Policy Reminders', icon: HiOutlineClipboardList, desc: 'Track policy expirations' },
-    { id: 'careers', title: 'Careers', icon: HiOutlineBriefcase, desc: 'Manage job postings' },
-    { id: 'consultations', title: 'Consultations', icon: HiOutlineDocumentText, desc: 'View consultation requests' },
-    { id: 'testimonials', title: 'Testimonials', icon: HiOutlineStar, desc: 'Manage customer reviews' },
-    { id: 'offers', title: 'Offers', icon: HiOutlineGift, desc: 'Manage special offers' },
-    { id: 'team', title: 'Team', icon: HiOutlineUsers, desc: 'Manage team members' },
+    {
+      id: "dashboard",
+      title: "Dashboard",
+      icon: HiOutlineHome,
+      desc: "Overview & Quick Stats",
+    },
+    {
+      id: "admins",
+      title: "Admins",
+      icon: HiOutlineUsers,
+      desc: "Manage Admin Users",
+    },
+    {
+      id: "partners",
+      title: "Partners",
+      icon: HiOutlineBriefcase,
+      desc: "Manage partner applications",
+    },
+    {
+      id: "policy-reminder",
+      title: "Policy Reminders",
+      icon: HiOutlineClipboardList,
+      desc: "Track policy expirations",
+    },
+    {
+      id: "careers",
+      title: "Careers",
+      icon: HiOutlineBriefcase,
+      desc: "Manage job postings",
+    },
+    {
+      id: "consultations",
+      title: "Consultations",
+      icon: HiOutlineDocumentText,
+      desc: "View consultation requests",
+    },
+    {
+      id: "testimonials",
+      title: "Testimonials",
+      icon: HiOutlineStar,
+      desc: "Manage customer reviews",
+    },
+    {
+      id: "offers",
+      title: "Offers",
+      icon: HiOutlineGift,
+      desc: "Manage special offers",
+    },
+    {
+      id: "team",
+      title: "Team",
+      icon: HiOutlineUsers,
+      desc: "Manage team members",
+    },
+    {
+      id: "cibil",
+      title: "Cibil",
+      icon: HiOutlineClipboardList,
+      desc: "CIBIL service requests",
+    },
+    {
+      id: "revenue",
+      title: "Revenue",
+      icon: HiOutlineCurrencyRupee,
+      desc: "Financial overview",
+    },
   ];
 
   // Fetch real stats from Firebase
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [consultationsSnap, policiesSnap, teamSnap, offersSnap, reviewsSnap, careersSnap, partnersSnap] = await Promise.all([
-          get(ref(db, 'consultations')),
-          get(ref(db, 'policies')),
-          get(ref(db, 'team')),
-          get(ref(db, 'offers')),
-          get(ref(db, 'reviews')),
-          get(ref(db, 'careers')),
-          get(ref(db, 'partner_applications'))
+        const [
+          consultationsSnap,
+          policiesSnap,
+          teamSnap,
+          offersSnap,
+          reviewsSnap,
+          careersSnap,
+          partnersSnap,
+          cibilSnap,
+          manualSnap,
+        ] = await Promise.all([
+          get(ref(db, "consultations")),
+          get(ref(db, "policies")),
+          get(ref(db, "team")),
+          get(ref(db, "offers")),
+          get(ref(db, "reviews")),
+          get(ref(db, "careers")),
+          get(ref(db, "partner_applications")),
+          get(ref(db, "cibil_requests")),
+          get(ref(db, "manual_revenue")),
         ]);
 
         setStats({
-          consultations: consultationsSnap.exists() ? Object.keys(consultationsSnap.val()).length : 0,
-          policies: policiesSnap.exists() ? Object.keys(policiesSnap.val()).length : 0,
+          consultations: consultationsSnap.exists()
+            ? Object.keys(consultationsSnap.val()).length
+            : 0,
+          policies: policiesSnap.exists()
+            ? Object.keys(policiesSnap.val()).length
+            : 0,
           team: teamSnap.exists() ? Object.keys(teamSnap.val()).length : 0,
-          offers: offersSnap.exists() ? Object.keys(offersSnap.val()).length : 0,
-          reviews: reviewsSnap.exists() ? Object.keys(reviewsSnap.val()).length : 0,
-          careers: careersSnap.exists() ? Object.keys(careersSnap.val()).length : 0,
-          partners: partnersSnap.exists() ? Object.keys(partnersSnap.val()).length : 0
+          offers: offersSnap.exists()
+            ? Object.keys(offersSnap.val()).length
+            : 0,
+          reviews: reviewsSnap.exists()
+            ? Object.keys(reviewsSnap.val()).length
+            : 0,
+          careers: careersSnap.exists()
+            ? Object.keys(careersSnap.val()).length
+            : 0,
+          partners: partnersSnap.exists()
+            ? Object.keys(partnersSnap.val()).length
+            : 0,
+          cibil: cibilSnap.exists() ? Object.keys(cibilSnap.val()).length : 0,
+          revenue: manualSnap.exists()
+            ? Object.keys(manualSnap.val()).length
+            : 0,
         });
       } catch (error) {
-        console.error('Error fetching stats:', error);
+        console.error("Error fetching stats:", error);
       }
     };
     fetchStats();
@@ -78,26 +178,42 @@ export const Admin = () => {
 
   const renderContent = () => {
     switch (activeModule) {
-      case 'dashboard':
-        return <DashboardContent stats={stats} setActiveModule={setActiveModule} adminModules={adminModules} />;
-      case 'admins':
+      case "dashboard":
+        return (
+          <DashboardContent
+            stats={stats}
+            setActiveModule={setActiveModule}
+            adminModules={adminModules}
+          />
+        );
+      case "admins":
         return <AdminManagement embedded={true} />;
-      case 'policy-reminder':
+      case "policy-reminder":
         return <AdminPolicyReminder embedded={true} />;
-      case 'careers':
+      case "careers":
         return <AddCareer embedded={true} />;
-      case 'partners':
+      case "partners":
         return <AdminPartners embedded={true} />;
-      case 'consultations':
+      case "consultations":
         return <AdminTable embedded={true} />;
-      case 'testimonials':
+      case "testimonials":
         return <AdminReviews embedded={true} />;
-      case 'offers':
+      case "offers":
         return <AdminOffers embedded={true} />;
-      case 'team':
+      case "team":
         return <AdminTeam embedded={true} />;
+      case "cibil":
+        return <AdminCibil embedded={true} />;
+      case "revenue":
+        return <AdminRevenue embedded={true} />;
       default:
-        return <DashboardContent stats={stats} setActiveModule={setActiveModule} adminModules={adminModules} />;
+        return (
+          <DashboardContent
+            stats={stats}
+            setActiveModule={setActiveModule}
+            adminModules={adminModules}
+          />
+        );
     }
   };
 
@@ -108,27 +224,39 @@ export const Admin = () => {
           <span className="restriction-icon">💻</span>
           <h2>Top Secret Area</h2>
           <p>Please use a PC or Laptop to access the Admin Portal.</p>
-          <a href="/" className="back-home-btn">Go Back Home</a>
+          <a href="/" className="back-home-btn">
+            Go Back Home
+          </a>
         </div>
       </div>
-      <div className={`admin-layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div
+        className={`admin-layout ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+      >
         {/* Mobile Header */}
         <div className="admin-mobile-header">
-          <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <HiOutlineX /> : <HiOutlineMenu />}
           </button>
           <h1>Admin Portal</h1>
         </div>
 
         {/* Sidebar */}
-        <aside className={`admin-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+        <aside
+          className={`admin-sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}
+        >
           <div className="sidebar-header">
             <div className="sidebar-logo">
               <span className="logo-icon">BB</span>
               {!sidebarCollapsed && <span className="logo-text">Admin</span>}
             </div>
-            <button className="sidebar-toggle" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
-              {sidebarCollapsed ? '→' : '←'}
+            <button
+              className="sidebar-toggle"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              {sidebarCollapsed ? "→" : "←"}
             </button>
           </div>
 
@@ -138,15 +266,17 @@ export const Admin = () => {
               return (
                 <button
                   key={module.id}
-                  className={`nav-item ${activeModule === module.id ? 'active' : ''}`}
+                  className={`nav-item ${activeModule === module.id ? "active" : ""}`}
                   onClick={() => handleModuleClick(module.id)}
-                  title={sidebarCollapsed ? module.title : ''}
+                  title={sidebarCollapsed ? module.title : ""}
                 >
                   <IconComponent className="nav-icon" />
                   {!sidebarCollapsed && (
                     <span className="nav-text">{module.title}</span>
                   )}
-                  {activeModule === module.id && <span className="nav-indicator"></span>}
+                  {activeModule === module.id && (
+                    <span className="nav-indicator"></span>
+                  )}
                 </button>
               );
             })}
@@ -157,37 +287,49 @@ export const Admin = () => {
         <main className="admin-main">
           <div className="admin-content-header">
             <div className="content-title">
-              <h2>{adminModules.find(m => m.id === activeModule)?.title}</h2>
-              <p>{adminModules.find(m => m.id === activeModule)?.desc}</p>
+              <h2>{adminModules.find((m) => m.id === activeModule)?.title}</h2>
+              <p>{adminModules.find((m) => m.id === activeModule)?.desc}</p>
             </div>
             <div className="header-actions">
-              <span className="current-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              <span className="current-date">
+                {new Date().toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
             </div>
           </div>
 
-          <div className="admin-content-body">
-            {renderContent()}
-          </div>
+          <div className="admin-content-body">{renderContent()}</div>
         </main>
 
         {/* Mobile Overlay */}
-        {mobileMenuOpen && <div className="mobile-overlay" onClick={() => setMobileMenuOpen(false)}></div>}
+        {mobileMenuOpen && (
+          <div
+            className="mobile-overlay"
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+        )}
       </div>
     </section>
-  )
-}
+  );
+};
 
 // Dashboard Content Component
 const DashboardContent = ({ stats, setActiveModule, adminModules }) => {
   const quickStats = [
-    { label: 'Consultations', value: stats.consultations, icon: '📝' },
-    { label: 'Active Policies', value: stats.policies, icon: '📋' },
-    { label: 'Team Members', value: stats.team, icon: '👥' },
-    { label: 'Active Offers', value: stats.offers, icon: '🎁' },
-    { label: 'Testimonials', value: stats.reviews, icon: '⭐' },
-    { label: 'Testimonials', value: stats.reviews, icon: '⭐' },
-    { label: 'Job Postings', value: stats.careers, icon: '💼' },
-    { label: 'Partner Apps', value: stats.partners, icon: '🤝' },
+    { label: "Consultations", value: stats.consultations, icon: "📝" },
+    { label: "Active Policies", value: stats.policies, icon: "📋" },
+    { label: "Team Members", value: stats.team, icon: "👥" },
+    { label: "Active Offers", value: stats.offers, icon: "🎁" },
+    { label: "Testimonials", value: stats.reviews, icon: "⭐" },
+    { label: "Testimonials", value: stats.reviews, icon: "⭐" },
+    { label: "Job Postings", value: stats.careers, icon: "💼" },
+    { label: "Partner Apps", value: stats.partners, icon: "🤝" },
+    { label: "Cibil Requests", value: stats.cibil, icon: "📊" },
+    { label: "Revenue Txns", value: stats.revenue, icon: "💰" },
   ];
 
   return (
@@ -227,4 +369,4 @@ const DashboardContent = ({ stats, setActiveModule, adminModules }) => {
       </div>
     </div>
   );
-}
+};

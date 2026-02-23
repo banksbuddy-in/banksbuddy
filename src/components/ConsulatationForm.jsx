@@ -21,7 +21,7 @@ export const ConsulatationForm = () => {
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   const handleSubmit = async (e) => {
@@ -65,7 +65,7 @@ export const ConsulatationForm = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       className="adareer"
       initial="hidden"
       whileInView="visible"
@@ -94,7 +94,7 @@ export const ConsulatationForm = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
-                placeholder="Contact Number"
+                placeholder="Mobile Number"
               />
             </div>
             <input
@@ -142,9 +142,13 @@ export const ConsulatationForm = () => {
               <option value="Uttar Pradesh">Uttar Pradesh</option>
               <option value="Uttarakhand">Uttarakhand</option>
               <option value="West Bengal">West Bengal</option>
-              <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+              <option value="Andaman and Nicobar Islands">
+                Andaman and Nicobar Islands
+              </option>
               <option value="Chandigarh">Chandigarh</option>
-              <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+              <option value="Dadra and Nagar Haveli and Daman and Diu">
+                Dadra and Nagar Haveli and Daman and Diu
+              </option>
               <option value="Delhi">Delhi</option>
               <option value="Jammu and Kashmir">Jammu and Kashmir</option>
               <option value="Ladakh">Ladakh</option>
@@ -174,7 +178,9 @@ export const ConsulatationForm = () => {
               <option value="Loan">Loan</option>
               <option value="Credit Card">Credit Card</option>
               <option value="Insurance">Insurance</option>
-              <option value="CIBIL Score Improvement">CIBIL Score Improvement</option>
+              <option value="CIBIL Score Improvement">
+                CIBIL Score Improvement
+              </option>
               <option value="Investment">Investment</option>
               <option value="Other">Other</option>
             </select>
@@ -193,7 +199,9 @@ export const ConsulatationForm = () => {
                 <option value="Business Loan (BL)">Business Loan (BL)</option>
                 <option value="Car Loan">Car Loan</option>
                 <option value="Education Loan">Education Loan</option>
-                <option value="Loan Against Property (LAP)">Loan Against Property (LAP)</option>
+                <option value="Loan Against Property (LAP)">
+                  Loan Against Property (LAP)
+                </option>
                 <option value="Other">Other</option>
               </select>
             )}

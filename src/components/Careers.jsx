@@ -28,7 +28,7 @@ export const Careers = () => {
   const filteredCareers = careers.filter((job) =>
     (job.title + job.description + job.skills + job.message)
       .toLowerCase()
-      .includes(search.toLowerCase())
+      .includes(search.toLowerCase()),
   );
 
   return (
@@ -110,7 +110,7 @@ export const Careers = () => {
 
             <a
               href={`https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-                "BanksBuddy - APPLICATION for " + selectedJob.title
+                "BanksBuddy - APPLICATION for " + selectedJob.title,
               )}&body=${encodeURIComponent(
                 `Hello BanksBuddy Team,
 [your introduction, experience, and motivation to apply]
@@ -118,7 +118,8 @@ export const Careers = () => {
 Please find my resume/CV and cover letter attached.
 Warm regards,
 [Your Name]
-[Your Contact Info]`
+Mobile Number: [Your Mobile Number]
+[Your Contact Info]`,
               )}`}
               target="_blank"
               rel="noopener noreferrer"

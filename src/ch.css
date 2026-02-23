@@ -52,3 +52,318 @@ form.ac-frm.pt {
   padding: 3% 10%;
   justify-content: space-between;
 }
+
+/* ══════════════════════════════════════════════════════
+   CIBIL — Form Modal
+   ══════════════════════════════════════════════════════ */
+.cb-modal-overlay,
+.cb-success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  backdrop-filter: blur(4px);
+}
+
+.cb-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  width: 92%;
+  max-width: 540px;
+  padding: 2.5rem 2rem 2rem;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: cbSlideUp 0.35s ease;
+}
+
+@keyframes cbSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cb-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+
+.cb-close-btn:hover {
+  color: #1e293b;
+}
+
+.cb-modal-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.cb-modal-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* Form elements */
+.cb-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.cb-form-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.cb-form-row .cb-input {
+  flex: 1;
+}
+
+.cb-input,
+.cb-select,
+.cb-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.cb-input:focus,
+.cb-select:focus,
+.cb-textarea:focus {
+  border-color: var(--bl, #0047ab);
+}
+
+.cb-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.cb-btn-submit {
+  background: var(--bl, #0047ab);
+  color: #fff;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cb-btn-submit:hover {
+  background: #003792;
+}
+
+.cb-form-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ef4444;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════
+   CIBIL — Success Popup
+   ══════════════════════════════════════════════════════ */
+.cb-success-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 92%;
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: cbSlideUp 0.35s ease;
+}
+
+.cb-success-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cb-success-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.cb-success-text {
+  font-size: 1rem;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0 0 0.5rem;
+}
+
+.cb-success-subtext {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* Get a Report button glow */
+.cb-btn-report {
+  animation: cbPulse 2s infinite;
+}
+
+@keyframes cbPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 71, 171, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 71, 171, 0);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   ADMIN — Cibil Notification Banners
+   ══════════════════════════════════════════════════════ */
+.cb-admin-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.cb-notif-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cb-notif-banner {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  flex: 1;
+  min-width: 220px;
+}
+
+.cb-notif-pending {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.cb-notif-new {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Download Button */
+.cb-filter-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.cb-download-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #1e293b;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.cb-download-btn:hover {
+  background: var(--bl, #0047ab);
+  color: #fff;
+  border-color: var(--bl, #0047ab);
+}
+
+/* Table truncation helpers */
+.cb-td-email,
+.cb-td-payid {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cb-td-date {
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.cb-modal-date {
+  color: #64748b;
+}
+
+.cb-empty-state {
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cb-empty-icon {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+/* Add completed status badge */
+.status-badge.completed {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — Mobile adjustments for Cibil modal
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .cb-form-row {
+    flex-direction: column;
+  }
+
+  .cb-modal-content,
+  .cb-success-card {
+    width: 95%;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .cb-filter-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cb-download-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

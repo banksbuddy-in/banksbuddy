@@ -95,7 +95,7 @@ export const PartnerForm = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                placeholder="Phone Number"
+                placeholder="Mobile Number"
               />
             </div>
 

@@ -978,6 +978,23 @@
   .ned-body {
     padding: 1.5rem;
   }
+  div#cover {
+    margin: 0;
+    border-radius: 5rem;
+  }
+
+  #cover h1,
+  #cover p,
+  #cover button {
+    display: none;
+  }
+
+  .pgcntt {
+    top: -7rem;
+    position: relative;
+    background: white;
+    border-radius: 3rem;
+  }
 }
 
 section.faq-section {

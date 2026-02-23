@@ -19,6 +19,7 @@ import "./change2.css";
 import "./responsive.css";
 import "./components/r.css";
 import "./ch.css";
+import "./res2.css";
 import { Cursor } from "./components/Cursor";
 import { RiAdminFill } from "react-icons/ri";
 import { PayslipAd } from "./components/PayslipAd";

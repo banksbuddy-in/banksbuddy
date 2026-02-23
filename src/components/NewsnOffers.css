@@ -6,15 +6,14 @@ div#NewsnOffers {
   background: #fdfdfd;
 }
 
-.shead {
+/* .shead {
   text-align: center;
   font-size: 1.6rem;
-  /* Reduced from 1.8rem */
   color: var(--darkbl);
   margin-bottom: 1rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-}
+} */
 
 .nnf {
   display: flex;
@@ -195,9 +194,9 @@ img.news-image {
     padding: 1.5rem 5%;
   }
 
-  .shead {
+  /* .shead {
     font-size: 1.5rem;
-  }
+  } */
 }
 
 /* Carousel styles for mobile/tablet */
