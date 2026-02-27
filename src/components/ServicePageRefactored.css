@@ -732,23 +732,46 @@
   line-height: 1.4;
 }
 
-/* NEW: Small Cards for Documents */
+/* NEW: Small Cards for Documents - Grid to Horizontal Row */
 .sp-docs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 0.75rem;
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0.5rem 0.5rem 1.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sp-docs-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.sp-docs-grid::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.sp-docs-grid::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.sp-docs-grid::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .sp-doc-card {
+  flex: 0 0 180px; /* Fixed width, no shrink */
+  scroll-snap-align: start;
   background: white;
   border: 1px solid #eef2f6;
-  border-radius: 10px;
-  padding: 1rem 0.6rem;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   transition: all 0.3s ease;
 }
 

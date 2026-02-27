@@ -24,7 +24,17 @@ export default async function handler(req, res) {
         : req.body || {};
 
     // Extract the specific fields from the request
-    const { name, phone, email, city, paymentId, amount, date } = body;
+    const {
+      name,
+      phone,
+      email,
+      city,
+      state,
+      income,
+      amount,
+      date,
+      serviceTitle,
+    } = body;
 
     const orderAmount = Number(amount);
     if (!orderAmount || Number.isNaN(orderAmount) || orderAmount <= 0) {
@@ -54,14 +64,14 @@ export default async function handler(req, res) {
         ? "https://api.cashfree.com/pg"
         : "https://sandbox.cashfree.com/pg";
 
-    // Use the provided Payment ID or generate one if missing
-    const orderId =
-      paymentId || `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    // Generate a unique order ID
+    const orderId = `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
     const payload = {
       order_id: orderId,
       order_amount: orderAmount,
       order_currency: "INR",
+      order_note: `${serviceTitle || "Service"} payment`,
       customer_details: {
         customer_id: phone || `guest_${Date.now()}`,
         customer_phone: phone || "9999999999",
@@ -73,6 +83,9 @@ export default async function handler(req, res) {
       },
       order_tags: {
         city: city || "Unknown",
+        state: state || "Unknown",
+        income: income || "Unknown",
+        service: serviceTitle || "Not Specified",
         date: date || new Date().toISOString(),
       },
     };

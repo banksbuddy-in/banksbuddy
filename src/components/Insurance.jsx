@@ -3,13 +3,24 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MdBolt } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
-import { FaHandHoldingUsd, FaWhatsapp } from "react-icons/fa";
+import {
+  FaHandHoldingUsd,
+  FaWhatsapp,
+  FaIdCard,
+  FaMoneyBillWave,
+  FaHome,
+  FaBriefcase,
+  FaGraduationCap,
+  FaUser,
+  FaCheckCircle,
+} from "react-icons/fa";
+import { BsBank2, BsFileEarmarkText } from "react-icons/bs";
 import { IoTimer } from "react-icons/io5";
 import { PiChartLineDownFill } from "react-icons/pi";
-import { Cover } from "./Cover";
+import { GoArrowRight } from "react-icons/go";
+import { BuyNowPayment } from "./BuyNowPayment";
 import { FAQ } from "./FAQ";
 import { insuranceFAQs } from "./Data_FAQs";
-import { BuyNowPayment } from "./BuyNowPayment";
 import "./ServicePageRefactored.css";
 
 const InsuranceData = [
@@ -107,9 +118,9 @@ Warm regards,
 })();
 
 const txtarr = [
-  "Max Loan Amount",
-  "Max Loan Tenure",
-  "Interest Rate",
+  "Coverage Amount",
+  "Policy Tenure",
+  "Premium Starting",
   "Processing Fees",
 ];
 
@@ -129,16 +140,90 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Helper to select icon based on document text (matching ServicePage logic)
+const getDocIcon = (docText) => {
+  const text = docText.toLowerCase();
+
+  if (
+    text.includes("aadhar") ||
+    text.includes("pan") ||
+    text.includes("kyc") ||
+    text.includes("passport") ||
+    text.includes("voter") ||
+    text.includes("id proof") ||
+    text.includes("license")
+  ) {
+    return <FaIdCard />;
+  }
+  if (
+    text.includes("salary") ||
+    text.includes("income") ||
+    text.includes("form 16")
+  ) {
+    return <FaMoneyBillWave />;
+  }
+  if (
+    text.includes("bank") ||
+    text.includes("statement") ||
+    text.includes("cheque") ||
+    text.includes("passbook")
+  ) {
+    return <BsBank2 />;
+  }
+  if (
+    text.includes("address") ||
+    text.includes("electricity") ||
+    text.includes("rent") ||
+    text.includes("property") ||
+    text.includes("bill") ||
+    text.includes("hosting")
+  ) {
+    return <FaHome />;
+  }
+  if (
+    text.includes("business") ||
+    text.includes("registration") ||
+    text.includes("itr") ||
+    text.includes("gst") ||
+    text.includes("partnership") ||
+    text.includes("company") ||
+    text.includes("profile")
+  ) {
+    return <FaBriefcase />;
+  }
+  if (text.includes("photo") || text.includes("check")) {
+    return <FaUser />;
+  }
+  if (
+    text.includes("education") ||
+    text.includes("marksheet") ||
+    text.includes("admission") ||
+    text.includes("scorecard") ||
+    text.includes("degree")
+  ) {
+    return <FaGraduationCap />;
+  }
+
+  return <BsFileEarmarkText />;
+};
+
 export const Insurance = () => {
+  const [faqCategory, setFaqCategory] = React.useState("Common");
+
+  const getFilteredFaqs = () => {
+    const allFaqs = insuranceFAQs;
+    const commonFaqs = allFaqs.slice(0, 3);
+    const infoFaqs = allFaqs.slice(3, 6);
+    const miscFaqs = allFaqs.slice(6);
+
+    if (faqCategory === "Common") return commonFaqs;
+    if (faqCategory === "Informations") return infoFaqs;
+    return miscFaqs;
+  };
+
   return (
     <div id="ServicePage" className="service-page-container">
-      <Cover
-        tagline={svc.tagline}
-        title={svc.Title}
-        description={`Secure your future with ${svc.Title}.`}
-        image={svc.image}
-      />
-
+      {/* Hero Section Without Cover component */}
       <div className="pgcntt">
         <motion.section
           className="sp-hero"
@@ -154,9 +239,19 @@ export const Insurance = () => {
             <p className="sp-hero-description">{svc.overview[0]}</p>
 
             <div className="sp-hero-actions">
-              <a className="sp-btn-primary" href={gmailHref} target="_blank" rel="noreferrer">
-                Get a Quote
+              <a
+                className="sp-btn-primary"
+                href={gmailHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Apply Now <GoArrowRight />
               </a>
+              <BuyNowPayment
+                serviceId={svc.id}
+                serviceTitle={svc.Title}
+                mainCategory="Insurance Services"
+              />
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -174,14 +269,7 @@ export const Insurance = () => {
           </div>
         </motion.section>
 
-        <section className="sp-section" style={{ paddingTop: "0" }}>
-          <BuyNowPayment
-            serviceId={svc.id}
-            serviceTitle={svc.Title}
-            mainCategory="Insurance Services"
-          />
-        </section>
-
+        {/* About & Details Section (Vertical Layout) */}
         <section className="sp-section" style={{ background: "#fff" }}>
           <motion.div
             className="sp-about-centered"
@@ -224,12 +312,14 @@ export const Insurance = () => {
           </motion.div>
         </section>
 
+        {/* Online Features Horizontal Grid */}
         <section className="sp-section">
           <div className="sp-centered-header">
             <span className="sp-section-tag">Why Choose Us</span>
-            <h2 className="sp-section-title">Insurance Features</h2>
+            <h2 className="sp-section-title">{svc.Title} Features</h2>
             <p className="sp-text-block" style={{ textAlign: "center" }}>
-              Pick the cover that fits you best with transparent pricing and guided onboarding.
+              Experience the best in class service with our digital-first
+              approach.
             </p>
           </div>
 
@@ -250,6 +340,7 @@ export const Insurance = () => {
           </motion.div>
         </section>
 
+        {/* Eligibility Section (Split) */}
         <section className="sp-section sp-section-alt">
           <div className="sp-split-section">
             <motion.div
@@ -275,7 +366,7 @@ export const Insurance = () => {
               <div className="sp-check-list">
                 {svc.EliCr.map((elg, i) => (
                   <div key={i} className="sp-check-item">
-                    <HiMiniClipboardDocumentCheck className="sp-check-icon" />
+                    <FaCheckCircle className="sp-check-icon" />
                     <p className="sp-check-text">{elg}</p>
                   </div>
                 ))}
@@ -284,6 +375,7 @@ export const Insurance = () => {
           </div>
         </section>
 
+        {/* Documents Section (Full Width, No Image, Centered Header) */}
         <section className="sp-section">
           <motion.div
             initial="hidden"
@@ -303,17 +395,19 @@ export const Insurance = () => {
             <div className="sp-docs-grid">
               {svc.Docs.map((doc, i) => (
                 <div key={i} className="sp-doc-card sp-doc-card-shadow">
-                  <div className="sp-doc-icon-wrapper">{i + 1}</div>
+                  <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
                   <p className="sp-doc-text">{doc}</p>
                 </div>
               ))}
             </div>
             <div className="sp-note">
-              <strong>Note:</strong> Eligibility and required documents may vary by insurer and policy.
+              <strong>Note:</strong> Eligibility and required documents are
+              subject to change depending on the individual profile.
             </div>
           </motion.div>
         </section>
 
+        {/* Types Section (Horizontal) */}
         <section className="sp-section sp-section-alt">
           <div className="sp-centered-header">
             <span className="sp-section-tag">Varieties</span>
@@ -336,13 +430,20 @@ export const Insurance = () => {
           </motion.div>
         </section>
 
+        {/* Bottom CTA */}
         <section className="sp-bottom-cta">
-          <h2>Ready to protect what matters most?</h2>
-          <a className="sp-btn-white" href={gmailHref} target="_blank" rel="noreferrer">
-            Talk to an Advisor
+          <h2>Ready to get started with {svc.Title}?</h2>
+          <a
+            className="sp-btn-white"
+            href={gmailHref}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Apply Now <GoArrowRight />
           </a>
         </section>
 
+        {/* FAQ Section with Categories */}
         <motion.div
           className="sp-section"
           id="faq-section"
@@ -352,13 +453,31 @@ export const Insurance = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
         >
-          <FAQ
-            faqs={insuranceFAQs}
-            title="Insurance - Frequently Asked Questions"
-            subtitle="Got Questions?"
-          />
+          <div className="sp-faq-header" style={{ marginBottom: "1rem" }}>
+            <h2
+              className="sp-section-title"
+              style={{ textAlign: "center", marginBottom: "1.5rem" }}
+            >
+              Frequently Asked Questions
+            </h2>
+            <div className="sp-faq-tabs">
+              {["Common", "Informations", "Misc"].map((tab) => (
+                <button
+                  key={tab}
+                  className={`sp-faq-tab ${faqCategory === tab ? "active" : ""}`}
+                  onClick={() => setFaqCategory(tab)}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <FAQ faqs={getFilteredFaqs()} title="" subtitle="" />
         </motion.div>
       </div>
     </div>
   );
 };
+
+export default Insurance;

@@ -290,6 +290,33 @@
   color: #9a3412;
 }
 
+.rev-status-resolved {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.rev-status-refunded {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.rev-edit-btn-small {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rev-edit-btn-small:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
 .rev-amount {
   font-weight: 700;
   color: #0f172a;

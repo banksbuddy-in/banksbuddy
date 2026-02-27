@@ -217,15 +217,7 @@ export const ServicesCards = () => {
               {service.media}
               <h1 style={{ whiteSpace: "normal" }}>{service.title}</h1>
               <p>{service.description}</p>
-              <a
-                className="kn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  BuddyNavigate(service.url);
-                }}
-              >
-                Know more
-              </a>
+              
             </motion.div>
           ))}
         </div>

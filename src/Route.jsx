@@ -184,8 +184,8 @@ export const Dat = [
     element: <PartnerForm />,
   },
   {
-    path: "/payment-test",
-    label: "Payment Test",
+    path: "/payment",
+    label: "Payment",
     element: <PaymentTestPage />,
   },
 ];

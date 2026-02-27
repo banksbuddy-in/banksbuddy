@@ -56,6 +56,7 @@ export const AdminRevenue = ({ embedded }) => {
   const [filteredTxns, setFilteredTxns] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [editingTxn, setEditingTxn] = useState(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -135,14 +136,20 @@ export const AdminRevenue = ({ embedded }) => {
     };
   }, []);
 
-  const [dataSources, setDataSources] = useState({ cibil: [], manual: [], cashfree: [] });
+  const [dataSources, setDataSources] = useState({
+    cibil: [],
+    manual: [],
+    cashfree: [],
+  });
 
   const updateTransactions = (source, list) => {
     setDataSources((prev) => {
       const newState = { ...prev, [source]: list };
-      const all = [...newState.cibil, ...newState.manual, ...newState.cashfree].sort(
-        (a, b) => new Date(b.date) - new Date(a.date),
-      );
+      const all = [
+        ...newState.cibil,
+        ...newState.manual,
+        ...newState.cashfree,
+      ].sort((a, b) => new Date(b.date) - new Date(a.date));
       setTransactions(all);
       return newState;
     });
@@ -179,8 +186,26 @@ export const AdminRevenue = ({ embedded }) => {
     setFormData((prev) => ({
       ...prev,
       mainCategory: category,
-      subCategory: SERVICE_CATEGORIES[category][0], // Reset sub to first option
+      subCategory: SERVICE_CATEGORIES[category]
+        ? SERVICE_CATEGORIES[category][0]
+        : "Other",
     }));
+  };
+
+  const handleEdit = (txn) => {
+    setEditingTxn(txn);
+    setFormData({
+      fullName: txn.username,
+      email: txn.email || "",
+      mobile: txn.mobile || "",
+      mainCategory: txn.mainCategory || "Loan Services",
+      subCategory: txn.subCategory || "",
+      status: txn.status,
+      amount: txn.amount,
+      isInstantPaid: true,
+      customDate: "",
+    });
+    setShowModal(true);
   };
 
   const handleManualSubmit = async (e) => {
@@ -201,14 +226,49 @@ export const AdminRevenue = ({ embedded }) => {
         mainCategory: formData.mainCategory,
         subCategory: formData.subCategory,
         status: formData.status,
-        amount: formData.amount,
-        createdAt: finalDate, // This is the payment/record timestamp
-        date: finalDate, // Consistent field for sorting
+        amount: Number(formData.amount),
+        updatedAt: new Date().toISOString(),
       };
 
-      await push(ref(db, "manual_revenue"), payload);
+      if (editingTxn) {
+        // Update existing record
+        const node =
+          editingTxn.source === "Manual"
+            ? "manual_revenue"
+            : editingTxn.source === "Cashfree"
+              ? "cashfree_revenue"
+              : "cibil_requests";
+
+        // Map consistency for different nodes
+        const finalPayload =
+          editingTxn.source === "Cibil"
+            ? {
+                name: formData.fullName,
+                email: formData.email,
+                phone: formData.mobile,
+                amount: Number(formData.amount),
+                status: formData.status,
+              }
+            : editingTxn.source === "Cashfree"
+              ? {
+                  username: formData.fullName,
+                  email: formData.email,
+                  mobile: formData.mobile,
+                  amount: Number(formData.amount),
+                  status: formData.status,
+                }
+              : payload;
+
+        await update(ref(db, `${node}/${editingTxn.id}`), finalPayload);
+      } else {
+        // Create new manual record
+        payload.createdAt = finalDate;
+        payload.date = finalDate;
+        await push(ref(db, "manual_revenue"), payload);
+      }
 
       setShowModal(false);
+      setEditingTxn(null);
       setFormData({
         fullName: "",
         email: "",
@@ -221,7 +281,7 @@ export const AdminRevenue = ({ embedded }) => {
         customDate: "",
       });
     } catch (error) {
-      console.error("Error adding revenue:", error);
+      console.error("Error saving revenue:", error);
     }
   };
 
@@ -428,6 +488,7 @@ export const AdminRevenue = ({ embedded }) => {
               <th>Status</th>
               <th>Amount</th>
               <th>Date & Time</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -464,7 +525,7 @@ export const AdminRevenue = ({ embedded }) => {
                   </td>
                   <td>
                     <span
-                      className={`rev-status-badge ${t.status === "paid" ? "rev-status-paid" : "rev-status-pending"}`}
+                      className={`rev-status-badge rev-status-${t.status || "pending"}`}
                     >
                       <span
                         style={{
@@ -494,6 +555,15 @@ export const AdminRevenue = ({ embedded }) => {
                       })}
                     </small>
                   </td>
+                  <td>
+                    <button
+                      className="rev-edit-btn-small"
+                      onClick={() => handleEdit(t)}
+                      title="Edit Entry"
+                    >
+                      Edit
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -516,13 +586,21 @@ export const AdminRevenue = ({ embedded }) => {
 
       {/* Manual Entry Modal */}
       {showModal && (
-        <div className="cb-modal-overlay" onClick={() => setShowModal(false)}>
+        <div
+          className="cb-modal-overlay"
+          onClick={() => {
+            setShowModal(false);
+            setEditingTxn(null);
+          }}
+        >
           <div
             className="cb-modal-content"
             onClick={(e) => e.stopPropagation()}
             style={{ maxWidth: "600px" }}
           >
-            <h2 className="cb-modal-title">Add Revenue Entry</h2>
+            <h2 className="cb-modal-title">
+              {editingTxn ? "Edit Revenue Entry" : "Add Revenue Entry"}
+            </h2>
             <form className="cb-form" onSubmit={handleManualSubmit}>
               <div className="cb-form-row">
                 <div style={{ flex: 1 }}>
@@ -630,62 +708,71 @@ export const AdminRevenue = ({ embedded }) => {
                   >
                     <option value="paid">Paid</option>
                     <option value="pending">Pending</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="refunded">Refunded</option>
                   </select>
                 </div>
               </div>
 
-              {/* Date Selection Logic */}
-              <div
-                style={{
-                  background: "#f8fafc",
-                  padding: "1rem",
-                  borderRadius: "8px",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <label
-                  className="rev-form-label"
+              {/* Date Selection Logic - Only for new entries */}
+              {!editingTxn && (
+                <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    marginBottom: formData.isInstantPaid ? 0 : "0.5rem",
-                    cursor: "pointer",
+                    background: "#f8fafc",
+                    padding: "1rem",
+                    borderRadius: "8px",
+                    border: "1px solid #e2e8f0",
                   }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={formData.isInstantPaid}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        isInstantPaid: e.target.checked,
-                      })
-                    }
-                    style={{ width: "16px", height: "16px" }}
-                  />
-                  <span>
-                    Record as <strong>Instantly Paid</strong> (Current Time)
-                  </span>
-                </label>
-
-                {!formData.isInstantPaid && (
-                  <div
-                    style={{ marginTop: "0.5rem", animation: "fadeIn 0.2s" }}
+                  <label
+                    className="rev-form-label"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      marginBottom: formData.isInstantPaid ? 0 : "0.5rem",
+                      cursor: "pointer",
+                    }}
                   >
-                    <label className="rev-form-label">Select Date & Time</label>
                     <input
-                      type="datetime-local"
-                      className="cb-input"
-                      required={!formData.isInstantPaid}
-                      value={formData.customDate}
+                      type="checkbox"
+                      checked={formData.isInstantPaid}
                       onChange={(e) =>
-                        setFormData({ ...formData, customDate: e.target.value })
+                        setFormData({
+                          ...formData,
+                          isInstantPaid: e.target.checked,
+                        })
                       }
+                      style={{ width: "16px", height: "16px" }}
                     />
-                  </div>
-                )}
-              </div>
+                    <span>
+                      Record as <strong>Instantly Paid</strong> (Current Time)
+                    </span>
+                  </label>
+
+                  {!formData.isInstantPaid && (
+                    <div
+                      style={{ marginTop: "0.5rem", animation: "fadeIn 0.2s" }}
+                    >
+                      <label className="rev-form-label">
+                        Select Date & Time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        className="cb-input"
+                        required={!formData.isInstantPaid}
+                        value={formData.customDate}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            customDate: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
               <button
                 className="cb-btn-submit"

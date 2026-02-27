@@ -171,6 +171,34 @@ export const Cibil = () => {
   const [hasPaid, setHasPaid] = useState(false);
   const [formStatus, setFormStatus] = useState("");
   const [paymentAmount, setPaymentAmount] = useState(200);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user has already paid for CIBIL improvement
+    const checkPaymentStatus = async (user) => {
+      if (!user) return;
+      const cibilRef = ref(db, "cibil_requests");
+      onValue(cibilRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const paidRequest = Object.values(data).find(
+            (req) => req.email === user.email && req.status === "paid",
+          );
+          if (paidRequest) {
+            setHasPaid(true);
+          }
+        }
+      });
+    };
+
+    // Assuming we have access to current user's email
+    // For now, checking against the phone/email if they were recently stored in localStorage or if we can find a better way.
+    // Let's look for a generic way since login might not be robust.
+    const savedEmail = localStorage.getItem("userEmail");
+    if (savedEmail) {
+      checkPaymentStatus({ email: savedEmail });
+    }
+  }, []);
   const [cfReady, setCfReady] = useState(false);
   const [paying, setPaying] = useState(false);
   const [sdkError, setSdkError] = useState("");
@@ -298,6 +326,11 @@ export const Cibil = () => {
 
       await recordRevenue("pending", data.order_id || data.link_id);
 
+      // Save email to localStorage for persistence check
+      if (formData.email) {
+        localStorage.setItem("userEmail", formData.email);
+      }
+
       await push(ref(db, "cibil_requests"), {
         ...formData,
         paymentId: data.order_id || data.link_id,
@@ -360,7 +393,7 @@ export const Cibil = () => {
                   className="sp-btn-primary"
                   onClick={() => setShowFormModal(true)}
                 >
-                  Apply Now <GoArrowRight />
+                  Pay now <GoArrowRight />
                 </button>
               )}
               <BuyNowPayment
@@ -562,7 +595,7 @@ export const Cibil = () => {
               className="sp-btn-white"
               onClick={() => setShowFormModal(true)}
             >
-              Apply Now — ₹200 <GoArrowRight />
+              Pay now — ₹{paymentAmount} <GoArrowRight />
             </button>
           )}
         </section>
