@@ -4,7 +4,19 @@ import { motion } from "framer-motion";
 import { MdOnlinePrediction } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
 import NewServices from "./Data_Services";
-import { FaHandHoldingUsd, FaWhatsapp, FaCheckCircle, FaFileAlt, FaIdCard, FaMoneyBillWave, FaHome, FaBriefcase, FaGraduationCap, FaUser, FaCalendarCheck } from "react-icons/fa";
+import {
+  FaHandHoldingUsd,
+  FaWhatsapp,
+  FaCheckCircle,
+  FaFileAlt,
+  FaIdCard,
+  FaMoneyBillWave,
+  FaHome,
+  FaBriefcase,
+  FaGraduationCap,
+  FaUser,
+  FaCalendarCheck,
+} from "react-icons/fa";
 import { BsBank2, BsFileEarmarkText } from "react-icons/bs";
 import { PiChartLineDownFill } from "react-icons/pi";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
@@ -13,6 +25,7 @@ import { getFAQsByServiceId } from "./Data_FAQs";
 import EMICalculator from "./EMICalculator";
 import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
+import { BuyNowPayment } from "./BuyNowPayment";
 const toSlug = (str) => {
   if (!str) return "";
   return String(str)
@@ -27,25 +40,63 @@ const toSlug = (str) => {
 const getDocIcon = (docText) => {
   const text = docText.toLowerCase();
 
-  if (text.includes("aadhar") || text.includes("pan") || text.includes("kyc") || text.includes("passport") || text.includes("voter") || text.includes("id proof") || text.includes("license")) {
+  if (
+    text.includes("aadhar") ||
+    text.includes("pan") ||
+    text.includes("kyc") ||
+    text.includes("passport") ||
+    text.includes("voter") ||
+    text.includes("id proof") ||
+    text.includes("license")
+  ) {
     return <FaIdCard />;
   }
-  if (text.includes("salary") || text.includes("income") || text.includes("form 16")) {
+  if (
+    text.includes("salary") ||
+    text.includes("income") ||
+    text.includes("form 16")
+  ) {
     return <FaMoneyBillWave />;
   }
-  if (text.includes("bank") || text.includes("statement") || text.includes("cheque") || text.includes("passbook")) {
+  if (
+    text.includes("bank") ||
+    text.includes("statement") ||
+    text.includes("cheque") ||
+    text.includes("passbook")
+  ) {
     return <BsBank2 />;
   }
-  if (text.includes("address") || text.includes("electricity") || text.includes("rent") || text.includes("property") || text.includes("bill") || text.includes("hosting")) {
+  if (
+    text.includes("address") ||
+    text.includes("electricity") ||
+    text.includes("rent") ||
+    text.includes("property") ||
+    text.includes("bill") ||
+    text.includes("hosting")
+  ) {
     return <FaHome />;
   }
-  if (text.includes("business") || text.includes("registration") || text.includes("itr") || text.includes("gst") || text.includes("partnership") || text.includes("company") || text.includes("profile")) {
+  if (
+    text.includes("business") ||
+    text.includes("registration") ||
+    text.includes("itr") ||
+    text.includes("gst") ||
+    text.includes("partnership") ||
+    text.includes("company") ||
+    text.includes("profile")
+  ) {
     return <FaBriefcase />;
   }
   if (text.includes("photo") || text.includes("check")) {
     return <FaUser />;
   }
-  if (text.includes("education") || text.includes("marksheet") || text.includes("admission") || text.includes("scorecard") || text.includes("degree")) {
+  if (
+    text.includes("education") ||
+    text.includes("marksheet") ||
+    text.includes("admission") ||
+    text.includes("scorecard") ||
+    text.includes("degree")
+  ) {
     return <FaGraduationCap />;
   }
 
@@ -61,19 +112,31 @@ export const ServicePage = () => {
 
   const [faqCategory, setFaqCategory] = useState("Common");
 
-  if (!slug) return <div className="service-page-container"><div className="sp-section">Service not found</div></div>;
+  if (!slug)
+    return (
+      <div className="service-page-container">
+        <div className="sp-section">Service not found</div>
+      </div>
+    );
 
   const svc = NewServices.find(
-    (s) => toSlug(s.id) === slug || toSlug(s.title) === slug
+    (s) => toSlug(s.id) === slug || toSlug(s.title) === slug,
   );
 
   if (!svc) {
     return (
       <div className="service-page-container">
-        <div className="sp-section" style={{ textAlign: 'center', padding: '10%' }}>
+        <div
+          className="sp-section"
+          style={{ textAlign: "center", padding: "10%" }}
+        >
           <h2 className="sp-section-title">Service not found</h2>
-          <p className="sp-text-block" style={{ textAlign: 'center' }}>No service matches the requested page.</p>
-          <Link className="sp-btn-primary" to="/services">Back to Services</Link>
+          <p className="sp-text-block" style={{ textAlign: "center" }}>
+            No service matches the requested page.
+          </p>
+          <Link className="sp-btn-primary" to="/services">
+            Back to Services
+          </Link>
         </div>
       </div>
     );
@@ -101,7 +164,7 @@ Warm regards,
 [Your Full Name]`;
 
     return `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-      subject
+      subject,
     )}&body=${encodeURIComponent(plainBody)}`;
   })();
 
@@ -122,7 +185,7 @@ Warm regards,
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   // Logic to categorize FAQs
@@ -153,7 +216,7 @@ Warm regards,
       // Look for the last number in the string which usually indicates max tenure
       const matches = svc.TbData[1].match(/(\d+)/g);
       if (matches && matches.length > 0) {
-        const nums = matches.map(n => parseInt(n));
+        const nums = matches.map((n) => parseInt(n));
         const max = Math.max(...nums);
         return max;
       }
@@ -162,16 +225,30 @@ Warm regards,
   };
 
   const serviceImageMap = {
-    "personal_loan": "/cc1.webp",
-    "home_loan": "/cc2.jpg",
-    "education_loan": "/cc3.jpeg",
-    "auto_loan": "/cc4.jpg",
-    "business_loan": "/cc5.jpg",
-    "loan_against_property": "/cc6.png",
+    personal_loan: "/cc1.webp",
+    home_loan: "/cc2.jpg",
+    education_loan: "/cc3.jpeg",
+    auto_loan: "/cc4.jpg",
+    business_loan: "/cc5.jpg",
+    loan_against_property: "/cc6.png",
     "cibil-improvement": "/cc7.png",
     "website-development": "/cc8.png",
-    "tax-services": "/cc2.jpg" // Fallback/Default for tax if not strictly specified, or keep as is. User didn't ask for tax. I will just add the requested ones.
+    "tax-services": "/cc2.jpg", // Fallback/Default for tax if not strictly specified, or keep as is. User didn't ask for tax. I will just add the requested ones.
   };
+
+  const serviceCategoryMap = {
+    personal_loan: "Loan Services",
+    home_loan: "Loan Services",
+    education_loan: "Loan Services",
+    auto_loan: "Loan Services",
+    business_loan: "Loan Services",
+    loan_against_property: "Loan Services",
+    "cibil-improvement": "Cibil Improvement",
+    "website-development": "Other Services",
+    "tax-services": "Other Services",
+  };
+
+  const mainCategory = serviceCategoryMap[svc.id] || "Other Services";
 
   const coverImage = serviceImageMap[svc.id] || svc.image;
 
@@ -203,12 +280,17 @@ Warm regards,
               <Link className="sp-btn-primary" to="/contact-banksbuddy">
                 Apply Now <GoArrowRight />
               </Link>
+              <BuyNowPayment
+                serviceId={svc.id}
+                serviceTitle={svc.Title}
+                mainCategory={mainCategory}
+              />
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
                 rel="noreferrer"
                 href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
-                  svc.Title
+                  svc.Title,
                 )}%20service%20offered%20by%20BanksBuddy.`}
               >
                 <FaWhatsapp /> Whatsapp
@@ -221,7 +303,7 @@ Warm regards,
         </motion.section>
 
         {/* About & Details Section (Vertical Layout) */}
-        <section className="sp-section" style={{ background: '#fff' }}>
+        <section className="sp-section" style={{ background: "#fff" }}>
           <motion.div
             className="sp-about-centered"
             initial="hidden"
@@ -234,7 +316,9 @@ Warm regards,
             <h2 className="sp-section-title">About {svc.Title}</h2>
             <div className="sp-overview-text-wrapper">
               {svc.overview.slice(1).map((para, idx) => (
-                <p key={idx} className="sp-text-block center-text">{para}</p>
+                <p key={idx} className="sp-text-block center-text">
+                  {para}
+                </p>
               ))}
             </div>
           </motion.div>
@@ -262,12 +346,23 @@ Warm regards,
         </section>
 
         {/* EMI Calculator Section - Hidden for Non-Loan Services */}
-        {!["cibil-improvement", "website-development", "tax-services"].includes(svc.id) && (
+        {!["cibil-improvement", "website-development", "tax-services"].includes(
+          svc.id,
+        ) && (
           <section className="sp-section sp-section-alt">
             <div className="sp-centered-header">
               <span className="sp-section-tag">Plan Your Finances</span>
               <h2 className="sp-section-title">EMI Calculator</h2>
-              <p className="sp-text-block" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>Calculate your monthly EMIs based on the loan amount and tenure.</p>
+              <p
+                className="sp-text-block"
+                style={{
+                  textAlign: "center",
+                  maxWidth: "600px",
+                  margin: "0 auto",
+                }}
+              >
+                Calculate your monthly EMIs based on the loan amount and tenure.
+              </p>
             </div>
             <motion.div
               initial="hidden"
@@ -280,7 +375,9 @@ Warm regards,
                 defaultAmount={500000}
                 defaultInterest={getInterestRate()}
                 defaultTenure={getMaxTenureMonths()}
-                maxTenure={getMaxTenureMonths() > 60 ? getMaxTenureMonths() : 84}
+                maxTenure={
+                  getMaxTenureMonths() > 60 ? getMaxTenureMonths() : 84
+                }
                 title={svc.Title}
               />
             </motion.div>
@@ -292,7 +389,10 @@ Warm regards,
           <div className="sp-centered-header">
             <span className="sp-section-tag">Why Choose Us</span>
             <h2 className="sp-section-title">{svc.Title} Features</h2>
-            <p className="sp-text-block" style={{ textAlign: 'center' }}>Experience the best in class service with our digital-first approach.</p>
+            <p className="sp-text-block" style={{ textAlign: "center" }}>
+              Experience the best in class service with our digital-first
+              approach.
+            </p>
           </div>
 
           <motion.div
@@ -356,7 +456,10 @@ Warm regards,
             transition={{ duration: 0.6, ease: "easeOut" }}
             variants={fadeUp}
           >
-            <div className="sp-centered-header-small" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div
+              className="sp-centered-header-small"
+              style={{ textAlign: "center", marginBottom: "2rem" }}
+            >
               <span className="sp-section-tag">Documentation</span>
               <h2 className="sp-section-title">Required Documents</h2>
             </div>
@@ -364,15 +467,14 @@ Warm regards,
             <div className="sp-docs-grid">
               {svc.Docs.map((doc, i) => (
                 <div key={i} className="sp-doc-card sp-doc-card-shadow">
-                  <div className="sp-doc-icon-wrapper">
-                    {getDocIcon(doc)}
-                  </div>
+                  <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
                   <p className="sp-doc-text">{doc}</p>
                 </div>
               ))}
             </div>
             <div className="sp-note">
-              <strong>Note:</strong> Eligibility and required documents are subject to change depending on the individual profile.
+              <strong>Note:</strong> Eligibility and required documents are
+              subject to change depending on the individual profile.
             </div>
           </motion.div>
         </section>
@@ -418,8 +520,13 @@ Warm regards,
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
         >
-          <div className="sp-faq-header" style={{ marginBottom: '1rem' }}>
-            <h2 className="sp-section-title" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
+          <div className="sp-faq-header" style={{ marginBottom: "1rem" }}>
+            <h2
+              className="sp-section-title"
+              style={{ textAlign: "center", marginBottom: "1.5rem" }}
+            >
+              Frequently Asked Questions
+            </h2>
             <div className="sp-faq-tabs">
               {["Common", "Informations", "Misc"].map((tab) => (
                 <button
@@ -433,11 +540,7 @@ Warm regards,
             </div>
           </div>
 
-          <FAQ
-            faqs={getFilteredFaqs()}
-            title=""
-            subtitle=""
-          />
+          <FAQ faqs={getFilteredFaqs()} title="" subtitle="" />
         </motion.div>
       </div>
     </div>

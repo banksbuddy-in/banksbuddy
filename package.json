@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.6",
+    "cashfree-pg": "^5.1.0",
     "firebase": "^12.6.0",
     "framer-motion": "^12.23.25",
     "react": "^19.1.1",

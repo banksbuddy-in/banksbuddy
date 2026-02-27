@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+
 import { MdBolt, MdOnlinePrediction } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
 import {
@@ -26,6 +25,10 @@ import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
 import { db } from "../firebase";
 import { ref, push } from "firebase/database";
+import { motion } from "framer-motion";
+import { BuyNowPayment } from "./BuyNowPayment";
+
+const CASHFREE_SCRIPT = "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.js";
 
 // Helper to select icon based on document text (Reusing logic from ServicePage)
 const getDocIcon = (docText) => {
@@ -150,36 +153,6 @@ const InsuranceData = [
 
 const svc = InsuranceData.find((s) => s.id === "Cibil Improvement");
 
-const gmailHref = (() => {
-  const subject = `SERVICE INQUIRY - ${svc.Title} | BanksBuddy`;
-
-  const plainBody = `Hello BanksBuddy Team,
-I am interested in your ${svc.Title}. Please share the next steps, eligibility confirmation and estimated timelines. 
-Brief Message / Additional Details:
-[Short paragraph describing purpose / urgency / additional context]
-
-Name: [Full Name]
-Email: [your.email@example.com]
-Phone Number: [Country code + number]
-Location: [City, State, Country]
-Product / Service: ${svc.Title}
-Employment Status: [Salaried / Self-employed / Other]
-If Loan — Loan Amount Required: [Amount or N/A]
-Preferred Contact Method: [Email / Phone]
-Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
-
-
-
-
-Thank you for your time.
-Warm regards,
-[Your Full Name]`;
-
-  return `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-    subject,
-  )}&body=${encodeURIComponent(plainBody)}`;
-})();
-
 const textarr2 = [
   { elm: <FaHandHoldingUsd />, txt: "Expert Credit Analysis & Strategy" },
   { elm: <MdBolt />, txt: "Fast Error Rectification Process" },
@@ -197,6 +170,10 @@ export const Cibil = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
   const [formStatus, setFormStatus] = useState("");
+  const [paymentAmount, setPaymentAmount] = useState(200);
+  const [cfReady, setCfReady] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [sdkError, setSdkError] = useState("");
 
   // Form fields
   const [formData, setFormData] = useState({
@@ -210,9 +187,19 @@ export const Cibil = () => {
     message: "",
   });
 
+  useEffect(() => {
+    setCfReady(true);
+  }, []);
+
   const handleFormChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const getMode = () =>
+    (import.meta.env.VITE_CASHFREE_ENV || "sandbox").toLowerCase() ===
+    "production"
+      ? "production"
+      : "sandbox";
 
   const resetForm = () => {
     setFormData({
@@ -228,45 +215,107 @@ export const Cibil = () => {
     setFormStatus("");
   };
 
-  const openRazorpay = () => {
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-      amount: 20000, // ₹200 in paise
-      currency: "INR",
-      name: "BanksBuddy",
-      description: "CIBIL Score Improvement Service",
-      handler: async (response) => {
-        try {
-          await push(ref(db, "cibil_requests"), {
-            ...formData,
-            paymentId: response.razorpay_payment_id,
-            amount: 200,
-            status: "pending",
-            createdAt: new Date().toISOString(),
-          });
-          setHasPaid(true);
-          setShowFormModal(false);
-          setShowSuccessPopup(true);
-          resetForm();
-        } catch (err) {
-          console.error("Firebase save error:", err);
-          setFormStatus("Payment succeeded but save failed. Contact support.");
-        }
-      },
-      prefill: {
-        name: formData.name,
-        email: formData.email,
-        contact: formData.phone,
-      },
-      theme: { color: "#0047AB" },
-    };
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+  const recordRevenue = async (status, orderId) => {
+    const now = new Date().toISOString();
+    await push(ref(db, "cashfree_revenue"), {
+      serviceId: "cibil-improvement",
+      serviceTitle: svc.Title,
+      mainCategory: "Cibil Improvement",
+      username: formData.name || "Guest User",
+      email: formData.email || "",
+      mobile: formData.phone || "",
+      status,
+      amount: Number(paymentAmount),
+      orderId,
+      date: now,
+      createdAt: now,
+    });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    openRazorpay();
+    setFormStatus("");
+
+    if (!cfReady) {
+      setFormStatus("Payment gateway is still loading. Please wait.");
+      return;
+    }
+
+    const amountValue = Number(paymentAmount);
+    if (!amountValue || amountValue <= 0) {
+      setFormStatus("Enter a valid amount.");
+      return;
+    }
+
+    try {
+      setPaying(true);
+
+      const appId = import.meta.env.VITE_CASHFREE_APP_ID;
+      const secret = import.meta.env.VITE_CASHFREE_SECRET_KEY;
+      const envUrl =
+        (import.meta.env.VITE_CASHFREE_API_ENV || "sandbox").toLowerCase() ===
+        "production"
+          ? "https://api.cashfree.com/pg"
+          : "https://sandbox.cashfree.com/pg";
+
+      if (!appId || !secret)
+        throw new Error("Cashfree keys missing in environment.");
+
+      const orderPayload = {
+        order_amount: amountValue,
+        order_currency: "INR",
+        order_id: `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+        order_note: `${svc.Title || "Service"} payment`,
+        customer_details: {
+          customer_id: formData.phone || `guest_${Date.now()}`,
+          customer_name: formData.name || "Guest User",
+          customer_email: formData.email || "support@banksbuddy.com",
+          customer_phone: formData.phone || "9999999999",
+        },
+        order_meta: {
+          return_url: `${window.location.origin}/payment-status?order_id={order_id}`,
+        },
+      };
+
+      const res = await fetch(`${envUrl}/orders`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "x-api-version": "2023-08-01",
+          "x-client-id": appId,
+          "x-client-secret": secret,
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.link_url) {
+        throw new Error(
+          data?.error || "Unable to start payment link via Cashfree directly",
+        );
+      }
+
+      await recordRevenue("pending", data.order_id || data.link_id);
+
+      await push(ref(db, "cibil_requests"), {
+        ...formData,
+        paymentId: data.order_id || data.link_id,
+        amount: amountValue,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      });
+
+      // Redirect the user entirely off banksbuddy.com to cashfree.com
+      window.location.href = data.link_url;
+    } catch (err) {
+      console.error("Cashfree payment error", err);
+      setFormStatus(
+        err.message || "Payment could not be processed. Try again.",
+      );
+    } finally {
+      setPaying(false);
+    }
   };
 
   const fadeUp = {
@@ -314,6 +363,12 @@ export const Cibil = () => {
                   Apply Now <GoArrowRight />
                 </button>
               )}
+              <BuyNowPayment
+                serviceId="cibil-improvement"
+                serviceTitle={svc.Title}
+                mainCategory="Cibil Improvement"
+                defaultAmount={paymentAmount}
+              />
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -575,9 +630,19 @@ export const Cibil = () => {
             </button>
             <h2 className="cb-modal-title">Apply for CIBIL Improvement</h2>
             <p className="cb-modal-subtitle">
-              Fill your details below. Payment of ₹200 will follow.
+              Fill your details below and pay securely via Cashfree.
             </p>
             <form className="cb-form" onSubmit={handleFormSubmit}>
+              <input
+                className="cb-input"
+                type="number"
+                min="1"
+                step="0.01"
+                value={paymentAmount}
+                onChange={(e) => setPaymentAmount(e.target.value)}
+                required
+                placeholder="Payment Amount (₹)"
+              />
               <div className="cb-form-row">
                 <input
                   className="cb-input"
@@ -686,8 +751,11 @@ export const Cibil = () => {
                 rows={3}
               />
               <button className="cb-btn-submit" type="submit">
-                Proceed to Pay ₹200
+                {paying
+                  ? "Processing payment..."
+                  : `Pay ₹${paymentAmount || ""} with Cashfree`}
               </button>
+              {sdkError && <p className="cb-form-status">{sdkError}</p>}
               {formStatus && <p className="cb-form-status">{formStatus}</p>}
             </form>
           </div>

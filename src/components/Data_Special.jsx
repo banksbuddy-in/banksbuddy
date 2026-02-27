@@ -2,6 +2,15 @@ import React from "react";
 import { FaHeartbeat, FaStethoscope, FaShieldAlt, FaMoneyBill } from "react-icons/fa";
 import { GiReceiveMoney } from "react-icons/gi";
 
+export const cibilSv = {
+  id: "cibil_improvement",
+  title: "CIBIL Improvement",
+  URL: "/cibil-improvement",
+  smg: "/ss4.jpg",
+  overview:
+    "Strategies to enhance your CIBIL score for better credit opportunities.",
+};
+
 export const specSv = [
   {
     id: "consultancy_service",
@@ -10,29 +19,6 @@ export const specSv = [
     smg: "/ss1.jpg",
     overview:
       "Personalized loan consultancy to find the best financial solutions.",
-  },
-  // {
-  //     id:"Insurance Assistance",
-  //     title:"Insurance Assistance",
-  //     URL:"/insurance-assistance",
-  //     smg:"/ss2.jpg",
-  //     overview:"Guidance on selecting and managing insurance policies.",
-  // },
-  // {
-  //     id:"EMI Calculator",
-  //     title:"EMI Calculator",
-  //     URL:"/emi-calculator",
-  //     smg:"/ss3.jpg",
-  //     overview:"Tool to calculate Equated Monthly Installments for loans.",
-  // },
-  {
-    id: "CiBil Improvement",
-    title: "CIBIL Improvement",
-    // URL:"/cibil-score-check",
-    URL: "/cibil-improvement",
-    smg: "/ss4.jpg",
-    overview:
-      "Strategies to enhance your CIBIL score for better credit opportunities.",
   },
   {
     id: "website_development",

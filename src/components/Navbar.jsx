@@ -27,11 +27,19 @@ const servicesMenu = {
       { title: "Health Insurance", slug: "/insurance/health-insurance" },
       { title: "General Insurance", slug: "/insurance/general-insurance" }
     ]
-  }, coreServices: {
+  },
+
+  cibilImprovement: {
+    title: "CIBIL Improvement",
+    items: [
+      { title: "CIBIL Score Improvement", slug: "/cibil" },
+    ]
+  },
+
+  coreServices: {
     title: "Other Services",
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
-      { title: "CIBIL Improvement", slug: "/cibil" },
       { title: "Website Development", slug: "/website-development" },
       { title: "Tax Services", slug: "/tax-services" }
     ]

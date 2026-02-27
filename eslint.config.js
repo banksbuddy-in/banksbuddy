@@ -6,8 +6,18 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
   globalIgnores(['dist']),
+  // Node.js environment for Vercel serverless API routes
+  {
+    files: ['api/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+      sourceType: 'module',
+    },
+  },
   {
     files: ['**/*.{js,jsx}'],
+    ignores: ['api/**/*.js'],
     extends: [
       js.configs.recommended,
       reactHooks.configs['recommended-latest'],

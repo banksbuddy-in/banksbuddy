@@ -38,13 +38,13 @@ const SERVICE_CATEGORIES = {
     "Business Loan",
     "Loan Against Property",
   ],
+  "Cibil Improvement": ["CIBIL Score Improvement"],
   "Insurance Services": [
     "Life Insurance",
     "Health Insurance",
     "General Insurance",
   ],
   "Other Services": [
-    "CIBIL Score Improvement",
     "Website Development",
     "Tax Consultancy Services",
     "Other",
@@ -80,13 +80,14 @@ export const AdminRevenue = ({ embedded }) => {
   useEffect(() => {
     const cibilRef = ref(db, "cibil_requests");
     const manualRef = ref(db, "manual_revenue");
+    const cashfreeRef = ref(db, "cashfree_revenue");
 
     const unsubCibil = onValue(cibilRef, (snap) => {
       const data = snap.val() || {};
       const list = Object.entries(data).map(([k, v]) => ({
         id: k,
         source: "Cibil",
-        mainCategory: "Other Services",
+        mainCategory: "Cibil Improvement",
         subCategory: "CIBIL Score Improvement",
         username: v.name,
         email: v.email,
@@ -109,18 +110,37 @@ export const AdminRevenue = ({ embedded }) => {
       updateTransactions("manual", list);
     });
 
+    const unsubCashfree = onValue(cashfreeRef, (snap) => {
+      const data = snap.val() || {};
+      const list = Object.entries(data).map(([k, v]) => ({
+        id: k,
+        source: "Cashfree",
+        username: v.username || v.customer_name,
+        email: v.email,
+        mobile: v.mobile,
+        mainCategory: v.mainCategory || "Other Services",
+        subCategory: v.serviceTitle || v.serviceId,
+        serviceType: v.serviceTitle,
+        status: v.status || "paid",
+        amount: v.amount,
+        date: v.date || v.createdAt,
+      }));
+      updateTransactions("cashfree", list);
+    });
+
     return () => {
       unsubCibil();
       unsubManual();
+      unsubCashfree();
     };
   }, []);
 
-  const [dataSources, setDataSources] = useState({ cibil: [], manual: [] });
+  const [dataSources, setDataSources] = useState({ cibil: [], manual: [], cashfree: [] });
 
   const updateTransactions = (source, list) => {
     setDataSources((prev) => {
       const newState = { ...prev, [source]: list };
-      const all = [...newState.cibil, ...newState.manual].sort(
+      const all = [...newState.cibil, ...newState.manual, ...newState.cashfree].sort(
         (a, b) => new Date(b.date) - new Date(a.date),
       );
       setTransactions(all);

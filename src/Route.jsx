@@ -29,6 +29,7 @@ import { Signup } from "./components/Signup";
 import { Credit } from "./components/Credit";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { AdminRoute } from "./components/AdminRoute";
+import { PaymentTestPage } from "./components/PaymentTestPage";
 
 export const Dat = [
   {
@@ -138,17 +139,29 @@ export const Dat = [
   {
     path: "/admin",
     label: "Admin",
-    element: <AdminRoute><Admin /></AdminRoute>,
+    element: (
+      <AdminRoute>
+        <Admin />
+      </AdminRoute>
+    ),
   },
   {
     path: "/cibil",
     label: "Credit Improvement Service",
-    element: <PrivateRoute><Cibil /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <Cibil />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/credit-dashboard",
     label: "Credit Dashboard",
-    element: <PrivateRoute><Credit /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <Credit />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/website-development",
@@ -169,5 +182,10 @@ export const Dat = [
     path: "/partner-application",
     label: "Partner Application",
     element: <PartnerForm />,
+  },
+  {
+    path: "/payment-test",
+    label: "Payment Test",
+    element: <PaymentTestPage />,
   },
 ];

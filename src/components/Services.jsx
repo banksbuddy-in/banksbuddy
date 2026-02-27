@@ -1,6 +1,6 @@
 import React from "react";
 import { ServicesCards } from "./ServicesCards";
-import { specSv } from "./Data_Special";
+import { specSv, cibilSv } from "./Data_Special";
 import { useNavigate } from "react-router-dom";
 import { SpecInsur } from "./SpecInsur";
 // eslint-disable-next-line no-unused-vars
@@ -50,6 +50,37 @@ export const Services = () => {
         </span>
       </motion.h1>
       <SpecInsur />
+
+      <motion.h1
+        className="shead"
+        style={{ marginTop: "5%" }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        variants={fadeUp}
+      >
+        CIBIL Improvement
+        <span>
+          Rebuild your credit score and unlock better financial opportunities.
+        </span>
+      </motion.h1>
+      <div className="services-list">
+        <motion.div
+          className="service-card spec"
+          onClick={() => hanService(cibilSv.URL)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          variants={fadeUp}
+        >
+          <img src={cibilSv.smg} alt={cibilSv.title} />
+          <div className="service-title">{cibilSv.title}</div>
+          <div className="service-overview">{cibilSv.overview}</div>
+        </motion.div>
+      </div>
+
       <motion.h1
         className="shead"
         style={{ marginTop: "5%" }}

@@ -1,17 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "./services.css";
-import { MdBolt, MdOnlinePrediction } from "react-icons/md";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { MdBolt } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
-import NewServices from "./Data_Services";
-import { FaBolt, FaHandHoldingUsd, FaWhatsapp } from "react-icons/fa";
-import { FaCalendarCheck } from "react-icons/fa";
-import "./newserv.css";
-import { PiChartLineDownFill, PiLightning, PiLightningAFill } from "react-icons/pi";
-import { GoArrowLeft } from "react-icons/go";
+import { FaHandHoldingUsd, FaWhatsapp } from "react-icons/fa";
 import { IoTimer } from "react-icons/io5";
+import { PiChartLineDownFill } from "react-icons/pi";
+import { Cover } from "./Cover";
 import { FAQ } from "./FAQ";
 import { insuranceFAQs } from "./Data_FAQs";
+import { BuyNowPayment } from "./BuyNowPayment";
+import "./ServicePageRefactored.css";
 
 const InsuranceData = [
   {
@@ -38,7 +37,6 @@ const InsuranceData = [
       "Nominee details for life insurance policies",
       "Accurate personal and risk-related information must be provided",
     ],
-
     Docs: [
       "Identity Proof (Aadhaar, PAN, Passport, Voter ID)",
       "Address Proof (Electricity Bill, Rent Agreement, etc.)",
@@ -49,7 +47,6 @@ const InsuranceData = [
       "Passport & Travel Details for Travel Insurance",
       "Nominee Details for Life Insurance",
     ],
-
     Types: [
       {
         titl: "Life Insurance",
@@ -78,7 +75,9 @@ const InsuranceData = [
     ],
   },
 ];
+
 const svc = InsuranceData.find((s) => s.id === "insurance");
+
 const gmailHref = (() => {
   const subject = `SERVICE INQUIRY - ${svc.Title} | BanksBuddy`;
 
@@ -93,10 +92,8 @@ Phone Number: [Country code + number]
 Location: [City, State, Country]
 Product / Service: ${svc.Title}
 Employment Status: [Salaried / Self-employed / Other]
-If Loan — Loan Amount Required: [Amount or N/A]
 Preferred Contact Method: [Email / Phone]
 Preferred Contact Time: [e.g., Mon–Fri, 10:00–18:00 IST]
-
 
 
 
@@ -105,15 +102,17 @@ Warm regards,
 [Your Full Name]`;
 
   return `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
-    subject
+    subject,
   )}&body=${encodeURIComponent(plainBody)}`;
 })();
+
 const txtarr = [
   "Max Loan Amount",
   "Max Loan Tenure",
   "Interest Rate",
   "Processing Fees",
 ];
+
 const textarr2 = [
   { elm: <FaHandHoldingUsd />, txt: "Affordable Premium Options" },
   { elm: <MdBolt />, txt: "Easy & Quick Online Purchase" },
@@ -125,135 +124,241 @@ const textarr2 = [
   { elm: <IoTimer />, txt: "Flexible Policy Tenure Choices" },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export const Insurance = () => {
   return (
-    <div id="ServicePage">
-      <div className="se1">
-        <img style={{borderRadius:"35rem"}} src={svc.image} alt={svc.Title} />
-        <section className="hro">
-          <Link className="backtoser" to="/services">
-            <span>
-              <GoArrowLeft />
-            </span>{" "}
-            Back to Services
-          </Link>
-          <h1>{svc.Title}</h1>
-          <p className="tg">{svc.tagline}</p>
-          <p className="ovi">{svc.overview[0]}</p>
+    <div id="ServicePage" className="service-page-container">
+      <Cover
+        tagline={svc.tagline}
+        title={svc.Title}
+        description={`Secure your future with ${svc.Title}.`}
+        image={svc.image}
+      />
 
-          <section className="se1se">
-            <Link className="alyn" to={gmailHref}>
-              Get A Quote
-            </Link>
-            <a
-              className="alynwp"
-              target="_blank"
-              href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
-                svc.Title
-              )}%20service%20offered%20by%20BanksBuddy.`}
-            >
-              <FaWhatsapp /> Whatsapp
-            </a>
-          </section>
-        </section>
-      </div>
-      <div className="se2">
-        <div className="se2c1">
-          <p className="abtg">{svc.tagline}</p>
-          <h2>About {svc.Title}</h2>
-          {/* <p className="svpp">{svc.overview[0]}</p> */}
-          <p className="svpp">{svc.overview[1]}</p>
-        </div>
-        <div className="se2c2">
-          <h3>{svc.Title} Details</h3>
-          <ul className="svtb">
-            {txtarr.map((k, i) => (
-              <li key={i} className={i % 2 == 0 ? "drk" : "plain"}>
-                <p>{k}</p>
-                <span>{svc.TbData[i]}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="seconstantdom">
-        <h1>{svc.Title} Online Features</h1>
-        <div className="secd">
-          {textarr2.map((io, i) => (
-            <div key={i} className="secdc">
-              <span>{io.elm}</span>
-              <p>{io.txt}</p>
+      <div className="pgcntt">
+        <motion.section
+          className="sp-hero"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          variants={fadeUp}
+        >
+          <div className="sp-hero-content">
+            <span className="sp-hero-tagline">{svc.tagline}</span>
+            <h1>{svc.Title}</h1>
+            <p className="sp-hero-description">{svc.overview[0]}</p>
+
+            <div className="sp-hero-actions">
+              <a className="sp-btn-primary" href={gmailHref} target="_blank" rel="noreferrer">
+                Get a Quote
+              </a>
+              <a
+                className="sp-btn-whatsapp"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://wa.me/+916377956633?text=I%20am%20interested%20in%20the%20${encodeURIComponent(
+                  svc.Title,
+                )}%20service%20offered%20by%20BanksBuddy.`}
+              >
+                <FaWhatsapp /> Whatsapp
+              </a>
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="se3">
-        <h1>Eligibility Criteria for {svc.Title}</h1>
-        <div className="se3m">
-          <div className="se3m1">
-            <ul>
-              {svc.EliCr.map((elg, i) => (
-                <li key={i}>
-                  <strong>{i + 1}.</strong> {elg}
-                </li>
-              ))}
-            </ul>
           </div>
-          <img
-            src="/se3m1.jpg"
-            alt="Eligibility Criteria Illustration"
-            className="se3m2"
+          <div className="sp-hero-image">
+            <img src={svc.image} alt={svc.Title} />
+          </div>
+        </motion.section>
+
+        <section className="sp-section" style={{ paddingTop: "0" }}>
+          <BuyNowPayment
+            serviceId={svc.id}
+            serviceTitle={svc.Title}
+            mainCategory="Insurance Services"
           />
-        </div>
-      </div>
-      <div className="se4">
-        <h1>Required Documents for {svc.Title}</h1>
-        <div className="chse4">
-          <div className="se4m">
-            <img
-              src="/se4m1.png"
-              alt="Documents Illustration"
-              className="se4mi"
-            />
-            <div className="se4m2">
-              {svc.Docs.map((doc, i) => (
-                <div key={i} className="se4mc">
-                  <p>
-                    <span>{i + 1}. </span>
-                    {doc}
-                  </p>
+        </section>
+
+        <section className="sp-section" style={{ background: "#fff" }}>
+          <motion.div
+            className="sp-about-centered"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            <span className="sp-section-tag">Overview</span>
+            <h2 className="sp-section-title">About {svc.Title}</h2>
+            <div className="sp-overview-text-wrapper">
+              {svc.overview.slice(1).map((para, idx) => (
+                <p key={idx} className="sp-text-block center-text">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="sp-details-card full-width-table"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            variants={fadeUp}
+          >
+            <div className="sp-details-header">
+              <h3>Key Highlights of {svc.Title}</h3>
+            </div>
+            <div className="sp-details-list">
+              {txtarr.map((k, i) => (
+                <div key={i} className="sp-detail-item">
+                  <span className="sp-detail-label">{k}</span>
+                  <span className="sp-detail-value">{svc.TbData[i]}</span>
                 </div>
               ))}
             </div>
-          </div>
-          <p className="nt">
-            <strong>Note:</strong> Eligibility and document required are
-            subjected to change depending on the individual
-          </p>
-        </div>
-      </div>
-      <Link className="alynse" to={gmailHref}>
-        Get a Quote
-      </Link>
-      {/* <hr /> */}
-      <div className="se5">
-        <h1>Types of {svc.Title}</h1>
-        <div className="s25cs">
-          {svc.Types.map((type, i) => (
-            <div key={i} className="se5c">
-              <h2>{type.titl}</h2>
-              <p>{type.des}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+          </motion.div>
+        </section>
 
-      {/* FAQ Section */}
-      <FAQ 
-        faqs={insuranceFAQs} 
-        title="Insurance - Frequently Asked Questions"
-        subtitle="Got Questions?"
-      />
+        <section className="sp-section">
+          <div className="sp-centered-header">
+            <span className="sp-section-tag">Why Choose Us</span>
+            <h2 className="sp-section-title">Insurance Features</h2>
+            <p className="sp-text-block" style={{ textAlign: "center" }}>
+              Pick the cover that fits you best with transparent pricing and guided onboarding.
+            </p>
+          </div>
+
+          <motion.div
+            className="sp-features-horizontal"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            {textarr2.map((io, i) => (
+              <div key={i} className="sp-feature-card">
+                <div className="sp-feature-icon">{io.elm}</div>
+                <p className="sp-feature-text">{io.txt}</p>
+              </div>
+            ))}
+          </motion.div>
+        </section>
+
+        <section className="sp-section sp-section-alt">
+          <div className="sp-split-section">
+            <motion.div
+              className="sp-split-image"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              variants={fadeUp}
+            >
+              <img src="/se3m1.jpg" alt="Eligibility Criteria" />
+            </motion.div>
+            <motion.div
+              className="sp-split-content"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              variants={fadeUp}
+            >
+              <span className="sp-section-tag">Requirements</span>
+              <h2 className="sp-section-title">Eligibility Criteria</h2>
+              <div className="sp-check-list">
+                {svc.EliCr.map((elg, i) => (
+                  <div key={i} className="sp-check-item">
+                    <HiMiniClipboardDocumentCheck className="sp-check-icon" />
+                    <p className="sp-check-text">{elg}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="sp-section">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            <div
+              className="sp-centered-header-small"
+              style={{ textAlign: "center", marginBottom: "2rem" }}
+            >
+              <span className="sp-section-tag">Documentation</span>
+              <h2 className="sp-section-title">Required Documents</h2>
+            </div>
+
+            <div className="sp-docs-grid">
+              {svc.Docs.map((doc, i) => (
+                <div key={i} className="sp-doc-card sp-doc-card-shadow">
+                  <div className="sp-doc-icon-wrapper">{i + 1}</div>
+                  <p className="sp-doc-text">{doc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="sp-note">
+              <strong>Note:</strong> Eligibility and required documents may vary by insurer and policy.
+            </div>
+          </motion.div>
+        </section>
+
+        <section className="sp-section sp-section-alt">
+          <div className="sp-centered-header">
+            <span className="sp-section-tag">Varieties</span>
+            <h2 className="sp-section-title">Types of {svc.Title}</h2>
+          </div>
+          <motion.div
+            className="sp-types-horizontal"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={fadeUp}
+          >
+            {svc.Types.map((type, i) => (
+              <div key={i} className="sp-type-card">
+                <h3 className="sp-type-title">{type.titl}</h3>
+                <p className="sp-type-desc">{type.des}</p>
+              </div>
+            ))}
+          </motion.div>
+        </section>
+
+        <section className="sp-bottom-cta">
+          <h2>Ready to protect what matters most?</h2>
+          <a className="sp-btn-white" href={gmailHref} target="_blank" rel="noreferrer">
+            Talk to an Advisor
+          </a>
+        </section>
+
+        <motion.div
+          className="sp-section"
+          id="faq-section"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          variants={fadeUp}
+        >
+          <FAQ
+            faqs={insuranceFAQs}
+            title="Insurance - Frequently Asked Questions"
+            subtitle="Got Questions?"
+          />
+        </motion.div>
+      </div>
     </div>
   );
 };
