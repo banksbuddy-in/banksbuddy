@@ -70,7 +70,7 @@ function App() {
           </Link>
           <AdminButton />
           <Footer />
-          <PayslipAd />
+          <img src="/paygt.png" alt="" className="pygt" />
           
         </AuthProvider>
       </BrowserRouter>
