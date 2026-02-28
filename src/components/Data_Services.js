@@ -10,10 +10,10 @@ const NewServices = [
     ],
     tagline: "Unlock Financial Freedom",
     TbData: [
-      "₹40 Lakhs",
+      "₹50 Lakhs",
       "Tenure from 12 months to 84 months",
-      "Starting from 11.1% p.a.",
-      "Up to 2% of loan amount + GST",
+      "Starting from 8.75% p.a.",
+      "Up to 2.5% of loan amount + GST",
     ],
     EliCr: [
       "Age: 21–80 years",
@@ -61,9 +61,9 @@ const NewServices = [
     ],
     tagline: "Turn Your Dream Home into Reality",
     TbData: [
-      "₹40 Lakhs",
-      "Tenure from 12 months to 84 months*",
-      "Starting from 11.1% p.a.",
+      "₹5 Cr ",
+      "Max Loan Tenure Upto 30 years *",
+      "Starting from 7.10% p.a.",
       "Up to 2% of loan amount + GST",
     ],
     EliCr: [
@@ -114,7 +114,7 @@ const NewServices = [
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
-      "Starting from 11.1% p.a.",
+      "Starting from 6.85% p.a.",
       "Up to 2% of loan amount + GST",
     ],
     EliCr: [
@@ -154,10 +154,10 @@ const NewServices = [
   },
   {
     id: "auto_loan",
-    Title: "Machinery Loan",
+    Title: "Auto Loan",
     image: "/ll4.jpg", // Real image (updated to Machinery/Construction relevant)
     overview: [
-      "A machinery or auto loan helps businesses and individuals invest in the right equipment or vehicle without financial burden. Whether you need machinery for business or a vehicle for personal/commercial use, our loans offer competitive rates and convenient repayment plans.",
+      "A auto loan helps businesses and individuals invest in the right equipment or vehicle without financial burden. Whether you need machinery for business or a vehicle for personal/commercial use, our loans offer competitive rates and convenient repayment plans.",
       "With fast approvals, minimal documentation, and flexible tenure, we make it easy to upgrade your assets and fuel your growth.",
       "Loans for new/used vehicles and refinance of existing vehicle loans.",
     ],
@@ -165,7 +165,7 @@ const NewServices = [
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
-      "Starting from 11.1% p.a.",
+      "Starting from 7.40% p.a.",
       "Up to 2% of loan amount + GST",
     ],
     EliCr: [
@@ -206,7 +206,7 @@ const NewServices = [
     TbData: [
       "₹40 Lakhs",
       "Tenure from 12 months to 84 months*",
-      "Starting from 11.1% p.a.",
+      "Starting from 7.25% p.a.",
       "Up to 2% of loan amount + GST",
     ],
     EliCr: [
@@ -253,7 +253,7 @@ const NewServices = [
     TbData: [
       "₹40 Lakhs (may vary based on property value)",
       "Tenure up to 15 years (varies by lender)",
-      "Starting from 11.1% p.a.",
+      "Starting from 8.55% p.a.",
       "Up to 2% of loan amount + GST",
     ],
     EliCr: [

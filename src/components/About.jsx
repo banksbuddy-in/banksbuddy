@@ -72,10 +72,10 @@ export const About = () => {
         <div className="ab-story-content">
           <h2>Our Story</h2>
           <p>
-            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide. From our humble beginnings, we have strived to provide exceptional services that empower our clients to make informed decisions.
+            Banksbuddy is a trusted financial services partner dedicated to empowering individuals and businesses across India with smart, accessible, and tailored financial solutions. Established with a vision to simplify finance for everyone, Banksbuddy bridges the gap between customers and financial opportunities — whether it’s loans, insurance, credit improvement, or business financial services.
           </p>
           <p>
-            Over time, we have expanded our portfolio to include CIBIL score improvement, education loans, and diverse CA services. Today, we stand proud as one of the fastest-growing platforms in the finance industry, turning financial dreams into reality—from education to enterprise.
+            At Banksbuddy, we believe that financial freedom is the key to personal growth and business success. Our mission is to make financial services transparent, efficient, and customized to meet the unique needs of each customer. With a customer-first mindset, we focus on delivering solutions that are simple to understand, affordable, and backed by expert guidance.
           </p>
         </div>
         <div className="ab-story-image">
