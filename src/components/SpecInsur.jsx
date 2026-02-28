@@ -102,7 +102,7 @@ export const SpecInsur = () => {
               className="service-card spec" style={{justifyContent:"start",gap:".75em"}}
               onClick={() => handleCardClick(`/insurance/${category.id.replace(/_/g, '-')}`)}
             >
-              <div className="service-icon">{category.icon}</div>
+              <div className="service-icon"><img src={category.isg} alt="" /></div>
               <div className="service-title">{category.title}</div>
               <div className="service-overview">{category.overview}</div>
             </div>

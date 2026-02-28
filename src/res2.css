@@ -22,8 +22,35 @@ a.btns:hover {
 }
 
 img.pygt {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 1% 25%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1% 25%;
+}
+section.ab-values-section {
+  width: 100%;
+  display: flex;
+}
+
+.vanen {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.ab-values-content {
+  max-width: none;
+}
+
+.navlist.suv::after {
+  display: none;
+}
+div#cover {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+}
+
+.pgcntt {
+  margin-top: 30%;
 }

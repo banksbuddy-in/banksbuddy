@@ -52,6 +52,8 @@ export const Insur = [
         id: "life_insurance",
         title: "Life Insurance",
         image: "/spc1.jpg",
+        isg: "/ins2.jpeg",
+        inr:"/inr3.avif",
         icon: <GiReceiveMoney size={40} color="#ff451f" />,
         overview:
           "Secure your family's financial future with comprehensive life insurance plans that provide protection and investment benefits.",
@@ -111,6 +113,8 @@ export const Insur = [
         id: "health_insurance",
         title: "Health Insurance",
         image: "/spc2.jpg",
+        isg:"/ins1.jpg",
+        inr:"/inr2.jpg",
         icon: <FaStethoscope size={40} color="#ff451f" />,
         overview:
           "Protect yourself and your family from rising medical costs with comprehensive health insurance coverage.",
@@ -170,6 +174,8 @@ export const Insur = [
         id: "general_insurance",
         title: "General Insurance",
         image: "/spc3.jpg",
+        isg:"/ins3.jpg",
+        inr:"/inr1.jpg",
         icon: <FaShieldAlt size={40} color="#ff451f" />,
         overview:
           "Comprehensive protection for your assets including vehicles, home, travel, and business with customized general insurance plans.",

@@ -5,6 +5,7 @@ import { Insur } from "./Data_Special";
 import { FAQ } from "./FAQ";
 import { getFAQsByServiceId } from "./Data_FAQs";
 import { BuyNowPayment } from "./BuyNowPayment";
+import { Cover } from "./Cover";
 import {
   FaHandHoldingUsd,
   FaWhatsapp,
@@ -211,9 +212,9 @@ Warm regards,
 
   return (
     <div id="ServicePage" className="service-page-container">
-      {/* Cover section removed as requested */}
+      <div id="cover" style={{backgroundImage: `url(${subCategory.inr})`}}></div>
 
-      <div className="pgcntt" style={{ marginTop: "30px" }}>
+      <div className="pgcntt">
         {/* Hero Section */}
         <motion.section
           className="sp-hero"
