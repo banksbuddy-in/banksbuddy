@@ -102,7 +102,7 @@ export const Hero = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 1.6, ease: "easeOut", delay: 1.2 }}
+          transition={{ duration: 1.6, ease: "easeOut", delay:0 }}
           variants={fadeUp}
         >
           <img className="rhrimg" src="heroman.png" alt="Hero Image" />

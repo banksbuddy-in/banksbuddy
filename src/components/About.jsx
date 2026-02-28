@@ -16,7 +16,7 @@ export const About = () => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           setTeamMembers(
-            Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+            Object.keys(data).map((key) => ({ id: key, ...data[key] })),
           );
         }
       } catch (error) {
@@ -34,9 +34,9 @@ export const About = () => {
   const staggerContainer = {
     visible: {
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   return (
@@ -52,10 +52,12 @@ export const About = () => {
       >
         <div className="ab-hero-content">
           <span className="ab-tagline">Who We Are</span>
-          <h1>Empowering Your <br /> Financial Journey</h1>
+          <h1>
+            Empowering Your <br /> Financial Journey
+          </h1>
           <p>
-            Your trusted partner for loans, insurance, and financial growth.
-            We make finance simple, transparent, and accessible for everyone.
+            Your trusted partner for loans, insurance, and financial growth. We
+            make finance simple, transparent, and accessible for everyone.
           </p>
         </div>
       </motion.section>
@@ -72,10 +74,18 @@ export const About = () => {
         <div className="ab-story-content">
           <h2>Our Story</h2>
           <p>
-            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide. From our humble beginnings, we have strived to provide exceptional services that empower our clients to make informed decisions.
+            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision:
+            to be the most trusted and innovative financial partner for
+            individuals and businesses worldwide. From our humble beginnings, we
+            have strived to provide exceptional services that empower our
+            clients to make informed decisions.
           </p>
           <p>
-            Over time, we have expanded our portfolio to include CIBIL score improvement, education loans, and diverse CA services. Today, we stand proud as one of the fastest-growing platforms in the finance industry, turning financial dreams into reality—from education to enterprise.
+            Over time, we have expanded our portfolio to include CIBIL score
+            improvement, education loans, and diverse CA services. Today, we
+            stand proud as one of the fastest-growing platforms in the finance
+            industry, turning financial dreams into reality—from education to
+            enterprise.
           </p>
         </div>
         <div className="ab-story-image">
@@ -96,14 +106,60 @@ export const About = () => {
           <span className="ab-mission-tag">Our Guiding Principles</span>
           <h2>Mission & Vision</h2>
           <p>
-            Our mission is to provide quick, reliable, and personalized financial solutions. We simplify complex decisions by offering accessible products like loans, insurance, and advisory services, allowing you to focus on growth and stability.
+            Our mission is to provide quick, reliable, and personalized
+            financial solutions. We simplify complex decisions by offering
+            accessible products like loans, insurance, and advisory services,
+            allowing you to focus on growth and stability.
           </p>
           <p>
-            We envision a world where financial freedom is a reality for everyone. By staying committed to integrity, innovation, and excellence, we strive to be the leading platform that transforms the financial landscape, one success story at a time.
+            We envision a world where financial freedom is a reality for
+            everyone. By staying committed to integrity, innovation, and
+            excellence, we strive to be the leading platform that transforms the
+            financial landscape, one success story at a time.
           </p>
         </div>
         <div className="ab-video-wrapper">
-          <video src="/mnv.mp4" autoPlay muted loop playsInline />
+          {/* <video src="/mnv.mp4" autoPlay muted loop playsInline /> */}
+          <img src="/mnv.jpg" alt="mission and vision" />
+        </div>
+      </motion.section>
+
+      {/* Values Section */}
+      <motion.section
+        className="ab-values-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        variants={fadeUp}
+      >
+        <div className="ab-values-content">
+          <h2>Our Values</h2>
+          <div
+            className="vanen">
+            <div className="ab-video-wrapper">
+              <video src="/mnv.mp4" autoPlay muted loop playsInline />
+              {/* <img src="/mnv.jpg" alt="mission and vision" /> */}
+            </div>
+            <ul className="ab-values-list">
+              <motion.li variants={fadeUp}>
+                <strong>Integrity:</strong> We operate with honesty and
+                transparency in every transaction.
+              </motion.li>
+              <motion.li variants={fadeUp}>
+                <strong>Customer Commitment:</strong> Your goals are our
+                priority - we support you at every step.
+              </motion.li>
+              <motion.li variants={fadeUp}>
+                <strong>Innovation:</strong> Leveraging technology and insights
+                to bring smarter financial solutions.
+              </motion.li>
+              <motion.li variants={fadeUp}>
+                <strong>Inclusivity:</strong> Making finance accessible for all
+                individuals and businesses, big or small.
+              </motion.li>
+            </ul>
+          </div>
         </div>
       </motion.section>
 
@@ -118,7 +174,10 @@ export const About = () => {
       >
         <div className="ab-section-header">
           <h2>Our Trusted Partners</h2>
-          <p>We collaborate with top financial institutions to provide you with the best rates and services.</p>
+          <p>
+            We collaborate with top financial institutions to provide you with
+            the best rates and services.
+          </p>
         </div>
 
         <div className="ab-partners-grid">
@@ -165,7 +224,11 @@ export const About = () => {
               className="ab-team-card"
               variants={fadeUp}
             >
-              <img src={member.image} alt={member.name} className="ab-team-img" />
+              <img
+                src={member.image}
+                alt={member.name}
+                className="ab-team-img"
+              />
               <h3>{member.name}</h3>
               <p>{member.role}</p>
             </motion.div>
@@ -177,4 +240,3 @@ export const About = () => {
     </div>
   );
 };
-

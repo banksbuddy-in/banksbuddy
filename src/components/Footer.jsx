@@ -96,7 +96,7 @@ export const Footer = () => {
           </ul>
         </div>
         <div className="c2">
-          <p className="fct">Core Services</p>
+          <p className="fct">Other Services</p>
           <ul>
             <li>
               <Link className="fct" to="/consultation">
