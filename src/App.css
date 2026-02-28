@@ -14,14 +14,13 @@ ul.navlist {
   align-items: center;
 }
 
-ul.navlist>li>a {
+ul.navlist > li > a {
   font-weight: 500;
   letter-spacing: 0.015em;
   font-size: 1rem;
-  color: white;
 }
 
-button.btns {
+button.btns {     
   background: white;
   padding: 1%;
 }
@@ -30,14 +29,10 @@ button.btns a {
   color: white;
 }
 
-.btns a {
-  color: white;
-}
-
 a.btns {
   padding: 11% 1em;
   background: white;
-  color: black !important;
+  color: black;
   /* Force black text on white button */
 }
 
@@ -183,7 +178,31 @@ a.chata:hover {
 
 .frr2 li a {
   color: white;
-  font-size: 28px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2b2b2b, #151515);
+  box-shadow:
+    4px 4px 8px rgba(0, 0, 0, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.05),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.frr2 li a:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(145deg, var(--bl), #0033aa);
+  box-shadow:
+    6px 6px 12px rgba(0, 0, 0, 0.8),
+    -2px -2px 6px rgba(255, 255, 255, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
 p.r3 {
@@ -550,19 +569,6 @@ a.hrc {
 
 .service-card.spec {
   justify-content: end;
-}
-
-.frr2 li a {
-  font-size: 1.45em;
-}
-
-.scont {
-  display: flex;
-  justify-content: center;
-}
-
-.frr2 li a {
-  font-size: 1.45em;
 }
 
 .scont {

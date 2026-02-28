@@ -1,8 +1,23 @@
-
 .counters-section {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 #designDat h1 {
-    margin: 2%;
+  margin: 2%;
 }
+
+a.btns {
+  color: black;
+  bottom: 2px;
+  position: relative;
+  background: rgb(194, 190, 190);
+}
+
+a.btns:hover {
+  color: white;
+  background: blue;
+}
+.pf-modal-container {
+  scale: 0.75;
+}
+

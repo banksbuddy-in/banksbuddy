@@ -28,9 +28,7 @@ import { ref, push } from "firebase/database";
 import { motion } from "framer-motion";
 import { BuyNowPayment } from "./BuyNowPayment";
 
-const CASHFREE_SCRIPT = "https://sdk.cashfree.com/js/ui/2.0.0/cashfree.js";
-
-// Helper to select icon based on document text (Reusing logic from ServicePage)
+import DevStudioPaymentForm from "./DevStudioPaymentForm"; // Helper to select icon based on document text (Reusing logic from ServicePage)
 const getDocIcon = (docText) => {
   const text = docText.toLowerCase();
 
@@ -199,157 +197,6 @@ export const Cibil = () => {
       checkPaymentStatus({ email: savedEmail });
     }
   }, []);
-  const [cfReady, setCfReady] = useState(false);
-  const [paying, setPaying] = useState(false);
-  const [sdkError, setSdkError] = useState("");
-
-  // Form fields
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    state: "",
-    city: "",
-    employmentType: "",
-    income: "",
-    message: "",
-  });
-
-  useEffect(() => {
-    setCfReady(true);
-  }, []);
-
-  const handleFormChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const getMode = () =>
-    (import.meta.env.VITE_CASHFREE_ENV || "sandbox").toLowerCase() ===
-    "production"
-      ? "production"
-      : "sandbox";
-
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      state: "",
-      city: "",
-      employmentType: "",
-      income: "",
-      message: "",
-    });
-    setFormStatus("");
-  };
-
-  const recordRevenue = async (status, orderId) => {
-    const now = new Date().toISOString();
-    await push(ref(db, "cashfree_revenue"), {
-      serviceId: "cibil-improvement",
-      serviceTitle: svc.Title,
-      mainCategory: "Cibil Improvement",
-      username: formData.name || "Guest User",
-      email: formData.email || "",
-      mobile: formData.phone || "",
-      status,
-      amount: Number(paymentAmount),
-      orderId,
-      date: now,
-      createdAt: now,
-    });
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus("");
-
-    if (!cfReady) {
-      setFormStatus("Payment gateway is still loading. Please wait.");
-      return;
-    }
-
-    const amountValue = Number(paymentAmount);
-    if (!amountValue || amountValue <= 0) {
-      setFormStatus("Enter a valid amount.");
-      return;
-    }
-
-    try {
-      setPaying(true);
-
-      const appId = import.meta.env.VITE_CASHFREE_APP_ID;
-      const secret = import.meta.env.VITE_CASHFREE_SECRET_KEY;
-      const envUrl =
-        (import.meta.env.VITE_CASHFREE_API_ENV || "sandbox").toLowerCase() ===
-        "production"
-          ? "https://api.cashfree.com/pg"
-          : "https://sandbox.cashfree.com/pg";
-
-      if (!appId || !secret)
-        throw new Error("Cashfree keys missing in environment.");
-
-      const orderPayload = {
-        order_amount: amountValue,
-        order_currency: "INR",
-        order_id: `order_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-        order_note: `${svc.Title || "Service"} payment`,
-        customer_details: {
-          customer_id: formData.phone || `guest_${Date.now()}`,
-          customer_name: formData.name || "Guest User",
-          customer_email: formData.email || "support@banksbuddy.com",
-          customer_phone: formData.phone || "9999999999",
-        },
-        order_meta: {
-          return_url: `${window.location.origin}/payment-status?order_id={order_id}`,
-        },
-      };
-
-      const res = await fetch(`${envUrl}/orders`, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "content-type": "application/json",
-          "x-api-version": "2023-08-01",
-          "x-client-id": appId,
-          "x-client-secret": secret,
-        },
-        body: JSON.stringify(orderPayload),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.link_url) {
-        throw new Error(
-          data?.error || "Unable to start payment link via Cashfree directly",
-        );
-      }
-
-      await recordRevenue("pending", data.order_id || data.link_id);
-
-      // Save email to localStorage for persistence check
-      if (formData.email) {
-        localStorage.setItem("userEmail", formData.email);
-      }
-
-      await push(ref(db, "cibil_requests"), {
-        ...formData,
-        paymentId: data.order_id || data.link_id,
-        amount: amountValue,
-        status: "pending",
-        createdAt: new Date().toISOString(),
-      });
-
-      // Redirect the user entirely off banksbuddy.com to cashfree.com
-      window.location.href = data.link_url;
-    } catch (err) {
-      console.error("Cashfree payment error", err);
-      setFormStatus(
-        err.message || "Payment could not be processed. Try again.",
-      );
-    } finally {
-      setPaying(false);
-    }
-  };
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -396,12 +243,7 @@ export const Cibil = () => {
                   Pay now <GoArrowRight />
                 </button>
               )}
-              <BuyNowPayment
-                serviceId="cibil-improvement"
-                serviceTitle={svc.Title}
-                mainCategory="Cibil Improvement"
-                defaultAmount={paymentAmount}
-              />
+
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -646,154 +488,12 @@ export const Cibil = () => {
       </div>
 
       {/* ─── Form Modal ─── */}
-      {showFormModal && (
-        <div
-          className="cb-modal-overlay"
-          onClick={() => setShowFormModal(false)}
-        >
-          <div
-            className="cb-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="cb-close-btn"
-              onClick={() => setShowFormModal(false)}
-            >
-              <FaTimes />
-            </button>
-            <h2 className="cb-modal-title">Apply for CIBIL Improvement</h2>
-            <p className="cb-modal-subtitle">
-              Fill your details below and pay securely via Cashfree.
-            </p>
-            <form className="cb-form" onSubmit={handleFormSubmit}>
-              <input
-                className="cb-input"
-                type="number"
-                min="1"
-                step="0.01"
-                value={paymentAmount}
-                onChange={(e) => setPaymentAmount(e.target.value)}
-                required
-                placeholder="Payment Amount (₹)"
-              />
-              <div className="cb-form-row">
-                <input
-                  className="cb-input"
-                  value={formData.name}
-                  onChange={(e) => handleFormChange("name", e.target.value)}
-                  required
-                  placeholder="Full Name"
-                />
-                <input
-                  className="cb-input"
-                  value={formData.phone}
-                  onChange={(e) => handleFormChange("phone", e.target.value)}
-                  required
-                  placeholder="Mobile Number"
-                />
-              </div>
-              <input
-                className="cb-input"
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleFormChange("email", e.target.value)}
-                required
-                placeholder="Email Address"
-              />
-              <select
-                className="cb-select"
-                value={formData.state}
-                onChange={(e) => handleFormChange("state", e.target.value)}
-                required
-              >
-                <option value="">Select State</option>
-                {[
-                  "Andhra Pradesh",
-                  "Arunachal Pradesh",
-                  "Assam",
-                  "Bihar",
-                  "Chhattisgarh",
-                  "Goa",
-                  "Gujarat",
-                  "Haryana",
-                  "Himachal Pradesh",
-                  "Jharkhand",
-                  "Karnataka",
-                  "Kerala",
-                  "Madhya Pradesh",
-                  "Maharashtra",
-                  "Manipur",
-                  "Meghalaya",
-                  "Mizoram",
-                  "Nagaland",
-                  "Odisha",
-                  "Punjab",
-                  "Rajasthan",
-                  "Sikkim",
-                  "Tamil Nadu",
-                  "Telangana",
-                  "Tripura",
-                  "Uttar Pradesh",
-                  "Uttarakhand",
-                  "West Bengal",
-                  "Delhi",
-                  "Chandigarh",
-                  "Puducherry",
-                ].map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-              {formData.state && (
-                <input
-                  className="cb-input"
-                  value={formData.city}
-                  onChange={(e) => handleFormChange("city", e.target.value)}
-                  required
-                  placeholder="Enter City Name"
-                />
-              )}
-              <select
-                className="cb-select"
-                value={formData.employmentType}
-                onChange={(e) =>
-                  handleFormChange("employmentType", e.target.value)
-                }
-                required
-              >
-                <option value="">Select Employment Type</option>
-                <option value="Salaried">Salaried</option>
-                <option value="Self-Employed">Self-Employed</option>
-              </select>
-              {formData.employmentType === "Salaried" && (
-                <input
-                  className="cb-input"
-                  type="number"
-                  value={formData.income}
-                  onChange={(e) => handleFormChange("income", e.target.value)}
-                  required
-                  placeholder="Monthly Income (₹)"
-                />
-              )}
-              <textarea
-                className="cb-textarea"
-                value={formData.message}
-                onChange={(e) => handleFormChange("message", e.target.value)}
-                placeholder="Any additional details..."
-                rows={3}
-              />
-              <button className="cb-btn-submit" type="submit">
-                {paying
-                  ? "Processing payment..."
-                  : `Pay ₹${paymentAmount || ""} with Cashfree`}
-              </button>
-              {sdkError && <p className="cb-form-status">{sdkError}</p>}
-              {formStatus && <p className="cb-form-status">{formStatus}</p>}
-            </form>
-          </div>
-        </div>
-      )}
+      <DevStudioPaymentForm
+        isOpen={showFormModal}
+        onClose={() => setShowFormModal(false)}
+        amount={paymentAmount}
+        serviceTitle={svc.Title}
+      />
 
       {/* ─── Success Popup ─── */}
       {showSuccessPopup && (

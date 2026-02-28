@@ -31,11 +31,17 @@ div#imggrid {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 1%;
+  padding: 2% 10%;
+  gap: 2rem;
+  background: white;
 }
 
 img.psa {
-  width: 104px;
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: contrast(1.1);
 }
 
 img.consult.partner {
