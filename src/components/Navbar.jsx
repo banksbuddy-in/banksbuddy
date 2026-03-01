@@ -14,8 +14,9 @@ const servicesMenu = {
       { title: "Personal Loan", slug: "/services/personal-loan" },
       { title: "Home Loan", slug: "/services/home-loan" },
       { title: "Education Loan", slug: "/services/education-loan" },
-      { title: "Auto Loan", slug: "/services/auto-loan" },
+      { title: "Machinery Loan", slug: "/services/machinery-loan" },
       { title: "Business Loan", slug: "/services/business-loan" },
+      { title: "Auto Loan", slug: "/services/auto-loan" },
       { title: "Loan Against Property", slug: "/services/loan-against-property" }
     ]
   },

@@ -68,14 +68,23 @@ export const ServicesCards = () => {
     {
       id: 5,
       className: "div5",
-      url: "/services/auto-loan",
+      url: "/services/machinery-loan",
       media: <img src="/d5.jpg" className="media" alt="Machinery Loan" />,
       title: "Machinery Loan",
       description:
-        "Drive your dream car with our competitive auto loan offerings, designed for easy and quick approval.",
+        "Power your business with financing for construction, industrial, and manufacturing equipment.",
     },
     {
       id: 6,
+      className: "div6",
+      url: "/services/auto-loan",
+      media: <img src="/d5.jpg" className="media" alt="Auto Loan" />,
+      title: "Auto Loan",
+      description:
+        "Drive your dream car or two-wheeler with quick approvals and competitive rates tailored for individuals.",
+    },
+    {
+      id: 7,
       className: "div6",
       url: "/services/loan-against-property",
       media: (
@@ -83,7 +92,7 @@ export const ServicesCards = () => {
       ),
       title: "Loan Against Property",
       description:
-        "Drive your dream car with our competitive auto loan offerings, designed for easy and quick approval.",
+        "Unlock the value of your property to meet major financial needs at lower interest rates.",
     },
   ];
 
@@ -217,7 +226,6 @@ export const ServicesCards = () => {
               {service.media}
               <h1 style={{ whiteSpace: "normal" }}>{service.title}</h1>
               <p>{service.description}</p>
-              
             </motion.div>
           ))}
         </div>

@@ -153,13 +153,13 @@ const NewServices = [
     ],
   },
   {
-    id: "auto_loan",
-    Title: "Auto Loan",
+    id: "machinery_loan",
+    Title: "Machinery Loan",
     image: "/ll4.jpg", // Real image (updated to Machinery/Construction relevant)
     overview: [
-      "A auto loan helps businesses and individuals invest in the right equipment or vehicle without financial burden. Whether you need machinery for business or a vehicle for personal/commercial use, our loans offer competitive rates and convenient repayment plans.",
+      "A machinery loan helps businesses and individuals invest in the right equipment or vehicle without financial burden. Whether you need machinery for business or a vehicle for personal/commercial use, our loans offer competitive rates and convenient repayment plans.",
       "With fast approvals, minimal documentation, and flexible tenure, we make it easy to upgrade your assets and fuel your growth.",
-      "Loans for new/used vehicles and refinance of existing vehicle loans.",
+      "Loans for new/used machinery and refinance of existing machinery loans.",
     ],
     tagline: "Power Your Growth",
     TbData: [
@@ -181,22 +181,72 @@ const NewServices = [
       "Business Registration Proof",
     ],
     Types: [
-      { titl: "Car Loans", des: "Finance your new car with ease." },
-      { titl: "Two-Wheeler Loan", des: "Affordable financing for bikes." },
+      {
+        titl: "New Machinery Loan",
+        des: "Finance your new machinery with ease.",
+      },
+      { titl: "Used Machinery Loan", des: "Affordable financing for bikes." },
       {
         titl: "Commercial Vehicle Loans",
         des: "For trucks, mixers, vans, and more.",
       },
       {
         titl: "Loan Against Vehicle",
-        des: "Use your owned vehicle as collateral.",
+        des: "Use your owned machinery as collateral.",
+      },
+    ],
+  },
+  {
+    id: "auto_loan",
+    Title: "Auto Loan",
+    image: "/cc89.jpg", // Real image (updated to Vehicle relevant)
+    overview: [
+      "An auto loan helps you purchase your desired vehicle without financial strain. Whether it's a car or two-wheeler for personal or commercial use, we offer competitive interest rates and flexible repayment options.",
+      "With quick approvals, minimal documentation, and simple processing, owning your vehicle becomes smooth and hassle-free.",
+      "Loans available for new/used vehicles and refinance of existing auto loans.",
+    ],
+    tagline: "Drive Your Dreams",
+    TbData: [
+      "₹25 Lakhs",
+      "Tenure from 12 months to 84 months*",
+      "Starting from 8.10% p.a.",
+      "Up to 2% of loan amount + GST",
+    ],
+    EliCr: [
+      "Age: 21 to 65 years",
+      "Salaried or Self-employed individuals",
+      "Minimum income as per lender criteria",
+    ],
+    Docs: [
+      "KYC Documents",
+      "Income Proof / Salary Slips",
+      "Bank Statements (6 Months)",
+      "ITR (for Self-employed applicants)",
+      "Vehicle Quotation / RC (for used vehicle)",
+    ],
+    Types: [
+      {
+        titl: "New Car Loan",
+        des: "Finance your brand-new car with attractive rates.",
+      },
+      {
+        titl: "Used Car Loan",
+        des: "Affordable financing for pre-owned vehicles.",
+      },
+      {
+        titl: "Two-Wheeler Loan",
+        des: "Quick loans for bikes and scooters.",
+      },
+      {
+        titl: "Loan Against Car",
+        des: "Unlock funds by pledging your owned vehicle.",
       },
     ],
   },
   {
     id: "business_loan",
     Title: "Business Loan",
-    image: "/ll5.jpg", // Real image
+    image: "/ll9.jpg", // Real image
     overview: [
       "A business loan empowers entrepreneurs and businesses with the capital they need to grow and scale. Whether you’re launching a startup, expanding operations, or managing working capital, our business loans provide quick funding with minimal hassle.",
       "Enjoy flexible repayment options, competitive interest rates, and fast approvals—designed to support your business vision.",
@@ -293,7 +343,8 @@ const NewServices = [
   {
     id: "cibil-improvement",
     Title: "CIBIL Score Improvement Service",
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80", // Finance/Graph image
+    image:
+      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80", // Finance/Graph image
     overview: [
       "Your CIBIL score is a critical factor that determines your loan and credit card approval chances. A strong credit score opens doors to better interest rates, higher loan amounts, and faster approvals from financial institutions.",
       "Our CIBIL Score Improvement Service helps you identify credit report errors, rectify negative remarks, and implement strategies to boost your creditworthiness. We provide expert guidance on credit management and dispute resolution to enhance your financial profile.",
@@ -343,7 +394,8 @@ const NewServices = [
   {
     id: "website-development",
     Title: "Website Development",
-    image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80", // Web dev image
+    image:
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80", // Web dev image
     overview: [
       "Website development services are designed to help businesses build a strong online presence with modern, responsive, and high-performing websites.",
       "Whether you're looking for a portfolio site, business website, e-commerce store, or a custom web application, development solutions are tailored to match your goals, branding, and functionality needs.",
@@ -390,14 +442,20 @@ const NewServices = [
   {
     id: "tax-services",
     Title: "Tax Consultancy Services",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=80", // Tax image
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=80", // Tax image
     overview: [
       "Expert Guidance for Smart, Compliant, and Stress-Free Taxation. From proactive tax planning and accurate filing to notice handling and long-term tax optimization, our experienced tax consultants support you at every step.",
       "We help you maximize exemptions, ensure compliance with the latest laws, and resolve any tax notices efficiently. Say goodbye to tax stress and fines.",
       "Comprehensive solutions for Individuals, Freelancers, and Businesses.",
     ],
     tagline: "Smart Tax Planning for a Secure Future",
-    TbLabels: ["Service Cost", "Audit Support", "Consultation", "Turnaround Time"],
+    TbLabels: [
+      "Service Cost",
+      "Audit Support",
+      "Consultation",
+      "Turnaround Time",
+    ],
     TbData: [
       "ITR Filing: ₹500+",
       "Audit Support: Varies",

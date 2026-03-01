@@ -1,11 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
-export const DevStudioPaymentForm = ({
-  isOpen,
-  onClose,
-  amount,
-  serviceTitle,
-}) => {
+export const DevStudioPaymentForm = ({ isOpen, onClose, serviceTitle }) => {
+  const [payAmount, setPayAmount] = useState("");
+
   if (!isOpen) return null;
 
   return (
@@ -16,9 +13,23 @@ export const DevStudioPaymentForm = ({
         </button>
 
         <div className="pf-content">
-          <div className="pf-amount-badge">
-            Amount to Pay: <strong>₹{amount || "200"}</strong>
+          <div className="pf-amount-input-wrapper">
+            <label className="pf-amount-label">Enter Payment Amount (₹)</label>
+            <input
+              type="number"
+              className="pf-amount-input"
+              placeholder="e.g. 500"
+              value={payAmount}
+              min="1"
+              onChange={(e) => setPayAmount(e.target.value)}
+            />
           </div>
+
+          {payAmount && (
+            <div className="pf-amount-badge">
+              Amount to Pay: <strong>₹{payAmount}</strong>
+            </div>
+          )}
 
           <div className="pf-qr-container">
             <img src="/paymentshot.jpeg" alt="Payment QR Code" />
@@ -100,9 +111,34 @@ export const DevStudioPaymentForm = ({
         .pf-content {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 1.25rem;
           align-items: center;
           padding-top: 0.5rem;
+        }
+        .pf-amount-input-wrapper {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+        .pf-amount-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #475569;
+        }
+        .pf-amount-input {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          font-size: 1rem;
+          color: #0f172a;
+          outline: none;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
+        }
+        .pf-amount-input:focus {
+          border-color: #0ea5e9;
         }
         .pf-amount-badge {
           background: #e0f2fe;

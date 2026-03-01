@@ -25,7 +25,7 @@ import { getFAQsByServiceId } from "./Data_FAQs";
 import EMICalculator from "./EMICalculator";
 import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
-import { BuyNowPayment } from "./BuyNowPayment";
+
 const toSlug = (str) => {
   if (!str) return "";
   return String(str)
@@ -228,12 +228,13 @@ Warm regards,
     personal_loan: "/cc1.webp",
     home_loan: "/cc2.jpg",
     education_loan: "/cc3.jpeg",
-    auto_loan: "/cc4.jpg",
+    machinery_loan: "/cc4.jpg",
     business_loan: "/cc5.jpg",
     loan_against_property: "/cc6.png",
-    "cibil-improvement": "/cc7.png",
-    "website-development": "/cc8.png",
-    "tax-services": "/cc2.jpg", // Fallback/Default for tax if not strictly specified, or keep as is. User didn't ask for tax. I will just add the requested ones.
+    cibil_improvement: "/cc7.png",
+    website_development: "/cc8.png",
+    tax_services: "/cc2.jpg",
+    auto_loan: "/lll9.jpg",
   };
 
   const serviceCategoryMap = {
@@ -241,6 +242,7 @@ Warm regards,
     home_loan: "Loan Services",
     education_loan: "Loan Services",
     auto_loan: "Loan Services",
+    machinery_loan: "Loan Services",
     business_loan: "Loan Services",
     loan_against_property: "Loan Services",
     "cibil-improvement": "Cibil Improvement",
@@ -280,11 +282,6 @@ Warm regards,
               <Link className="sp-btn-primary" to="/contact-banksbuddy">
                 Apply Now <GoArrowRight />
               </Link>
-              <BuyNowPayment
-                serviceId={svc.id}
-                serviceTitle={svc.Title}
-                mainCategory={mainCategory}
-              />
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -396,7 +393,7 @@ Warm regards,
           </div>
 
           <motion.div
-            className="sp-features-horizontal"
+            className={`sp-features-horizontal${textarr2.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -464,7 +461,9 @@ Warm regards,
               <h2 className="sp-section-title">Required Documents</h2>
             </div>
 
-            <div className="sp-docs-grid">
+            <div
+              className={`sp-docs-grid${svc.Docs.length > 5 ? " multi-row" : ""}`}
+            >
               {svc.Docs.map((doc, i) => (
                 <div key={i} className="sp-doc-card sp-doc-card-shadow">
                   <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
@@ -486,7 +485,7 @@ Warm regards,
             <h2 className="sp-section-title">Types of {svc.Title}</h2>
           </div>
           <motion.div
-            className="sp-types-horizontal"
+            className={`sp-types-horizontal${svc.Types.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -496,7 +495,6 @@ Warm regards,
             {svc.Types.map((type, i) => (
               <div key={i} className="sp-type-card">
                 <h3 className="sp-type-title">{type.titl}</h3>
-                <p className="sp-type-desc">{type.des}</p>
               </div>
             ))}
           </motion.div>

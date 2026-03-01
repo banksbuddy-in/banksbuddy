@@ -279,18 +279,34 @@
   margin-right: auto;
 }
 
-/* Horizontal Features */
+/* Horizontal Features - single row */
 .sp-features-horizontal {
   display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 0.75rem;
+  padding: 0.5rem 0.25rem 1rem 0.25rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  justify-content: safe center;
+}
+
+/* Multi-row: >5 items → 4 per row, last row centered */
+.sp-features-horizontal.multi-row {
   flex-wrap: wrap;
+  overflow-x: hidden;
   justify-content: center;
-  gap: 1rem;
-  padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+  scroll-snap-type: none;
+}
+
+.sp-features-horizontal.multi-row .sp-feature-card {
+  flex: 0 0 calc(25% - 0.6rem);
+  min-width: 120px;
+  max-width: 160px;
 }
 
 .sp-features-horizontal::-webkit-scrollbar {
-  height: 4px;
-  /* Thinner scrollbar */
+  height: 3px;
 }
 
 .sp-features-horizontal::-webkit-scrollbar-track {
@@ -304,13 +320,12 @@
 
 /* Minimal Feature Card */
 .sp-feature-card {
-  min-width: 180px;
-  /* Reduced width */
-  max-width: 180px;
+  flex: 0 0 auto;
+  min-width: 130px;
+  max-width: 150px;
   scroll-snap-align: start;
   background: white;
-  padding: 1.25rem 1rem;
-  /* Reduced padding */
+  padding: 0.9rem 0.75rem;
   border-radius: 10px;
   border: 1px solid #eef2f6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
@@ -323,15 +338,13 @@
 
 .sp-feature-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  /* Softer shadow */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   border-color: var(--bl);
 }
 
 .sp-feature-icon {
-  width: 51px;
-  /* Larger icon */
-  height: 51px;
+  width: 38px;
+  height: 38px;
   background: linear-gradient(
     135deg,
     rgba(8, 105, 255, 0.1) 0%,
@@ -341,9 +354,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--bl);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   transition: all 0.3s ease;
 }
 
@@ -354,9 +367,8 @@
 
 .sp-feature-text {
   font-weight: 500;
-  /* Slightly lighter weight */
   color: var(--darkbl);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   line-height: 1.3;
 }
 
@@ -732,18 +744,27 @@
   line-height: 1.4;
 }
 
-/* NEW: Small Cards for Documents - Grid to Horizontal Row */
+/* Documents - single centered row, mirrors features section */
 .sp-docs-grid {
   display: flex;
+  flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 1rem;
-  padding: 0.5rem 0.5rem 1.5rem;
+  gap: 0.75rem;
+  padding: 0.5rem 0.25rem 1rem;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  justify-content: safe center;
+}
+
+.sp-docs-grid.multi-row {
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  justify-content: center;
+  scroll-snap-type: none;
 }
 
 .sp-docs-grid::-webkit-scrollbar {
-  height: 6px;
+  height: 3px;
 }
 
 .sp-docs-grid::-webkit-scrollbar-track {
@@ -760,19 +781,23 @@
   background: #94a3b8;
 }
 
+/* Doc card mirrors sp-feature-card exactly */
 .sp-doc-card {
-  flex: 0 0 180px; /* Fixed width, no shrink */
+  flex: 0 0 auto;
+  min-width: 120px;
+  max-width: 130px;
   scroll-snap-align: start;
   background: white;
+  padding: 0.9rem 0.6rem;
+  border-radius: 10px;
   border: 1px solid #eef2f6;
-  border-radius: 12px;
-  padding: 1.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  text-align: center;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 0.75rem;
-  transition: all 0.3s ease;
+  gap: 0.5rem;
 }
 
 .sp-doc-card-shadow {
@@ -780,28 +805,37 @@
 }
 
 .sp-doc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
   border-color: var(--bl);
-  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.08);
-  /* Reduced hover shadow */
-  transform: translateY(-2px);
 }
 
 .sp-doc-icon-wrapper {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%);
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(
+    135deg,
+    rgba(8, 105, 255, 0.1) 0%,
+    rgba(0, 57, 144, 0.05) 100%
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--bl);
   font-size: 1rem;
-  margin-bottom: 0.1rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.sp-doc-card:hover .sp-doc-icon-wrapper {
+  background: var(--bl);
+  color: white;
 }
 
 .sp-doc-text {
-  font-size: 0.75rem;
-  color: #334155;
+  font-size: 0.72rem;
+  color: var(--darkbl);
   font-weight: 600;
   line-height: 1.3;
 }
@@ -816,18 +850,28 @@
   font-size: 0.8rem;
 }
 
-/* ==================== Types Section ==================== */
-/* Horizontal Types */
+/* ==================== Types Section - compact single row ==================== */
 .sp-types-horizontal {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 0.75rem;
+  padding: 0.5rem 0.25rem 1rem 0.25rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   justify-content: center;
-  gap: 1rem;
-  padding: 0.5rem 0.25rem 1.5rem 0.25rem;
+}
+
+/* Multi-row: >5 types → 4 per row, last row centered */
+.sp-types-horizontal.multi-row {
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  justify-content: center;
+  scroll-snap-type: none;
 }
 
 .sp-types-horizontal::-webkit-scrollbar {
-  height: 4px;
+  height: 3px;
 }
 
 .sp-types-horizontal::-webkit-scrollbar-track {
@@ -840,47 +884,29 @@
 }
 
 .sp-type-card {
-  min-width: 240px;
-  /* Reduced width */
-  max-width: 240px;
+  flex: 0 0 auto;
+  min-width: 0;
   scroll-snap-align: start;
   background: var(--darkbl);
   color: white;
-  padding: 1.25rem;
-  border-radius: 12px;
+  padding: 0.6rem 1.1rem;
+  border-radius: 50px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  height: auto;
-}
-
-.sp-type-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 0 0 0 100%;
+  white-space: nowrap;
 }
 
 .sp-type-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 57, 144, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 57, 144, 0.2);
 }
 
 .sp-type-title {
-  font-size: 1.05rem;
-  margin-bottom: 0.4rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #fff;
-}
-
-.sp-type-desc {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.8rem;
-  line-height: 1.45;
+  margin: 0;
 }
 
 /* ==================== Apply Bar (Bottom sticky or just plain) ==================== */
