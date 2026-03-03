@@ -53,10 +53,11 @@ export const Insur = [
         title: "Life Insurance",
         image: "/spc1.jpg",
         isg: "/ins2.jpeg",
-        inr:"/inr3.avif",
+        inr: "/inr3.avif",
         icon: <GiReceiveMoney size={40} color="#ff451f" />,
         overview:
           "Secure your family's financial future with comprehensive life insurance plans that provide protection and investment benefits.",
+        tagline: "Secure Your Family's Financial Future",
         description:
           "Life insurance ensures that your loved ones are financially protected in case of an unfortunate event. Choose from term plans, endowment policies, ULIPs, and pension plans designed to meet your long-term financial goals.",
         keyBenefits: [
@@ -113,11 +114,12 @@ export const Insur = [
         id: "health_insurance",
         title: "Health Insurance",
         image: "/spc2.jpg",
-        isg:"/ins1.jpg",
-        inr:"/inr2.jpg",
+        isg: "/ins1.jpg",
+        inr: "/inr2.jpg",
         icon: <FaStethoscope size={40} color="#ff451f" />,
         overview:
           "Protect yourself and your family from rising medical costs with comprehensive health insurance coverage.",
+        tagline: "Protect Your Health, Secure Your Wealth",
         description:
           "Health insurance covers hospitalization expenses, surgeries, treatments, and critical illnesses. With cashless facilities at network hospitals and family floater options, ensure quality healthcare without financial burden.",
         keyBenefits: [
@@ -174,11 +176,12 @@ export const Insur = [
         id: "general_insurance",
         title: "General Insurance",
         image: "/spc3.jpg",
-        isg:"/ins3.jpg",
-        inr:"/inr1.jpg",
+        isg: "/ins3.jpg",
+        inr: "/inr1.jpg",
         icon: <FaShieldAlt size={40} color="#ff451f" />,
         overview:
           "Comprehensive protection for your assets including vehicles, home, travel, and business with customized general insurance plans.",
+        tagline: "Comprehensive Protection for Your Assets",
         description:
           "General insurance covers non-life assets and liabilities including motor vehicles, property, travel, business risks, and third-party liabilities. Get peace of mind knowing your valuable assets are protected against damages, theft, and unforeseen events.",
         keyBenefits: [

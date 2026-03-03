@@ -212,7 +212,12 @@ Warm regards,
 
   return (
     <div id="ServicePage" className="service-page-container">
-      <div id="cover" style={{backgroundImage: `url(${subCategory.inr})`}}></div>
+      <Cover
+        tagline={subCategory.tagline || subCategory.overview}
+        title={subCategory.title}
+        description={subCategory.description}
+        image={subCategory.inr || subCategory.image}
+      />
 
       <div className="pgcntt">
         {/* Hero Section */}
@@ -314,11 +319,7 @@ Warm regards,
           </div>
 
           <motion.div
-            className="sp-features-horizontal"
-            style={{
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
+            className={`sp-features-horizontal${subCategory.keyBenefits.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -326,15 +327,7 @@ Warm regards,
             variants={fadeUp}
           >
             {subCategory.keyBenefits.map((txt, i) => (
-              <div
-                key={i}
-                className="sp-feature-card"
-                style={{
-                  minWidth: "220px",
-                  maxWidth: "280px",
-                  flex: "1 1 auto",
-                }}
-              >
+              <div key={i} className="sp-feature-card">
                 <div className="sp-feature-icon">{getFeatureIcon(txt)}</div>
                 <p className="sp-feature-text">{txt}</p>
               </div>
@@ -395,23 +388,10 @@ Warm regards,
             </div>
 
             <div
-              className="sp-docs-grid"
-              style={{
-                justifyContent: "center",
-                flexWrap: "wrap",
-                marginBottom: "2rem",
-              }}
+              className={`sp-docs-grid${subCategory.documents.length > 5 ? " multi-row" : ""}`}
             >
               {subCategory.documents.map((doc, i) => (
-                <div
-                  key={i}
-                  className="sp-doc-card sp-doc-card-shadow"
-                  style={{
-                    minWidth: "180px",
-                    maxWidth: "240px",
-                    flex: "1 1 auto",
-                  }}
-                >
+                <div key={i} className="sp-doc-card sp-doc-card-shadow">
                   <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
                   <p className="sp-doc-text">{doc}</p>
                 </div>
@@ -431,7 +411,7 @@ Warm regards,
             <h2 className="sp-section-title">Popular Plans</h2>
           </div>
           <motion.div
-            className="sp-types-horizontal"
+            className={`sp-types-horizontal${subCategory.popularPlans.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -441,7 +421,6 @@ Warm regards,
             {subCategory.popularPlans.map((type, i) => (
               <div key={i} className="sp-type-card">
                 <h3 className="sp-type-title">{type.name}</h3>
-                <p className="sp-type-desc">{type.desc}</p>
               </div>
             ))}
           </motion.div>

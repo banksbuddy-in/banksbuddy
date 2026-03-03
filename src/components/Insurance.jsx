@@ -22,6 +22,7 @@ import { BuyNowPayment } from "./BuyNowPayment";
 import { FAQ } from "./FAQ";
 import { insuranceFAQs } from "./Data_FAQs";
 import "./ServicePageRefactored.css";
+import { Cover } from "./Cover";
 
 const InsuranceData = [
   {
@@ -223,7 +224,12 @@ export const Insurance = () => {
 
   return (
     <div id="ServicePage" className="service-page-container">
-      {/* Hero Section Without Cover component */}
+      <Cover
+        tagline={svc.tagline}
+        title={svc.Title}
+        description={`Get your ${svc.Title} with BanksBuddy.`}
+        image={svc.image}
+      />
       <div className="pgcntt">
         <motion.section
           className="sp-hero"
@@ -324,7 +330,7 @@ export const Insurance = () => {
           </div>
 
           <motion.div
-            className="sp-features-horizontal"
+            className={`sp-features-horizontal${textarr2.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -392,7 +398,7 @@ export const Insurance = () => {
               <h2 className="sp-section-title">Required Documents</h2>
             </div>
 
-            <div className="sp-docs-grid">
+            <div className={`sp-docs-grid${svc.Docs.length > 5 ? " multi-row" : ""}`}>
               {svc.Docs.map((doc, i) => (
                 <div key={i} className="sp-doc-card sp-doc-card-shadow">
                   <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
@@ -414,7 +420,7 @@ export const Insurance = () => {
             <h2 className="sp-section-title">Types of {svc.Title}</h2>
           </div>
           <motion.div
-            className="sp-types-horizontal"
+            className={`sp-types-horizontal${svc.Types.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -424,7 +430,6 @@ export const Insurance = () => {
             {svc.Types.map((type, i) => (
               <div key={i} className="sp-type-card">
                 <h3 className="sp-type-title">{type.titl}</h3>
-                <p className="sp-type-desc">{type.des}</p>
               </div>
             ))}
           </motion.div>

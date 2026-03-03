@@ -1,5 +1,5 @@
-
 import { useNavigate } from "react-router-dom";
+import { GoArrowRight } from "react-icons/go";
 
 export const Cover = ({ title, tagline, description, image }) => {
     const n = useNavigate();
@@ -25,7 +25,9 @@ export const Cover = ({ title, tagline, description, image }) => {
         <div id="cover" style={{ backgroundImage: `url('${image || "/cc2.jpg"}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
             <h1>{p1} <span>{p2}</span></h1>
             <p>{description || "Dreams don’t wait. Neither should your finances. Get your Personal Loan with BanksBuddy"}</p>
-            <button onClick={() => n("/contact-banksbuddy")}>Get Started</button>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }} onClick={() => n("/contact-banksbuddy")}>
+                Get Started <GoArrowRight />
+            </button>
         </div>
     );
 }

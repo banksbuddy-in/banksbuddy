@@ -9,12 +9,12 @@ export const personalLoanFAQs = [
     question:
       "What is the minimum and maximum personal loan amount I can apply for?",
     answer:
-      "You can apply for a personal loan starting from ₹50,000 up to ₹40 Lakhs, depending on your eligibility, income, credit score, and repayment capacity. The final loan amount is determined after evaluating your financial profile.",
+      "You can apply for a personal loan starting from ₹50,000 up to ₹50 Lakhs, depending on your eligibility, income, credit score, and repayment capacity. The final loan amount is determined after evaluating your financial profile.",
   },
   {
     question: "What is the interest rate for personal loans?",
     answer:
-      "Personal loan interest rates start from 11.1% per annum and may vary based on your credit score, income stability, employment type, and relationship with the lender. A higher CIBIL score typically helps you secure better rates.",
+      "Personal loan interest rates start from 8.75% per annum and may vary based on your credit score, income stability, employment type, and relationship with the lender. A higher CIBIL score typically helps you secure better rates.",
   },
   {
     question: "What documents are required to apply for a personal loan?",
@@ -113,12 +113,12 @@ export const educationLoanFAQs = [
   {
     question: "What is the interest rate for education loans?",
     answer:
-      "Education loan interest rates typically start from 8.5% to 15% per annum depending on the course, institution, loan amount, and whether it's secured or unsecured. Government schemes like Vidyalakshmi offer subsidized rates.",
+      "Education loan interest rates typically start from 6.85% to 15% per annum depending on the course, institution, loan amount, and whether it's secured or unsecured. Government schemes like Vidyalakshmi offer subsidized rates.",
   },
   {
     question: "Can I get a loan for studying abroad?",
     answer:
-      "Yes, education loans are available for studying abroad in recognized universities. The loan amount can go up to ₹1.5 Crore or more for premier institutions. Documentation includes admission letter, I-20/CAS, and visa documents.",
+      "Yes, education loans are available for studying abroad in recognized universities. The loan amount can go up to ₹40 Lakhs or more for premier institutions. Documentation includes admission letter, I-20/CAS, and visa documents.",
   },
   {
     question: "What is the eligibility for an education loan?",
@@ -191,7 +191,7 @@ export const businessLoanFAQs = [
   {
     question: "Is collateral required for a business loan?",
     answer:
-      "Both secured and unsecured business loans are available. Unsecured loans up to ₹50-75 Lakhs may not require collateral but have higher interest rates. For larger amounts, collateral in the form of property or other assets is usually required.",
+      "Both secured and unsecured business loans are available. Unsecured loans up to ₹40 Lakhs may not require collateral but have higher interest rates. For larger amounts, collateral in the form of property or other assets is usually required.",
   },
   {
     question: "What is the typical processing time for business loans?",
@@ -206,7 +206,7 @@ export const businessLoanFAQs = [
   {
     question: "What interest rates apply to business loans?",
     answer:
-      "Business loan interest rates typically range from 11% to 24% per annum depending on the loan type (secured/unsecured), business profile, credit score, turnover, and profitability. Secured loans generally have lower rates.",
+      "Business loan interest rates typically range from  7.25% per annum depending on the loan type (secured/unsecured), business profile, credit score, turnover, and profitability. Secured loans generally have lower rates.",
   },
   {
     question: "What documents are required for a business loan?",
@@ -246,7 +246,7 @@ export const lapFAQs = [
   {
     question: "What are the interest rates for Loan Against Property?",
     answer:
-      "LAP interest rates typically range from 9% to 15% per annum, which is lower than unsecured loans because of the collateral security. Rates vary based on loan amount, tenure, property type, and borrower profile.",
+      "LAP interest rates typically range from 8.55% per annum, which is lower than unsecured loans because of the collateral security. Rates vary based on loan amount, tenure, property type, and borrower profile.",
   },
   {
     question: "Can I get a LAP if the property is jointly owned?",
@@ -261,7 +261,7 @@ export const lapFAQs = [
   {
     question: "What is the maximum tenure for Loan Against Property?",
     answer:
-      "LAP can have a tenure of up to 15-20 years depending on the lender and borrower's age at maturity. Longer tenure means lower EMIs but higher total interest outgo over the loan period.",
+      "LAP can have a tenure of up to 15 years depending on the lender and borrower's age at maturity. Longer tenure means lower EMIs but higher total interest outgo over the loan period.",
   },
   {
     question: "What documents are required for LAP?",
@@ -286,6 +286,36 @@ export const insuranceFAQs = [
     question: "How do I file an insurance claim?",
     answer:
       "Notify the insurer immediately about the incident. For health claims, use cashless facility at network hospitals or submit bills for reimbursement. For other claims, file an FIR if needed and submit required documents within the specified time.",
+  },
+  {
+    question: "How do I choose the right insurance policy?",
+    answer:
+      "Assess your specific needs, compare different policies, consider the coverage amount, premium costs, and the claim settlement ratio of the insurer. Read the terms and conditions carefully before making a decision.",
+  },
+  {
+    question: "Can I have multiple insurance policies?",
+    answer:
+      "Yes, you can hold multiple insurance policies across different categories (life, health, motor) or even within the same category to enhance your overall coverage limits.",
+  },
+  {
+    question: "What factors affect my insurance premium?",
+    answer:
+      "Premiums are influenced by factors such as your age, health condition, lifestyle choices (like smoking), occupation, the sum assured, and the specific type of insurance policy you choose.",
+  },
+  {
+    question: "Are insurance premiums tax-deductible?",
+    answer:
+      "Yes, many insurance premiums offer tax benefits. For example, life insurance premiums are deductible under Section 80C, and health insurance premiums are deductible under Section 80D of the Income Tax Act.",
+  },
+  {
+    question: "What happens if I miss an insurance premium payment?",
+    answer:
+      "Most policies offer a grace period (usually 15-30 days). If you fail to pay within this period, your policy may lapse, meaning you'll lose coverage until it's officially revived.",
+  },
+  {
+    question: "Can I cancel my insurance policy if I change my mind?",
+    answer:
+      "Yes, life and health policies generally come with a 'Free Look Period' of 15-30 days during which you can cancel the policy and get a refund of the premium paid, subject to minor administrative deductions.",
   },
 ];
 
