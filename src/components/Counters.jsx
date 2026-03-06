@@ -65,7 +65,7 @@ export const Counters = () => {
   };
 
   return (
-    <div className="counters-section" ref={counterRef}>
+    <div className="counters-section" ref={counterRef} style={{margin:"3% 0"}}>
       <h2 className="counters-title">Our Impact</h2>
       <div className="counters-container">
         <div className="counter-card">

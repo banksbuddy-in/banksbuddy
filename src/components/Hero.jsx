@@ -43,15 +43,11 @@ export const Hero = () => {
             About <span style={{ color: "#ff451f" }}>Us</span>
           </h1>
           <p className="hdes">Your trusted partner in loans</p>
+          <p className="abtdes" style={{paddingBottom:"0"}}>
+            Banksbuddy is a trusted financial services partner dedicated to empowering individuals and businesses across India with smart, accessible, and tailored financial solutions. Established with a vision to simplify finance for everyone, Banksbuddy bridges the gap between customers and financial opportunities — whether it’s loans, insurance, credit improvement, or business financial services.
+          </p>
           <p className="abtdes">
-            BanksBuddy Finance is committed to uplifting small, micro, and
-            medium enterprises that often struggle to secure financial support
-            due to market constraints. Our platform is designed to provide
-            accessible personal and business loans, ensuring that entrepreneurs
-            at the grassroots level receive the assistance they need to thrive.
-            By empowering these businesses, we contribute to strengthening the
-            foundation of the economy and driving sustainable growth for a
-            better tomorrow.
+            At Banksbuddy, we believe that financial freedom is the key to personal growth and business success. Our mission is to make financial services transparent, efficient, and customized to meet the unique needs of each customer. With a customer-first mindset, we focus on delivering solutions that are simple to understand, affordable, and backed by expert guidance.
           </p>
           <div className="btnnss">
             <Link className="abtsn" to="/about-us">
