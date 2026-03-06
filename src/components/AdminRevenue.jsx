@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { ref, onValue, push, update } from "firebase/database";
+import React, { useState, useEffect, useRef } from "react";
+import apiFetch from "../lib/api.js";
 import {
   HiOutlineCurrencyRupee,
   HiPlus,
@@ -77,15 +76,16 @@ export const AdminRevenue = ({ embedded }) => {
     completedPayment: 0,
   });
 
-  // Fetch Data
-  useEffect(() => {
-    const cibilRef = ref(db, "cibil_requests");
-    const manualRef = ref(db, "manual_revenue");
-    const cashfreeRef = ref(db, "cashfree_revenue");
+  // Fetch Data from all 3 sources via REST
+  const fetchAll = async () => {
+    try {
+      const [cibilData, manualData, cashfreeData] = await Promise.all([
+        apiFetch("/api/revenue/cibil"),
+        apiFetch("/api/revenue/manual"),
+        apiFetch("/api/revenue/cashfree"),
+      ]);
 
-    const unsubCibil = onValue(cibilRef, (snap) => {
-      const data = snap.val() || {};
-      const list = Object.entries(data).map(([k, v]) => ({
+      const cibilList = Object.entries(cibilData || {}).map(([k, v]) => ({
         id: k,
         source: "Cibil",
         mainCategory: "Cibil Improvement",
@@ -97,23 +97,15 @@ export const AdminRevenue = ({ embedded }) => {
         amount: v.amount || 200,
         date: v.createdAt,
       }));
-      updateTransactions("cibil", list);
-    });
 
-    const unsubManual = onValue(manualRef, (snap) => {
-      const data = snap.val() || {};
-      const list = Object.entries(data).map(([k, v]) => ({
+      const manualList = Object.entries(manualData || {}).map(([k, v]) => ({
         id: k,
         source: "Manual",
-        username: v.fullName, // Map fullName to username for consistency
+        username: v.fullName,
         ...v,
       }));
-      updateTransactions("manual", list);
-    });
 
-    const unsubCashfree = onValue(cashfreeRef, (snap) => {
-      const data = snap.val() || {};
-      const list = Object.entries(data).map(([k, v]) => ({
+      const cashfreeList = Object.entries(cashfreeData || {}).map(([k, v]) => ({
         id: k,
         source: "Cashfree",
         username: v.username || v.customer_name,
@@ -126,14 +118,21 @@ export const AdminRevenue = ({ embedded }) => {
         amount: v.amount,
         date: v.date || v.createdAt,
       }));
-      updateTransactions("cashfree", list);
-    });
 
-    return () => {
-      unsubCibil();
-      unsubManual();
-      unsubCashfree();
-    };
+      const all = [...cibilList, ...manualList, ...cashfreeList].sort(
+        (a, b) => new Date(b.date) - new Date(a.date),
+      );
+      setTransactions(all);
+    } catch (err) {
+      console.error("Error fetching revenue:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAll();
+    // Poll every 30s for near-realtime updates
+    const interval = setInterval(fetchAll, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const [dataSources, setDataSources] = useState({
@@ -231,41 +230,45 @@ export const AdminRevenue = ({ embedded }) => {
       };
 
       if (editingTxn) {
-        // Update existing record
-        const node =
-          editingTxn.source === "Manual"
-            ? "manual_revenue"
-            : editingTxn.source === "Cashfree"
-              ? "cashfree_revenue"
-              : "cibil_requests";
-
-        // Map consistency for different nodes
-        const finalPayload =
-          editingTxn.source === "Cibil"
-            ? {
-                name: formData.fullName,
-                email: formData.email,
-                phone: formData.mobile,
-                amount: Number(formData.amount),
-                status: formData.status,
-              }
-            : editingTxn.source === "Cashfree"
-              ? {
-                  username: formData.fullName,
-                  email: formData.email,
-                  mobile: formData.mobile,
-                  amount: Number(formData.amount),
-                  status: formData.status,
-                }
-              : payload;
-
-        await update(ref(db, `${node}/${editingTxn.id}`), finalPayload);
+        // Update existing record via REST
+        let endpoint;
+        let finalPayload;
+        if (editingTxn.source === "Manual") {
+          endpoint = `/api/revenue/manual/${editingTxn.id}`;
+          finalPayload = payload;
+        } else if (editingTxn.source === "Cashfree") {
+          endpoint = `/api/revenue/cashfree/${editingTxn.id}`;
+          finalPayload = {
+            username: formData.fullName,
+            email: formData.email,
+            mobile: formData.mobile,
+            amount: Number(formData.amount),
+            status: formData.status,
+          };
+        } else {
+          endpoint = `/api/revenue/cibil/${editingTxn.id}`;
+          finalPayload = {
+            name: formData.fullName,
+            email: formData.email,
+            phone: formData.mobile,
+            amount: Number(formData.amount),
+            status: formData.status,
+          };
+        }
+        await apiFetch(endpoint, {
+          method: "PUT",
+          body: JSON.stringify(finalPayload),
+        });
       } else {
         // Create new manual record
         payload.createdAt = finalDate;
         payload.date = finalDate;
-        await push(ref(db, "manual_revenue"), payload);
+        await apiFetch("/api/revenue/manual", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
       }
+      await fetchAll();
 
       setShowModal(false);
       setEditingTxn(null);

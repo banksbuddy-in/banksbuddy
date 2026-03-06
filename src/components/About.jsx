@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./AboutRefactored.css";
 import { motion } from "framer-motion";
-import { db } from "../firebase";
-import { ref, get } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import { Awards } from "./Awards";
 
 export const About = () => {
@@ -12,13 +11,8 @@ export const About = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const snapshot = await get(ref(db, "team"));
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          setTeamMembers(
-            Object.keys(data).map((key) => ({ id: key, ...data[key] })),
-          );
-        }
+        const data = await apiFetch("/api/team");
+        setTeamMembers(data || []);
       } catch (error) {
         console.error("Error fetching team:", error);
       }
@@ -74,11 +68,18 @@ export const About = () => {
         <div className="ab-story-content">
           <h2>Our Story</h2>
           <p>
-            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide. From our humble beginnings, we have strived to provide exceptional services that empower our clients to make informed decisions.
+            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision:
+            to be the most trusted and innovative financial partner for
+            individuals and businesses worldwide. From our humble beginnings, we
+            have strived to provide exceptional services that empower our
+            clients to make informed decisions.
           </p>
           <p>
-            Over time, we have expanded our portfolio to include CIBIL score improvement, education loans, and diverse CA services. Today, we stand proud as one of the fastest-growing platforms in the finance industry, turning financial dreams into reality—from education to enterprise.
-
+            Over time, we have expanded our portfolio to include CIBIL score
+            improvement, education loans, and diverse CA services. Today, we
+            stand proud as one of the fastest-growing platforms in the finance
+            industry, turning financial dreams into reality—from education to
+            enterprise.
           </p>
         </div>
         <div className="ab-story-image">
@@ -128,9 +129,13 @@ export const About = () => {
       >
         <div className="ab-values-content">
           <h2>Our Values</h2>
-          <div
-            className="vanen">
-            <img className="v-full" style={{width:"100%"}} src="/values.png" alt="values" />
+          <div className="vanen">
+            <img
+              className="v-full"
+              style={{ width: "100%" }}
+              src="/values.png"
+              alt="values"
+            />
           </div>
         </div>
       </motion.section>

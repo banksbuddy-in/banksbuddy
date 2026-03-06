@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { db } from "../firebase";
-import { ref, push, set } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import { useNavigate } from "react-router-dom";
 // import "./PartnerForm.css"; // Removing custom CSS to use global classes
 import { motion } from "framer-motion";
@@ -34,11 +33,9 @@ export const PartnerForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const newAppRef = push(ref(db, "partner_applications"));
-      await set(newAppRef, {
-        ...formData,
-        status: "pending",
-        submittedAt: new Date().toISOString(),
+      await apiFetch("/api/partners", {
+        method: "POST",
+        body: JSON.stringify(formData),
       });
       setStatus(
         "Application submitted successfully! We will contact you soon.",

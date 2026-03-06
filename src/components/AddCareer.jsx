@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { db } from "../firebase";
-import { ref, push } from "firebase/database";
-import './AddCareer.css'
+import apiFetch from "../lib/api.js";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import "./AddCareer.css";
 
 export const AddCareer = ({ embedded = false }) => {
   const navigate = useNavigate();
@@ -14,83 +14,77 @@ export const AddCareer = ({ embedded = false }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const careerData = {
-      title,
-      description,
-      skills,
-      message,
-      createdAt: new Date().toISOString(),
-    };
-
+    if (!title || !description || !skills) {
+      setStatus("Please fill all required fields.");
+      return;
+    }
     try {
-      await push(ref(db, "careers"), careerData);
-      setStatus("Career added successfully!");
-
+      await apiFetch("/api/careers", {
+        method: "POST",
+        body: JSON.stringify({ title, description, skills, message }),
+      });
+      setStatus("Job posted successfully!");
       setTitle("");
       setDescription("");
       setSkills("");
       setMessage("");
-    } catch (error) {
-      console.error(error);
-      setStatus("Error adding career!");
+    } catch (err) {
+      console.error(err);
+      setStatus("Failed to post job. Please try again.");
     }
   };
-const n = useNavigate();
-  return (
-    <div className={`add-career ${embedded ? 'embedded' : ''}`}>
-      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
-      <h2 className="ac-title">Add New Career</h2>
 
+  return (
+    <motion.div
+      className={`add-career ${embedded ? "embedded" : ""}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
+      {!embedded && (
+        <button className="back-btn" onClick={() => navigate("/admin")}>
+          ← Back to Admin
+        </button>
+      )}
+      <h2 className="ac-title">Add Job Posting</h2>
       <form className="ac-form" onSubmit={handleSubmit}>
-        <label className="ac-label">Job Title</label>
+        <label className="ac-label">Job Title *</label>
         <input
           className="ac-input"
-          type="text"
-          placeholder="e.g. Frontend Developer"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          placeholder="e.g. Financial Advisor"
         />
-
-        <label className="ac-label">Job Description</label>
+        <label className="ac-label">Description *</label>
         <textarea
           className="ac-textarea"
-          placeholder="Describe roles and responsibilities..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+          placeholder="Job description..."
         />
-
-        <label className="ac-label">Skills Required</label>
+        <label className="ac-label">Skills Required *</label>
         <input
           className="ac-input"
-          type="text"
-          placeholder="React, JS, API handling"
           value={skills}
           onChange={(e) => setSkills(e.target.value)}
           required
+          placeholder="e.g. Communication, Finance, Excel"
         />
-
         <label className="ac-label">Message from Recruiter</label>
         <textarea
           className="ac-textarea"
-          placeholder="What would you like to tell applicants?"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          placeholder="Optional note for applicants..."
         />
-
-        <button type="submit" className="ac-button">
-          Add Career
+        <button className="ac-button" type="submit">
+          Post Job
         </button>
-        {!embedded && (
-          <button className="btn" onClick={() => n("/admin")}>
-            Back to Admin
-          </button>
-        )}
       </form>
-
       {status && <p className="ac-status">{status}</p>}
-    </div>
+    </motion.div>
   );
 };
+
+export default AddCareer;

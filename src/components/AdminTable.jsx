@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { ref, onValue, off } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import "./AdminTable.css";
 import { useNavigate } from "react-router-dom";
 
@@ -10,29 +9,21 @@ const AdminTable = ({ embedded = false }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const consultationsRef = ref(db, "consultations");
-    // eslint-disable-next-line no-unused-vars
-    const unsubscribe = onValue(consultationsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        setRows([]);
+    const loadConsultations = async () => {
+      try {
+        const data = await apiFetch("/api/consultations");
+        // Sort by createdAt descending
+        data.sort((a, b) =>
+          (b.createdAt || "").localeCompare(a.createdAt || ""),
+        );
+        setRows(data);
+      } catch (err) {
+        console.error("Error fetching consultations:", err);
+      } finally {
         setLoading(false);
-        return;
       }
-      // data is object keyed by push id
-      const mapped = Object.entries(data).map(([id, value]) => ({
-        id,
-        ...value,
-      }));
-      // sort by createdAt descending if present
-      mapped.sort((a, b) =>
-        (b.createdAt || "").localeCompare(a.createdAt || "")
-      );
-      setRows(mapped);
-      setLoading(false);
-    });
-
-    return () => off(consultationsRef);
+    };
+    loadConsultations();
   }, []);
 
   const escapeCsv = (v) => {
@@ -77,8 +68,12 @@ const AdminTable = ({ embedded = false }) => {
   };
 
   return (
-    <div className={`admin-table ${embedded ? 'embedded' : ''}`}>
-      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
+    <div className={`admin-table ${embedded ? "embedded" : ""}`}>
+      {!embedded && (
+        <button className="back-btn" onClick={() => navigate("/admin")}>
+          ← Back to Admin
+        </button>
+      )}
       <h2>Consultations</h2>
       <div className="admin-actions" style={{ display: "flex", gap: "1em" }}>
         <button

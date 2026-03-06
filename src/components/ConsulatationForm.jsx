@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { db } from "../firebase";
-import { ref, push } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import "./AddCareer.css";
 import { useNavigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
@@ -38,11 +37,13 @@ export const ConsulatationForm = () => {
       ...(serviceType === "Loan" && { loanType }),
       employmentType,
       ...(employmentType === "Salaried" && { income }),
-      createdAt: new Date().toISOString(),
     };
 
     try {
-      await push(ref(db, "consultations"), payload);
+      await apiFetch("/api/consultations", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
       setStatus("Request submitted — we will contact you soon.");
       setName("");
       setEmail("");
@@ -229,8 +230,6 @@ export const ConsulatationForm = () => {
                 placeholder="Monthly Income (₹)"
               />
             )}
-
-            {/* <label className="ac-label">Contact Number</label> */}
 
             {/* <label className="ac-label">Reason for Consultation</label> */}
             <textarea

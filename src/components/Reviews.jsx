@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { reviewData } from "./Data_Reviews";
-import { db } from "../firebase";
-import { ref, onValue, off } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import { FaStar } from "react-icons/fa";
 import "./r.css";
 
@@ -17,22 +16,20 @@ export const Reviews = () => {
   const trackRef = useRef(null);
 
   useEffect(() => {
-    const reviewsRef = ref(db, "reviews");
-    const unsub = onValue(reviewsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        setReviews([]);
-        return;
+    const loadReviews = async () => {
+      try {
+        const data = await apiFetch("/api/reviews");
+        const mapped = (data || []).map((item) => ({
+          name: item.name || item.title || "Anonymous",
+          review: item.review || item.message || "",
+          createdAt: item.createdAt || "",
+        }));
+        setReviews(mapped);
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
       }
-      const mapped = Object.values(data).map((item) => ({
-        name: item.name || item.title || "Anonymous",
-        review: item.review || item.message || "",
-        createdAt: item.createdAt || "",
-      }));
-      setReviews(mapped);
-    });
-
-    return () => off(reviewsRef);
+    };
+    loadReviews();
   }, []);
 
   const display = reviews.length ? reviews : reviewData;
@@ -161,7 +158,14 @@ export const Reviews = () => {
         </div>
 
         <div className="crdsss">
-          <video className="crdsvid" src="rvc1.mp4" autoPlay loop muted playsInline />
+          <video
+            className="crdsvid"
+            src="rvc1.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
           <div className="crds">
             <div className="reviews-carousel-viewport">
               <div

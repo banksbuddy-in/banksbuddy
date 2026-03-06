@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { db } from '../firebase';
-import { ref, set, get, remove } from 'firebase/database';
-import './AdminTeam.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import apiFetch from "../lib/api.js";
+import "./AdminTeam.css";
 
 export const AdminTeam = ({ embedded = false }) => {
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]);
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
-  const [image, setImage] = useState('');
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [image, setImage] = useState("");
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
@@ -18,18 +17,10 @@ export const AdminTeam = ({ embedded = false }) => {
 
   const fetchTeamMembers = async () => {
     try {
-      const teamRef = ref(db, 'team');
-      const snapshot = await get(teamRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const teamArray = Object.keys(data).map(key => ({
-          id: key,
-          ...data[key]
-        }));
-        setTeamMembers(teamArray);
-      }
+      const data = await apiFetch("/api/team");
+      setTeamMembers(data);
     } catch (error) {
-      console.error('Error fetching team:', error);
+      console.error("Error fetching team:", error);
     }
   };
 
@@ -45,28 +36,28 @@ export const AdminTeam = ({ embedded = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !role || !image) {
-      alert('Please fill all fields');
+      alert("Please fill all fields");
       return;
     }
-
     try {
       const memberId = editingId || Date.now().toString();
-      const memberRef = ref(db, `team/${memberId}`);
-      await set(memberRef, { name, role, image });
-      
-      alert(editingId ? 'Updated!' : 'Added!');
+      await apiFetch(`/api/team/${memberId}`, {
+        method: "POST",
+        body: JSON.stringify({ name, role, image }),
+      });
+      alert(editingId ? "Updated!" : "Added!");
       resetForm();
       fetchTeamMembers();
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      alert('Error saving');
+      alert("Error saving");
     }
   };
 
   const resetForm = () => {
-    setName('');
-    setRole('');
-    setImage('');
+    setName("");
+    setRole("");
+    setImage("");
     setEditingId(null);
   };
 
@@ -78,24 +69,27 @@ export const AdminTeam = ({ embedded = false }) => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this member?')) return;
+    if (!window.confirm("Delete this member?")) return;
     try {
-      await remove(ref(db, `team/${id}`));
+      await apiFetch(`/api/team/${id}`, { method: "DELETE" });
       fetchTeamMembers();
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      alert('Error deleting');
+      alert("Error deleting");
     }
   };
 
   return (
-    <div id="admin-team" className={embedded ? 'embedded' : ''}>
-      {!embedded && <button className="back-btn" onClick={() => navigate('/admin')}>← Back to Admin</button>}
+    <div id="admin-team" className={embedded ? "embedded" : ""}>
+      {!embedded && (
+        <button className="back-btn" onClick={() => navigate("/admin")}>
+          ← Back to Admin
+        </button>
+      )}
       <h1>Team Management</h1>
-      
       <div className="team-container">
         <div className="team-form">
-          <h2>{editingId ? 'Edit' : 'Add'} Member</h2>
+          <h2>{editingId ? "Edit" : "Add"} Member</h2>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -111,14 +105,16 @@ export const AdminTeam = ({ embedded = false }) => {
             />
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             {image && <img src={image} alt="Preview" className="preview" />}
-            
             <div className="form-btns">
-              <button type="submit">{editingId ? 'Update' : 'Add'}</button>
-              {editingId && <button type="button" onClick={resetForm}>Cancel</button>}
+              <button type="submit">{editingId ? "Update" : "Add"}</button>
+              {editingId && (
+                <button type="button" onClick={resetForm}>
+                  Cancel
+                </button>
+              )}
             </div>
           </form>
         </div>
-
         <div className="team-list">
           <h2>Team Members ({teamMembers.length})</h2>
           {teamMembers.map((member) => (

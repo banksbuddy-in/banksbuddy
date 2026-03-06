@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import './NewsnOffers.css'
-import { db } from '../firebase'
-import { ref, get } from 'firebase/database'
+import React, { useState, useEffect } from "react";
+import "./NewsnOffers.css";
+import apiFetch from "../lib/api.js";
 
 const truncateText = (text, wordLimit) => {
-  if (!text) return '';
-  const words = text.split(' ');
+  if (!text) return "";
+  const words = text.split(" ");
   return words.length > wordLimit
-    ? words.slice(0, wordLimit).join(' ') + '...'
+    ? words.slice(0, wordLimit).join(" ") + "..."
     : text;
 };
 
@@ -16,7 +15,9 @@ const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
     <h1 className="shead">News and Offers</h1>
     <div className="nnf">
       <div className="news">
-        <h2 style={{ fontWeight: '900', margin: '3%', color: 'var(--bl)' }}>Latest Financial News</h2>
+        <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>
+          Latest Financial News
+        </h2>
         {loading ? (
           <p>Loading news...</p>
         ) : (
@@ -24,13 +25,20 @@ const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
             {news.map((article, index) => (
               <div key={index} className="news-card">
                 <img
-                  src={article.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+                  src={
+                    article.image ||
+                    "https://via.placeholder.com/300x200?text=No+Image"
+                  }
                   alt={article.title}
                   className="news-image"
                 />
                 <div className="news-content">
-                  <h3 className="news-title">{truncateText(article.title, 8)}</h3>
-                  <p className="news-desc">{truncateText(article.description, 7)}</p>
+                  <h3 className="news-title">
+                    {truncateText(article.title, 8)}
+                  </h3>
+                  <p className="news-desc">
+                    {truncateText(article.description, 7)}
+                  </p>
                   <a
                     href={article.url}
                     target="_blank"
@@ -46,7 +54,9 @@ const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
         )}
       </div>
       <div className="offers">
-        <h2 style={{ fontWeight: '900', margin: '3%', color: 'var(--bl)' }}>Special Offers</h2>
+        <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>
+          Special Offers
+        </h2>
         {offersLoading ? (
           <p>Loading offers...</p>
         ) : offers.length === 0 ? (
@@ -55,7 +65,11 @@ const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
           <div className="offers-container">
             {offers.map((offer) => (
               <div key={offer.id} className="offer-card">
-                <img src={offer.image} alt={offer.name} className="offer-image" />
+                <img
+                  src={offer.image}
+                  alt={offer.name}
+                  className="offer-image"
+                />
               </div>
             ))}
           </div>
@@ -81,11 +95,7 @@ const MobileCarousel = ({ items, renderItem }) => {
   const totalCards = items.length;
   const cloneCount = cardsPerView;
   const extendedCards = totalCards
-    ? [
-        ...items.slice(-cloneCount),
-        ...items,
-        ...items.slice(0, cloneCount),
-      ]
+    ? [...items.slice(-cloneCount), ...items, ...items.slice(0, cloneCount)]
     : [];
   const cloneOffset = cardsPerView;
 
@@ -129,13 +139,13 @@ const MobileCarousel = ({ items, renderItem }) => {
   // Drag handlers
   const handleDragStart = (e) => {
     setIsDragging(true);
-    const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    const clientX = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
     setDragStartX(clientX);
     setDragOffset(0);
   };
   const handleDragMove = (e) => {
     if (!isDragging) return;
-    const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    const clientX = e.type === "touchmove" ? e.touches[0].clientX : e.clientX;
     setDragOffset(clientX - dragStartX);
   };
   const handleDragEnd = () => {
@@ -159,9 +169,9 @@ const MobileCarousel = ({ items, renderItem }) => {
             transform: `translateX(calc(${translateX}% + ${dragOffset}px))`,
             transition:
               enableTransition && !isDragging
-                ? 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)'
-                : 'none',
-            cursor: isDragging ? 'grabbing' : 'grab',
+                ? "transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)"
+                : "none",
+            cursor: isDragging ? "grabbing" : "grab",
           }}
           onTransitionEnd={handleTransitionEnd}
           onMouseDown={handleDragStart}
@@ -173,7 +183,7 @@ const MobileCarousel = ({ items, renderItem }) => {
           onTouchEnd={handleDragEnd}
         >
           {extendedCards.map((item, idx) => (
-            <div key={`mob-${idx}`} style={{ flex: '0 0 100%' }}>
+            <div key={`mob-${idx}`} style={{ flex: "0 0 100%" }}>
               {renderItem(item)}
             </div>
           ))}
@@ -183,7 +193,7 @@ const MobileCarousel = ({ items, renderItem }) => {
         {Array.from({ length: totalCards }).map((_, i) => (
           <button
             key={`dot-${i}`}
-            className={`dot ${i === getCurrentDotIndex() ? 'active' : ''}`}
+            className={`dot ${i === getCurrentDotIndex() ? "active" : ""}`}
             onClick={() => goToSlide(i)}
             aria-label={`Go to slide ${i + 1}`}
           />
@@ -198,7 +208,9 @@ const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
     <h1 className="shead">News and Offers</h1>
     <div className="nnf mobile-col">
       <div className="news">
-        <h2 style={{ fontWeight: '900', margin: '3%', color: 'var(--bl)' }}>Latest Financial News</h2>
+        <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>
+          Latest Financial News
+        </h2>
         {loading ? (
           <p>Loading news...</p>
         ) : (
@@ -207,13 +219,20 @@ const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
             renderItem={(article) => (
               <div className="news-card">
                 <img
-                  src={article.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+                  src={
+                    article.image ||
+                    "https://via.placeholder.com/300x200?text=No+Image"
+                  }
                   alt={article.title}
                   className="news-image"
                 />
                 <div className="news-content">
-                  <h3 className="news-title">{truncateText(article.title, 12)}</h3>
-                  <p className="news-desc">{truncateText(article.description, 18)}</p>
+                  <h3 className="news-title">
+                    {truncateText(article.title, 12)}
+                  </h3>
+                  <p className="news-desc">
+                    {truncateText(article.description, 18)}
+                  </p>
                   <a
                     href={article.url}
                     target="_blank"
@@ -229,7 +248,9 @@ const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
         )}
       </div>
       <div className="offers">
-        <h2 style={{ fontWeight: '900', margin: '3%', color: 'var(--bl)' }}>Special Offers</h2>
+        <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>
+          Special Offers
+        </h2>
         {offersLoading ? (
           <p>Loading offers...</p>
         ) : offers.length === 0 ? (
@@ -239,7 +260,11 @@ const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
             items={offers}
             renderItem={(offer) => (
               <div className="offer-card">
-                <img src={offer.image} alt={offer.name} className="offer-image" />
+                <img
+                  src={offer.image}
+                  alt={offer.name}
+                  className="offer-image"
+                />
               </div>
             )}
           />
@@ -254,12 +279,14 @@ export const NewsnOffers = () => {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [offersLoading, setOffersLoading] = useState(true);
-  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1920);
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1920,
+  );
 
   useEffect(() => {
     const onResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useEffect(() => {
@@ -269,49 +296,24 @@ export const NewsnOffers = () => {
 
   const fetchOffers = async () => {
     try {
-      const offersRef = ref(db, 'offers');
-      const snapshot = await get(offersRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const offersArray = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        setOffers(offersArray);
-      }
+      const data = await apiFetch("/api/offers");
+      setOffers(data || []);
       setOffersLoading(false);
     } catch (error) {
-      console.error('Error fetching offers:', error);
+      console.error("Error fetching offers:", error);
       setOffersLoading(false);
     }
   };
 
   const fetchFinancialNews = async () => {
     try {
-      const isDevelopment = window.location.hostname === 'localhost';
-
-      if (isDevelopment) {
-        const API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
-        const response = await fetch(
-          `https://gnews.io/api/v4/search?q=finance OR banking OR investment OR stock market&country=in&lang=en&max=4&apikey=${API_KEY}`
-        );
-        const data = await response.json();
-
-        if (data.articles) {
-          setNews(data.articles);
-        }
-      } else {
-        const response = await fetch('/api/news');
-        const data = await response.json();
-
-        if (data.articles) {
-          setNews(data.articles);
-        }
+      const data = await apiFetch("/api/news");
+      if (data && data.articles) {
+        setNews(data.articles);
       }
-
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error("Error fetching news:", error);
       setLoading(false);
     }
   };
@@ -333,4 +335,4 @@ export const NewsnOffers = () => {
       offersLoading={offersLoading}
     />
   );
-}
+};

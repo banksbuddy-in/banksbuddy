@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { ref, onValue } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import "./optional.css";
 
 export const Careers = () => {
@@ -9,20 +8,15 @@ export const Careers = () => {
   const [selectedJob, setSelectedJob] = useState(null); // for modal
 
   useEffect(() => {
-    const careersRef = ref(db, "careers");
-
-    const unsubscribe = onValue(careersRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const list = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        setCareers(list.reverse());
+    const loadCareers = async () => {
+      try {
+        const data = await apiFetch("/api/careers");
+        setCareers(data.reverse());
+      } catch (err) {
+        console.error("Error fetching careers:", err);
       }
-    });
-
-    return () => unsubscribe();
+    };
+    loadCareers();
   }, []);
 
   const filteredCareers = careers.filter((job) =>

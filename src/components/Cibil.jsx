@@ -23,8 +23,7 @@ import { FAQ } from "./FAQ";
 import { cibilFAQs } from "./Data_FAQs";
 import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
-import { db } from "../firebase";
-import { ref, push } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import { motion } from "framer-motion";
 import { BuyNowPayment } from "./BuyNowPayment";
 
@@ -171,30 +170,22 @@ export const Cibil = () => {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    // Check if user has already paid for CIBIL improvement
-    const checkPaymentStatus = async (user) => {
-      if (!user) return;
-      const cibilRef = ref(db, "cibil_requests");
-      onValue(cibilRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const paidRequest = Object.values(data).find(
-            (req) => req.email === user.email && req.status === "paid",
-          );
-          if (paidRequest) {
-            setHasPaid(true);
-          }
-        }
-      });
-    };
-
-    // Assuming we have access to current user's email
-    // For now, checking against the phone/email if they were recently stored in localStorage or if we can find a better way.
-    // Let's look for a generic way since login might not be robust.
     const savedEmail = localStorage.getItem("userEmail");
-    if (savedEmail) {
-      checkPaymentStatus({ email: savedEmail });
-    }
+    if (!savedEmail) return;
+    const checkPaymentStatus = async () => {
+      try {
+        const data = await apiFetch("/api/cibil-requests");
+        if (data && typeof data === "object") {
+          const paidRequest = Object.values(data).find(
+            (req) => req.email === savedEmail && req.status === "paid",
+          );
+          if (paidRequest) setHasPaid(true);
+        }
+      } catch (err) {
+        console.error("Error checking payment status:", err);
+      }
+    };
+    checkPaymentStatus();
   }, []);
 
   const fadeUp = {
@@ -261,13 +252,14 @@ export const Cibil = () => {
         </motion.section>
 
         <div className="cibprt">
-          <h1 className=" sp-section-title" style={{textAlign:"center"}}>
+          <h1 className=" sp-section-title" style={{ textAlign: "center" }}>
             Our Trusted Bureaus Partners
           </h1>
           <p className="sp-text-block center-text">
-            Partnering with India's leading credit bureaus to provide expert analysis and help improve your credit score.
+            Partnering with India's leading credit bureaus to provide expert
+            analysis and help improve your credit score.
           </p>
-          <img src="/bureaus.png"  style={{width:"80%"}} alt="" />
+          <img src="/bureaus.png" style={{ width: "80%" }} alt="" />
         </div>
 
         {/* About & Highlights */}

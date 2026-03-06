@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import apiFetch from "../lib/api.js";
 import {
   HiOutlineClipboardList,
   HiOutlineBriefcase,
@@ -11,8 +12,6 @@ import {
   HiOutlineHome,
   HiOutlineCurrencyRupee,
 } from "react-icons/hi";
-import { db } from "../firebase";
-import { ref, get } from "firebase/database";
 import "./Admin.css";
 
 // Import Admin Components
@@ -113,57 +112,12 @@ export const Admin = () => {
     },
   ];
 
-  // Fetch real stats from Firebase
+  // Fetch real stats from backend API
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [
-          consultationsSnap,
-          policiesSnap,
-          teamSnap,
-          offersSnap,
-          reviewsSnap,
-          careersSnap,
-          partnersSnap,
-          cibilSnap,
-          manualSnap,
-        ] = await Promise.all([
-          get(ref(db, "consultations")),
-          get(ref(db, "policies")),
-          get(ref(db, "team")),
-          get(ref(db, "offers")),
-          get(ref(db, "reviews")),
-          get(ref(db, "careers")),
-          get(ref(db, "partner_applications")),
-          get(ref(db, "cibil_requests")),
-          get(ref(db, "manual_revenue")),
-        ]);
-
-        setStats({
-          consultations: consultationsSnap.exists()
-            ? Object.keys(consultationsSnap.val()).length
-            : 0,
-          policies: policiesSnap.exists()
-            ? Object.keys(policiesSnap.val()).length
-            : 0,
-          team: teamSnap.exists() ? Object.keys(teamSnap.val()).length : 0,
-          offers: offersSnap.exists()
-            ? Object.keys(offersSnap.val()).length
-            : 0,
-          reviews: reviewsSnap.exists()
-            ? Object.keys(reviewsSnap.val()).length
-            : 0,
-          careers: careersSnap.exists()
-            ? Object.keys(careersSnap.val()).length
-            : 0,
-          partners: partnersSnap.exists()
-            ? Object.keys(partnersSnap.val()).length
-            : 0,
-          cibil: cibilSnap.exists() ? Object.keys(cibilSnap.val()).length : 0,
-          revenue: manualSnap.exists()
-            ? Object.keys(manualSnap.val()).length
-            : 0,
-        });
+        const data = await apiFetch("/api/stats");
+        setStats(data);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { ref, onValue, update, remove } from "firebase/database";
+import apiFetch from "../lib/api.js";
 import {
   HiCheck,
   HiX,
@@ -26,29 +25,25 @@ import "./AdminPartners.css";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const STATUS_COLORS = {
-  pending: "#f59e0b", // Amber
-  approved: "#10b981", // Emerald
-  rejected: "#ef4444", // Red
+  pending: "#f59e0b",
+  approved: "#10b981",
+  rejected: "#ef4444",
 };
 
 export const AdminPartners = ({ embedded }) => {
   const [applications, setApplications] = useState({});
-  const [filter, setFilter] = useState("all"); // all, pending, approved, rejected
+  const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedApp, setSelectedApp] = useState(null);
 
-  // Derived Data for Charts
   const getChartData = () => {
     const apps = Object.values(applications);
     const total = apps.length;
-
-    // Status Distribution
     const statusCounts = apps.reduce((acc, app) => {
       const status = app.status || "pending";
       acc[status] = (acc[status] || 0) + 1;
       return acc;
     }, {});
-
     const statusData = [
       {
         name: "Pending",
@@ -66,44 +61,55 @@ export const AdminPartners = ({ embedded }) => {
         color: STATUS_COLORS.rejected,
       },
     ].filter((item) => item.value > 0);
-
-    // State Distribution (Top 5)
     const stateCounts = apps.reduce((acc, app) => {
       if (app.state) {
         acc[app.state] = (acc[app.state] || 0) + 1;
       }
       return acc;
     }, {});
-
     const stateData = Object.entries(stateCounts)
       .map(([state, count]) => ({ state, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
-
     return { total, statusData, stateData };
   };
 
   const { total, statusData, stateData } = getChartData();
 
   useEffect(() => {
-    const appsRef = ref(db, "partner_applications");
-    const unsubscribe = onValue(appsRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setApplications(snapshot.val());
-      } else {
-        setApplications({});
+    const fetchPartners = async () => {
+      try {
+        const data = await apiFetch("/api/partners");
+        setApplications(data || {});
+      } catch (err) {
+        console.error("Error fetching partners:", err);
       }
-    });
-    return () => unsubscribe();
+    };
+    fetchPartners();
+    // Poll every 30s for semi-realtime feel
+    const interval = setInterval(fetchPartners, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const handleStatusChange = (id, newStatus) => {
-    update(ref(db, `partner_applications/${id}`), { status: newStatus });
+  const handleStatusChange = async (id, newStatus) => {
+    await apiFetch(`/api/partners/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: newStatus }),
+    });
+    setApplications((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], status: newStatus },
+    }));
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this application?")) {
-      remove(ref(db, `partner_applications/${id}`));
+      await apiFetch(`/api/partners/${id}`, { method: "DELETE" });
+      setApplications((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
     }
   };
 
@@ -128,10 +134,8 @@ export const AdminPartners = ({ embedded }) => {
         </div>
       </div>
 
-      {/* Charts Section */}
       {Object.keys(applications).length > 0 && (
         <div className="charts-grid">
-          {/* Card 1: Total Applications */}
           <div
             className="chart-card"
             style={{ justifyContent: "center", textAlign: "center" }}
@@ -165,8 +169,6 @@ export const AdminPartners = ({ embedded }) => {
               All time received
             </div>
           </div>
-
-          {/* Card 2: Status Distribution */}
           <div className="chart-card">
             <div className="chart-header">
               <h4>Application Status</h4>
@@ -193,8 +195,6 @@ export const AdminPartners = ({ embedded }) => {
               </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Card 3: Geographic Distribution */}
           <div className="chart-card">
             <div className="chart-header">
               <h4>Top Locations</h4>
@@ -361,7 +361,6 @@ export const AdminPartners = ({ embedded }) => {
         </table>
       </div>
 
-      {/* Application Detail Modal */}
       {selectedApp && (
         <div
           className="partner-modal-overlay"
@@ -390,7 +389,6 @@ export const AdminPartners = ({ embedded }) => {
                 {new Date(selectedApp.submittedAt).toLocaleString()}
               </p>
             </div>
-
             <div className="modal-grid">
               <div className="detail-item">
                 <label>Contact Person</label>
@@ -442,7 +440,6 @@ export const AdminPartners = ({ embedded }) => {
                 </p>
               </div>
             </div>
-
             <div
               className="action-buttons"
               style={{ marginTop: "2rem", justifyContent: "flex-end" }}

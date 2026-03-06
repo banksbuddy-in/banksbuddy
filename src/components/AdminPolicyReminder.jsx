@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { db } from '../firebase';
-import { ref, set, get, remove, update } from 'firebase/database';
-import './AdminPolicyReminder.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import apiFetch from "../lib/api.js";
+import "./AdminPolicyReminder.css";
 
 export const AdminPolicyReminder = ({ embedded = false }) => {
   const navigate = useNavigate();
@@ -10,42 +9,40 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingPolicy, setEditingPolicy] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("all");
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
-    userName: '',
-    address: '',
-    policyNumber: '',
-    policyType: '',
-    purchaseDate: '',
-    expirationDate: '',
-    phone: '',
-    email: '',
-    premiumAmount: '',
-    notes: ''
+    userName: "",
+    address: "",
+    policyNumber: "",
+    policyType: "",
+    purchaseDate: "",
+    expirationDate: "",
+    phone: "",
+    email: "",
+    premiumAmount: "",
+    notes: "",
   });
 
   const policyTypes = [
-    'Life Insurance',
-    'Health Insurance',
-    'Vehicle Insurance',
-    'Home Insurance',
-    'Travel Insurance',
-    'Term Insurance',
-    'ULIP',
-    'Pension Plan',
-    'Child Plan',
-    'Other'
+    "Life Insurance",
+    "Health Insurance",
+    "Vehicle Insurance",
+    "Home Insurance",
+    "Travel Insurance",
+    "Term Insurance",
+    "ULIP",
+    "Pension Plan",
+    "Child Plan",
+    "Other",
   ];
 
   useEffect(() => {
     fetchPolicies();
   }, []);
-
   useEffect(() => {
     checkExpiringPolicies();
   }, [policies]);
@@ -53,23 +50,14 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
   const fetchPolicies = async () => {
     setLoading(true);
     try {
-      const policiesRef = ref(db, 'policyReminders');
-      const snapshot = await get(policiesRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const policiesArray = Object.keys(data).map(key => ({
-          id: key,
-          ...data[key]
-        }));
-        // Sort by expiration date
-        policiesArray.sort((a, b) => new Date(a.expirationDate) - new Date(b.expirationDate));
-        setPolicies(policiesArray);
-      } else {
-        setPolicies([]);
-      }
+      const data = await apiFetch("/api/policies");
+      data.sort(
+        (a, b) => new Date(a.expirationDate) - new Date(b.expirationDate),
+      );
+      setPolicies(data);
     } catch (error) {
-      console.error('Error fetching policies:', error);
-      alert('Error fetching policies');
+      console.error("Error fetching policies:", error);
+      alert("Error fetching policies");
     } finally {
       setLoading(false);
     }
@@ -77,60 +65,54 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
 
   const checkExpiringPolicies = () => {
     const today = new Date();
-    const thirtyDaysFromNow = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-    
-    const expiringPolicies = policies.filter(policy => {
+    const thirtyDaysFromNow = new Date(
+      today.getTime() + 30 * 24 * 60 * 60 * 1000,
+    );
+    const expiringPolicies = policies.filter((policy) => {
       const expDate = new Date(policy.expirationDate);
       return expDate >= today && expDate <= thirtyDaysFromNow;
     });
-
-    const expiredPolicies = policies.filter(policy => {
-      const expDate = new Date(policy.expirationDate);
-      return expDate < today;
-    });
-
+    const expiredPolicies = policies.filter(
+      (policy) => new Date(policy.expirationDate) < today,
+    );
     const notifs = [];
-    
-    expiredPolicies.forEach(policy => {
+    expiredPolicies.forEach((policy) => {
       notifs.push({
-        type: 'expired',
+        type: "expired",
         policy,
-        message: `Policy ${policy.policyNumber} for ${policy.userName} has EXPIRED!`
+        message: `Policy ${policy.policyNumber} for ${policy.userName} has EXPIRED!`,
       });
     });
-
-    expiringPolicies.forEach(policy => {
-      const daysLeft = Math.ceil((new Date(policy.expirationDate) - today) / (1000 * 60 * 60 * 24));
+    expiringPolicies.forEach((policy) => {
+      const daysLeft = Math.ceil(
+        (new Date(policy.expirationDate) - today) / (1000 * 60 * 60 * 24),
+      );
       notifs.push({
-        type: 'expiring',
+        type: "expiring",
         policy,
-        message: `Policy ${policy.policyNumber} for ${policy.userName} expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'}`
+        message: `Policy ${policy.policyNumber} for ${policy.userName} expires in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`,
       });
     });
-
     setNotifications(notifs);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const resetForm = () => {
     setFormData({
-      userName: '',
-      address: '',
-      policyNumber: '',
-      policyType: '',
-      purchaseDate: '',
-      expirationDate: '',
-      phone: '',
-      email: '',
-      premiumAmount: '',
-      notes: ''
+      userName: "",
+      address: "",
+      policyNumber: "",
+      policyType: "",
+      purchaseDate: "",
+      expirationDate: "",
+      phone: "",
+      email: "",
+      premiumAmount: "",
+      notes: "",
     });
     setEditingPolicy(null);
     setShowForm(false);
@@ -138,38 +120,36 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.userName || !formData.policyNumber || !formData.policyType || 
-        !formData.purchaseDate || !formData.expirationDate) {
-      alert('Please fill in all required fields');
+    if (
+      !formData.userName ||
+      !formData.policyNumber ||
+      !formData.policyType ||
+      !formData.purchaseDate ||
+      !formData.expirationDate
+    ) {
+      alert("Please fill in all required fields");
       return;
     }
-
     setLoading(true);
     try {
       if (editingPolicy) {
-        // Update existing policy
-        const policyRef = ref(db, `policyReminders/${editingPolicy.id}`);
-        await update(policyRef, {
-          ...formData,
-          updatedAt: new Date().toISOString()
+        await apiFetch(`/api/policies/${editingPolicy.id}`, {
+          method: "PUT",
+          body: JSON.stringify(formData),
         });
-        alert('Policy updated successfully!');
+        alert("Policy updated successfully!");
       } else {
-        // Add new policy
-        const newPolicyId = Date.now().toString();
-        const policyRef = ref(db, `policyReminders/${newPolicyId}`);
-        await set(policyRef, {
-          ...formData,
-          createdAt: new Date().toISOString()
+        await apiFetch("/api/policies", {
+          method: "POST",
+          body: JSON.stringify(formData),
         });
-        alert('Policy added successfully!');
+        alert("Policy added successfully!");
       }
       resetForm();
       fetchPolicies();
     } catch (error) {
-      console.error('Error saving policy:', error);
-      alert('Error saving policy');
+      console.error("Error saving policy:", error);
+      alert("Error saving policy");
     } finally {
       setLoading(false);
     }
@@ -177,34 +157,33 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
 
   const handleEdit = (policy) => {
     setFormData({
-      userName: policy.userName || '',
-      address: policy.address || '',
-      policyNumber: policy.policyNumber || '',
-      policyType: policy.policyType || '',
-      purchaseDate: policy.purchaseDate || '',
-      expirationDate: policy.expirationDate || '',
-      phone: policy.phone || '',
-      email: policy.email || '',
-      premiumAmount: policy.premiumAmount || '',
-      notes: policy.notes || ''
+      userName: policy.userName || "",
+      address: policy.address || "",
+      policyNumber: policy.policyNumber || "",
+      policyType: policy.policyType || "",
+      purchaseDate: policy.purchaseDate || "",
+      expirationDate: policy.expirationDate || "",
+      phone: policy.phone || "",
+      email: policy.email || "",
+      premiumAmount: policy.premiumAmount || "",
+      notes: policy.notes || "",
     });
     setEditingPolicy(policy);
     setShowForm(true);
   };
 
   const handleDelete = async (policyId) => {
-    if (!window.confirm('Are you sure you want to delete this policy reminder?')) {
+    if (
+      !window.confirm("Are you sure you want to delete this policy reminder?")
+    )
       return;
-    }
-
     try {
-      const policyRef = ref(db, `policyReminders/${policyId}`);
-      await remove(policyRef);
-      alert('Policy deleted successfully!');
+      await apiFetch(`/api/policies/${policyId}`, { method: "DELETE" });
+      alert("Policy deleted successfully!");
       fetchPolicies();
     } catch (error) {
-      console.error('Error deleting policy:', error);
-      alert('Error deleting policy');
+      console.error("Error deleting policy:", error);
+      alert("Error deleting policy");
     }
   };
 
@@ -212,44 +191,41 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
     const today = new Date();
     const expDate = new Date(expirationDate);
     const daysLeft = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
-
-    if (daysLeft < 0) {
+    if (daysLeft < 0)
       return <span className="status-badge expired">Expired</span>;
-    } else if (daysLeft <= 7) {
-      return <span className="status-badge critical">Expires in {daysLeft}d</span>;
-    } else if (daysLeft <= 30) {
-      return <span className="status-badge warning">Expires in {daysLeft}d</span>;
-    } else {
-      return <span className="status-badge active">Active</span>;
-    }
+    else if (daysLeft <= 7)
+      return (
+        <span className="status-badge critical">Expires in {daysLeft}d</span>
+      );
+    else if (daysLeft <= 30)
+      return (
+        <span className="status-badge warning">Expires in {daysLeft}d</span>
+      );
+    else return <span className="status-badge active">Active</span>;
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+  const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     });
-  };
 
-  // Filter policies
-  const filteredPolicies = policies.filter(policy => {
-    const matchesSearch = 
+  const filteredPolicies = policies.filter((policy) => {
+    const matchesSearch =
       policy.userName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       policy.policyNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       policy.phone?.includes(searchTerm);
-    
-    const matchesType = filterType === 'all' || policy.policyType === filterType;
-    
+    const matchesType =
+      filterType === "all" || policy.policyType === filterType;
     return matchesSearch && matchesType;
   });
 
   return (
-    <div className={`policy-reminder-container ${embedded ? 'embedded' : ''}`}>
-      {/* Header */}
+    <div className={`policy-reminder-container ${embedded ? "embedded" : ""}`}>
       <div className="policy-header">
         {!embedded && (
-          <button className="back-btn" onClick={() => navigate('/admin')}>
+          <button className="back-btn" onClick={() => navigate("/admin")}>
             ← Back
           </button>
         )}
@@ -258,8 +234,8 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           <p>Manage and track policy expirations</p>
         </div>
         <div className="header-actions">
-          <button 
-            className={`notification-btn ${notifications.length > 0 ? 'has-notifications' : ''}`}
+          <button
+            className={`notification-btn ${notifications.length > 0 ? "has-notifications" : ""}`}
             onClick={() => setShowNotifications(!showNotifications)}
           >
             🔔
@@ -273,7 +249,6 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
         </div>
       </div>
 
-      {/* Notifications Panel */}
       {showNotifications && notifications.length > 0 && (
         <div className="notifications-panel">
           <div className="notifications-header">
@@ -282,8 +257,8 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           </div>
           <div className="notifications-list">
             {notifications.map((notif, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className={`notification-item ${notif.type}`}
                 onClick={() => {
                   handleEdit(notif.policy);
@@ -291,7 +266,7 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                 }}
               >
                 <span className="notif-icon">
-                  {notif.type === 'expired' ? '🔴' : '🟡'}
+                  {notif.type === "expired" ? "🔴" : "🟡"}
                 </span>
                 <span className="notif-message">{notif.message}</span>
                 <span className="notif-arrow">→</span>
@@ -301,7 +276,6 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
         </div>
       )}
 
-      {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card total">
           <span className="stat-icon">📊</span>
@@ -314,7 +288,10 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           <span className="stat-icon">✅</span>
           <div className="stat-info">
             <span className="stat-number">
-              {policies.filter(p => new Date(p.expirationDate) > new Date()).length}
+              {
+                policies.filter((p) => new Date(p.expirationDate) > new Date())
+                  .length
+              }
             </span>
             <span className="stat-label">Active</span>
           </div>
@@ -323,7 +300,7 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           <span className="stat-icon">⚠️</span>
           <div className="stat-info">
             <span className="stat-number">
-              {notifications.filter(n => n.type === 'expiring').length}
+              {notifications.filter((n) => n.type === "expiring").length}
             </span>
             <span className="stat-label">Expiring Soon</span>
           </div>
@@ -332,14 +309,13 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           <span className="stat-icon">❌</span>
           <div className="stat-info">
             <span className="stat-number">
-              {notifications.filter(n => n.type === 'expired').length}
+              {notifications.filter((n) => n.type === "expired").length}
             </span>
             <span className="stat-label">Expired</span>
           </div>
         </div>
       </div>
 
-      {/* Search and Filter */}
       <div className="search-filter-bar">
         <div className="search-box">
           <span className="search-icon">🔍</span>
@@ -350,25 +326,28 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <select 
+        <select
           className="filter-select"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         >
           <option value="all">All Types</option>
-          {policyTypes.map(type => (
-            <option key={type} value={type}>{type}</option>
+          {policyTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
           ))}
         </select>
       </div>
 
-      {/* Form Modal */}
       {showForm && (
         <div className="modal-overlay" onClick={() => resetForm()}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>{editingPolicy ? '✏️ Edit Policy' : '➕ Add New Policy'}</h2>
-              <button className="close-btn" onClick={resetForm}>×</button>
+              <h2>{editingPolicy ? "✏️ Edit Policy" : "➕ Add New Policy"}</h2>
+              <button className="close-btn" onClick={resetForm}>
+                ×
+              </button>
             </div>
             <form onSubmit={handleSubmit} className="policy-form">
               <div className="form-grid">
@@ -403,8 +382,10 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                     required
                   >
                     <option value="">Select Type</option>
-                    {policyTypes.map(type => (
-                      <option key={type} value={type}>{type}</option>
+                    {policyTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -480,11 +461,19 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                 </div>
               </div>
               <div className="form-actions">
-                <button type="button" className="cancel-btn" onClick={resetForm}>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={resetForm}
+                >
                   Cancel
                 </button>
                 <button type="submit" className="submit-btn" disabled={loading}>
-                  {loading ? 'Saving...' : (editingPolicy ? 'Update Policy' : 'Add Policy')}
+                  {loading
+                    ? "Saving..."
+                    : editingPolicy
+                      ? "Update Policy"
+                      : "Add Policy"}
                 </button>
               </div>
             </form>
@@ -492,7 +481,6 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
         </div>
       )}
 
-      {/* Policies Table */}
       <div className="policies-table-container">
         {loading ? (
           <div className="loading-state">
@@ -504,14 +492,13 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
             <span className="empty-icon">📭</span>
             <h3>No policies found</h3>
             <p>
-              {searchTerm || filterType !== 'all' 
-                ? 'Try adjusting your search or filter' 
-                : 'Add your first policy reminder to get started'}
+              {searchTerm || filterType !== "all"
+                ? "Try adjusting your search or filter"
+                : "Add your first policy reminder to get started"}
             </p>
           </div>
         ) : (
           <>
-            {/* Desktop Table */}
             <table className="policies-table desktop-table">
               <thead>
                 <tr>
@@ -525,19 +512,23 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                 </tr>
               </thead>
               <tbody>
-                {filteredPolicies.map(policy => (
+                {filteredPolicies.map((policy) => (
                   <tr key={policy.id}>
                     <td>
                       <div className="customer-info">
                         <strong>{policy.userName}</strong>
-                        {policy.phone && <span className="phone">{policy.phone}</span>}
+                        {policy.phone && (
+                          <span className="phone">{policy.phone}</span>
+                        )}
                       </div>
                     </td>
                     <td>
                       <div className="policy-info">
                         <strong>{policy.policyNumber}</strong>
                         {policy.premiumAmount && (
-                          <span className="premium">₹{Number(policy.premiumAmount).toLocaleString()}</span>
+                          <span className="premium">
+                            ₹{Number(policy.premiumAmount).toLocaleString()}
+                          </span>
                         )}
                       </div>
                     </td>
@@ -549,15 +540,15 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                     <td>{getStatusBadge(policy.expirationDate)}</td>
                     <td>
                       <div className="action-btns">
-                        <button 
-                          className="edit-btn" 
+                        <button
+                          className="edit-btn"
                           onClick={() => handleEdit(policy)}
                           title="Edit"
                         >
                           ✏️
                         </button>
-                        <button 
-                          className="delete-btn" 
+                        <button
+                          className="delete-btn"
                           onClick={() => handleDelete(policy.id)}
                           title="Delete"
                         >
@@ -569,10 +560,8 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                 ))}
               </tbody>
             </table>
-
-            {/* Mobile Cards */}
             <div className="mobile-cards">
-              {filteredPolicies.map(policy => (
+              {filteredPolicies.map((policy) => (
                 <div key={policy.id} className="policy-card">
                   <div className="card-header">
                     <div className="card-title">
@@ -581,7 +570,9 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                     </div>
                     <div className="card-actions">
                       <button onClick={() => handleEdit(policy)}>✏️</button>
-                      <button onClick={() => handleDelete(policy.id)}>🗑️</button>
+                      <button onClick={() => handleDelete(policy.id)}>
+                        🗑️
+                      </button>
                     </div>
                   </div>
                   <div className="card-body">
@@ -595,11 +586,15 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                     </div>
                     <div className="card-row">
                       <span className="label">Purchase:</span>
-                      <span className="value">{formatDate(policy.purchaseDate)}</span>
+                      <span className="value">
+                        {formatDate(policy.purchaseDate)}
+                      </span>
                     </div>
                     <div className="card-row">
                       <span className="label">Expires:</span>
-                      <span className="value">{formatDate(policy.expirationDate)}</span>
+                      <span className="value">
+                        {formatDate(policy.expirationDate)}
+                      </span>
                     </div>
                     {policy.phone && (
                       <div className="card-row">
@@ -610,7 +605,9 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
                     {policy.premiumAmount && (
                       <div className="card-row">
                         <span className="label">Premium:</span>
-                        <span className="value">₹{Number(policy.premiumAmount).toLocaleString()}</span>
+                        <span className="value">
+                          ₹{Number(policy.premiumAmount).toLocaleString()}
+                        </span>
                       </div>
                     )}
                   </div>

@@ -1,321 +1,149 @@
-import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
-import { ref, onValue, update } from "firebase/database";
-import { HiSearch, HiEye, HiOutlineX, HiDownload } from "react-icons/hi";
-import * as XLSX from "xlsx";
-import "./Admin.css";
-import "./AdminPartners.css";
+import React, { useEffect, useState } from "react";
+import apiFetch from "../lib/api.js";
+import { useNavigate } from "react-router-dom";
+import "./AdminCibil.css";
 
-const STATUS_COLORS = {
-  pending: "#f59e0b",
-  completed: "#10b981",
-};
-
-export const AdminCibil = ({ embedded }) => {
-  const [requests, setRequests] = useState({});
+export const AdminCibil = ({ embedded = false }) => {
+  const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
-  const [selectedReq, setSelectedReq] = useState(null);
 
   useEffect(() => {
-    const reqRef = ref(db, "cibil_requests");
-    const unsubscribe = onValue(reqRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setRequests(snapshot.val());
-      } else {
-        setRequests({});
-      }
-    });
-    return () => unsubscribe();
+    fetchRequests();
+    const interval = setInterval(fetchRequests, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const allEntries = Object.entries(requests);
-
-  // Notification counts
-  const pendingCount = allEntries.filter(
-    ([, r]) => (r.status || "pending") === "pending",
-  ).length;
-
-  const today = new Date().toISOString().slice(0, 10);
-  const newTodayCount = allEntries.filter(
-    ([, r]) => r.createdAt && r.createdAt.slice(0, 10) === today,
-  ).length;
-
-  const handleStatusToggle = (id, currentStatus) => {
-    const next = currentStatus === "pending" ? "completed" : "pending";
-    update(ref(db, `cibil_requests/${id}`), { status: next });
+  const fetchRequests = async () => {
+    setLoading(true);
+    try {
+      const data = await apiFetch("/api/cibil-requests");
+      if (data && typeof data === "object") {
+        const list = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+        list.sort((a, b) =>
+          (b.createdAt || "").localeCompare(a.createdAt || ""),
+        );
+        setRequests(list);
+      } else {
+        setRequests([]);
+      }
+    } catch (err) {
+      console.error("Error fetching CIBIL requests:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const filteredEntries = allEntries.filter(([, r]) => {
-    const matchesFilter =
-      filter === "all" || (r.status || "pending") === filter;
-    const q = search.toLowerCase();
-    const matchesSearch =
-      r.name?.toLowerCase().includes(q) ||
-      r.email?.toLowerCase().includes(q) ||
-      r.phone?.includes(q) ||
-      r.paymentId?.toLowerCase().includes(q);
-    return matchesFilter && matchesSearch;
-  });
-
-  const handleDownloadXlsx = () => {
-    const rows = allEntries.map(([id, r]) => ({
-      ID: id,
-      Name: r.name || "",
-      Phone: r.phone || "",
-      Email: r.email || "",
-      State: r.state || "",
-      City: r.city || "",
-      "Employment Type": r.employmentType || "",
-      Income: r.income || "",
-      "Payment ID": r.paymentId || "",
-      Amount: r.amount || "",
-      Status: r.status || "pending",
-      Date: r.createdAt ? new Date(r.createdAt).toLocaleString() : "",
-    }));
-    const ws = XLSX.utils.json_to_sheet(rows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Cibil Requests");
-    XLSX.writeFile(wb, "cibil_requests.xlsx");
+  const updateStatus = async (id, status) => {
+    try {
+      await apiFetch(`/api/cibil-requests/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ status }),
+      });
+      setRequests((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status } : r)),
+      );
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
   };
+
+  const handleDownload = (request) => {
+    const lines = Object.entries(request)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join("\n");
+    const blob = new Blob([lines], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cibil_${request.id}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const filtered =
+    filter === "all" ? requests : requests.filter((r) => r.status === filter);
 
   return (
-    <div className={`admin-module ${embedded ? "embedded" : ""}`}>
-      <div className="module-header" style={{ marginBottom: "1rem" }}>
-        <div>
-          <h3>CIBIL Service Requests</h3>
-          <p className="cb-admin-desc">
-            Manage customer payment requests and send reports
-          </p>
-        </div>
-      </div>
-
-      {/* Notification Banners */}
-      {(pendingCount > 0 || newTodayCount > 0) && (
-        <div className="cb-notif-row">
-          {pendingCount > 0 && (
-            <div className="cb-notif-banner cb-notif-pending">
-              ⏳ <strong>{pendingCount}</strong> request
-              {pendingCount > 1 ? "s" : ""} pending action
-            </div>
-          )}
-          {newTodayCount > 0 && (
-            <div className="cb-notif-banner cb-notif-new">
-              🆕 <strong>{newTodayCount}</strong> new request
-              {newTodayCount > 1 ? "s" : ""} today
-            </div>
-          )}
-        </div>
+    <div className={`admin-cibil ${embedded ? "embedded" : ""}`}>
+      {!embedded && (
+        <button className="back-btn" onClick={() => navigate("/admin")}>
+          ← Back to Admin
+        </button>
       )}
+      <h2>CIBIL Service Requests</h2>
 
-      {/* Filters + Search + Download */}
-      <div className="partner-filters">
-        <div className="filter-tabs">
-          {["all", "pending", "completed"].map((f) => (
-            <button
-              key={f}
-              className={`filter-tab ${filter === f ? "active" : ""}`}
-              onClick={() => setFilter(f)}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
-          ))}
-        </div>
-        <div className="cb-filter-actions">
-          <div className="search-box">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search by name, email, phone..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <button className="cb-download-btn" onClick={handleDownloadXlsx}>
-            <HiDownload /> Download XLSX
+      <div className="filter-tabs" style={{ marginBottom: "1rem" }}>
+        {["all", "pending", "in-progress", "completed"].map((f) => (
+          <button
+            key={f}
+            className={`filter-tab ${filter === f ? "active" : ""}`}
+            onClick={() => setFilter(f)}
+          >
+            {f.charAt(0).toUpperCase() + f.slice(1)}
           </button>
-        </div>
+        ))}
       </div>
 
-      {/* Table */}
-      <div className="table-container">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>City</th>
-              <th>Payment ID</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEntries.length > 0 ? (
-              filteredEntries.map(([id, r]) => (
-                <tr key={id}>
+      {loading ? (
+        <p>Loading...</p>
+      ) : filtered.length === 0 ? (
+        <p>No requests found.</p>
+      ) : (
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((req) => (
+                <tr key={req.id}>
+                  <td>{req.name || req.fullName || "-"}</td>
+                  <td>{req.email}</td>
+                  <td>{req.phone}</td>
+                  <td>₹{req.amount || req.amountPaid || "-"}</td>
                   <td>
-                    <strong>{r.name}</strong>
-                  </td>
-                  <td>{r.phone}</td>
-                  <td className="cb-td-email">{r.email}</td>
-                  <td>{r.city || "—"}</td>
-                  <td className="cb-td-payid">{r.paymentId || "—"}</td>
-                  <td>₹{r.amount || 100}</td>
-                  <td className="cb-td-date">
-                    {r.createdAt
-                      ? new Date(r.createdAt).toLocaleDateString()
-                      : "—"}
-                  </td>
-                  <td>
-                    <span className={`status-badge ${r.status || "pending"}`}>
-                      {r.status || "pending"}
+                    <span className={`status-dot ${req.status || "pending"}`}>
+                      {req.status || "pending"}
                     </span>
                   </td>
                   <td>
-                    <div className="action-buttons">
-                      <button
-                        className="btn-icon view"
-                        onClick={() => setSelectedReq({ ...r, id })}
-                        title="View Details"
+                    {req.createdAt
+                      ? new Date(req.createdAt).toLocaleDateString("en-IN")
+                      : "-"}
+                  </td>
+                  <td>
+                    <div style={{ display: "flex", gap: "0.4rem" }}>
+                      <select
+                        value={req.status || "pending"}
+                        onChange={(e) => updateStatus(req.id, e.target.value)}
+                        className="status-select"
                       >
-                        <HiEye />
-                      </button>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                      </select>
                       <button
-                        className={`btn-icon ${(r.status || "pending") === "pending" ? "approve" : "reject"}`}
-                        onClick={() =>
-                          handleStatusToggle(id, r.status || "pending")
-                        }
-                        title={
-                          (r.status || "pending") === "pending"
-                            ? "Mark Completed"
-                            : "Mark Pending"
-                        }
+                        onClick={() => handleDownload(req)}
+                        className="download-btn"
                       >
-                        {(r.status || "pending") === "pending" ? "✓" : "↺"}
+                        ↓
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="9"
-                  className="text-center"
-                  style={{ padding: "3rem" }}
-                >
-                  <div className="cb-empty-state">
-                    <HiSearch className="cb-empty-icon" />
-                    <p>No requests match your filter.</p>
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Detail Modal */}
-      {selectedReq && (
-        <div
-          className="partner-modal-overlay"
-          onClick={() => setSelectedReq(null)}
-        >
-          <div
-            className="partner-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="modal-close"
-              onClick={() => setSelectedReq(null)}
-            >
-              <HiOutlineX />
-            </button>
-            <div className="modal-header">
-              <span
-                className={`status-badge ${selectedReq.status || "pending"}`}
-                style={{ marginBottom: "0.5rem" }}
-              >
-                {selectedReq.status || "pending"}
-              </span>
-              <h2>{selectedReq.name}</h2>
-              <p className="cb-modal-date">
-                Submitted on {new Date(selectedReq.createdAt).toLocaleString()}
-              </p>
-            </div>
-            <div className="modal-grid">
-              <div className="detail-item">
-                <label>Mobile Number</label>
-                <p>{selectedReq.phone}</p>
-              </div>
-              <div className="detail-item">
-                <label>Email</label>
-                <p>{selectedReq.email}</p>
-              </div>
-              <div className="detail-item">
-                <label>Location</label>
-                <p>
-                  {selectedReq.city || "—"}, {selectedReq.state || "—"}
-                </p>
-              </div>
-              <div className="detail-item">
-                <label>Employment</label>
-                <p>
-                  {selectedReq.employmentType || "—"}
-                  {selectedReq.income ? ` — ₹${selectedReq.income}/mo` : ""}
-                </p>
-              </div>
-              <div className="detail-item">
-                <label>Payment ID</label>
-                <p>{selectedReq.paymentId || "—"}</p>
-              </div>
-              <div className="detail-item">
-                <label>Amount</label>
-                <p>₹{selectedReq.amount || 100}</p>
-              </div>
-              {selectedReq.message && (
-                <div className="detail-full">
-                  <label>Message</label>
-                  <p
-                    style={{
-                      fontWeight: "400",
-                      lineHeight: "1.6",
-                      whiteSpace: "pre-wrap",
-                    }}
-                  >
-                    {selectedReq.message}
-                  </p>
-                </div>
-              )}
-            </div>
-            <div
-              className="action-buttons"
-              style={{ marginTop: "2rem", justifyContent: "flex-end" }}
-            >
-              <button
-                className={`btn-icon ${(selectedReq.status || "pending") === "pending" ? "approve" : "reject"}`}
-                onClick={() => {
-                  const next =
-                    (selectedReq.status || "pending") === "pending"
-                      ? "completed"
-                      : "pending";
-                  update(ref(db, `cibil_requests/${selectedReq.id}`), {
-                    status: next,
-                  });
-                  setSelectedReq({ ...selectedReq, status: next });
-                }}
-                style={{ width: "auto", padding: "0.5rem 1rem", gap: "0.5rem" }}
-              >
-                {(selectedReq.status || "pending") === "pending"
-                  ? "✓ Mark Completed"
-                  : "↺ Mark Pending"}
-              </button>
-            </div>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
