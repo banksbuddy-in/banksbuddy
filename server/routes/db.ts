@@ -245,4 +245,168 @@ router.put("/revenue/cibil/:id", async (c: any) => {
   return c.json({ ok: true });
 });
 
+// ─── Cashfree Payments Integration ────────────────────────────────────────────
+router.post("/payment/create-order", async (c: any) => {
+  try {
+    const { name, email, phone, amount, pan, address, state, city, accountNumber, salaryStatus } = await c.req.json();
+    const order_id = `cibil_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+    // 1. Create pending record in Firebase
+    const requestId = await dbPush("cibil_requests", {
+      name,
+      email,
+      phone,
+      pan: pan || "",
+      address: address || "",
+      state: state || "",
+      city: city || "",
+      accountNumber: accountNumber || "",
+      salaryStatus: salaryStatus || "",
+      amount,
+      status: "pending",
+      orderId: order_id,
+      createdAt: new Date().toISOString(),
+    });
+
+    // 2. Call Cashfree to create the order
+    const isProd = process.env.VITE_CASHFREE_API_ENV === "production";
+    const baseUrl = isProd ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg";
+    
+    const response = await fetch(`${baseUrl}/orders`, {
+      method: "POST",
+      headers: {
+        "x-api-version": "2023-08-01",
+        "x-client-id": process.env.VITE_CASHFREE_APP_ID || "",
+        "x-client-secret": process.env.VITE_CASHFREE_SECRET_KEY || "",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_amount: amount,
+        order_currency: "INR",
+        order_id: order_id,
+        customer_details: {
+          customer_id: phone || `cust_${Date.now()}`,
+          customer_phone: phone || "9999999999",
+          customer_name: name || "Customer",
+          customer_email: email || "customer@example.com",
+        },
+        order_meta: {
+          // Cashfree checkout popup configuration
+          payment_methods: "cc,dc,ccc,emi,nb,upi,paypal,app",
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error("Cashfree Order Error:", errText);
+      throw new Error(`Cashfree error: ${errText}`);
+    }
+
+    const orderData = await response.json() as any;
+    
+    return c.json({
+      payment_session_id: orderData.payment_session_id,
+      order_id: order_id,
+      request_id: requestId,
+    });
+  } catch (err: any) {
+    return c.json({ error: "Failed to create order", detail: err.message }, 500);
+  }
+});
+
+router.post("/payment/verify", async (c: any) => {
+  try {
+    const { order_id, request_id } = await c.req.json();
+
+    const isProd = process.env.VITE_CASHFREE_API_ENV === "production";
+    const baseUrl = isProd
+      ? "https://api.cashfree.com/pg"
+      : "https://sandbox.cashfree.com/pg";
+
+    const response = await fetch(`${baseUrl}/orders/${order_id}`, {
+      method: "GET",
+      headers: {
+        "x-api-version": "2023-08-01",
+        "x-client-id": process.env.VITE_CASHFREE_APP_ID || "",
+        "x-client-secret": process.env.VITE_CASHFREE_SECRET_KEY || "",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to verify order with Cashfree");
+    }
+
+    const orderData = (await response.json()) as any;
+
+    if (orderData.order_status === "PAID") {
+      // 1. Update order record
+      await dbUpdate(`cibil_requests/${request_id}`, {
+        status: "paid",
+        paymentVerifiedAt: new Date().toISOString(),
+      });
+
+      // 2. Effort to tag user profile if possible
+      try {
+        const orderSnapshot = (await dbGet(`cibil_requests/${request_id}`)) as any;
+        const email = orderSnapshot?.email;
+        if (email) {
+          const users = await dbGet("users");
+          if (users) {
+            const userEntry = Object.entries(users).find(
+              ([uid, u]: [string, any]) => u.email === email,
+            );
+            if (userEntry) {
+              await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: true });
+            }
+          }
+        }
+      } catch (profileErr) {
+        console.error("Non-critical: Failed to tag user profile:", profileErr);
+      }
+
+      return c.json({ status: "PAID", message: "Payment successful" });
+    } else {
+      return c.json({
+        status: orderData.order_status,
+        message: "Payment not completed",
+      });
+    }
+  } catch (err: any) {
+    return c.json(
+      { error: "Failed to verify order", detail: err.message },
+      500,
+    );
+  }
+});
+
+router.get("/payment/status/:email", async (c: any) => {
+  try {
+    const email = c.req.param("email");
+    if (!email) return c.json({ error: "Email required" }, 400);
+
+    // Check user profile first (fastest)
+    const users = await dbGet("users");
+    if (users) {
+      const user = Object.values(users).find((u: any) => u.email === email) as any;
+      if (user?.cibilPaid) {
+        return c.json({ paid: true, source: "profile" });
+      }
+    }
+
+    // Fallback: Check cibil_requests (most accurate for guest/new flows)
+    const requests = await dbGet("cibil_requests");
+    if (requests) {
+      const paidReq = Object.values(requests).find(
+        (r: any) => r.email === email && r.status === "paid",
+      );
+      if (paidReq) return c.json({ paid: true, source: "history" });
+    }
+
+    return c.json({ paid: false });
+  } catch (err: any) {
+    return c.json({ error: "Status check failed", detail: err.message }, 500);
+  }
+});
+
 export default router;

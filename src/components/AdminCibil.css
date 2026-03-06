@@ -88,6 +88,10 @@
   background: #d1fae5;
   color: #065f46;
 }
+.status-dot.resolved {
+  background: #e0f2fe;
+  color: #0369a1;
+}
 
 .status-select {
   padding: 0.3rem 0.5rem;
@@ -109,4 +113,31 @@
 
 .download-btn:hover {
   background: #e2e8f0;
+}
+
+.req-cell-main {
+  font-size: 1rem;
+  color: #1e293b;
+}
+.req-cell-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+.req-amount {
+  font-weight: 700;
+  color: var(--bl, #2563eb);
+  margin-top: 4px;
+}
+.req-address {
+  font-size: 0.8rem;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.req-city {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
 }

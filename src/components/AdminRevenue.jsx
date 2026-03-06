@@ -93,7 +93,8 @@ export const AdminRevenue = ({ embedded }) => {
         username: v.name,
         email: v.email,
         mobile: v.phone,
-        status: v.paymentId ? "paid" : "pending",
+        // Prioritize DB status, fallback to paymentId check for auto-verification
+        status: v.status || (v.paymentId ? "paid" : "pending"),
         amount: v.amount || 200,
         date: v.createdAt,
       }));
@@ -114,6 +115,7 @@ export const AdminRevenue = ({ embedded }) => {
         mainCategory: v.mainCategory || "Other Services",
         subCategory: v.serviceTitle || v.serviceId,
         serviceType: v.serviceTitle,
+        // Honor existing status, else default to paid for historical reasons
         status: v.status || "paid",
         amount: v.amount,
         date: v.date || v.createdAt,
@@ -135,23 +137,34 @@ export const AdminRevenue = ({ embedded }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const [dataSources, setDataSources] = useState({
-    cibil: [],
-    manual: [],
-    cashfree: [],
-  });
+  const updateTxnStatus = async (txn, newStatus) => {
+    try {
+      let endpoint;
+      let payload;
 
-  const updateTransactions = (source, list) => {
-    setDataSources((prev) => {
-      const newState = { ...prev, [source]: list };
-      const all = [
-        ...newState.cibil,
-        ...newState.manual,
-        ...newState.cashfree,
-      ].sort((a, b) => new Date(b.date) - new Date(a.date));
-      setTransactions(all);
-      return newState;
-    });
+      if (txn.source === "Manual") {
+        endpoint = `/api/revenue/manual/${txn.id}`;
+        payload = { status: newStatus };
+      } else if (txn.source === "Cashfree") {
+        endpoint = `/api/revenue/cashfree/${txn.id}`;
+        payload = { status: newStatus };
+      } else {
+        endpoint = `/api/revenue/cibil/${txn.id}`;
+        payload = { status: newStatus };
+      }
+
+      await apiFetch(endpoint, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+      });
+
+      // Optimistic update
+      setTransactions((prev) =>
+        prev.map((t) => (t.id === txn.id ? { ...t, status: newStatus } : t)),
+      );
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
   };
 
   useEffect(() => {
@@ -164,12 +177,12 @@ export const AdminRevenue = ({ embedded }) => {
     setFilteredTxns(filtered);
 
     const totalRev = transactions
-      .filter((t) => t.status === "paid" || t.status === "complete")
+      .filter((t) => ["paid", "completed", "resolved"].includes(t.status))
       .reduce((sum, t) => sum + Number(t.amount || 0), 0);
 
     const pending = transactions.filter((t) => t.status === "pending").length;
-    const completed = transactions.filter(
-      (t) => t.status === "paid" || t.status === "complete",
+    const completed = transactions.filter((t) =>
+      ["paid", "completed", "resolved"].includes(t.status),
     ).length;
 
     setStats({
@@ -311,7 +324,7 @@ export const AdminRevenue = ({ embedded }) => {
     // Prefer mainCategory if available, else standard fallback
     const svc = curr.mainCategory || "Other Services";
     if (!acc[svc]) acc[svc] = 0;
-    if (curr.status === "paid" || curr.status === "complete") {
+    if (["paid", "completed", "resolved"].includes(curr.status)) {
       acc[svc] += Number(curr.amount || 0);
     }
     return acc;
@@ -559,13 +572,32 @@ export const AdminRevenue = ({ embedded }) => {
                     </small>
                   </td>
                   <td>
-                    <button
-                      className="rev-edit-btn-small"
-                      onClick={() => handleEdit(t)}
-                      title="Edit Entry"
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
+                      }}
                     >
-                      Edit
-                    </button>
+                      <select
+                        className="rev-status-select"
+                        value={t.status || "pending"}
+                        onChange={(e) => updateTxnStatus(t, e.target.value)}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="completed">Completed</option>
+                        <option value="refunded">Refunded</option>
+                      </select>
+                      <button
+                        className="rev-edit-btn-small"
+                        onClick={() => handleEdit(t)}
+                        title="Edit Full Entry"
+                      >
+                        Edit Details
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -709,9 +741,10 @@ export const AdminRevenue = ({ embedded }) => {
                       setFormData({ ...formData, status: e.target.value })
                     }
                   >
-                    <option value="paid">Paid</option>
                     <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
                     <option value="resolved">Resolved</option>
+                    <option value="completed">Completed</option>
                     <option value="refunded">Refunded</option>
                   </select>
                 </div>

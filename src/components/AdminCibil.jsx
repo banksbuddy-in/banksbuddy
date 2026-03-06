@@ -75,7 +75,7 @@ export const AdminCibil = ({ embedded = false }) => {
       <h2>CIBIL Service Requests</h2>
 
       <div className="filter-tabs" style={{ marginBottom: "1rem" }}>
-        {["all", "pending", "in-progress", "completed"].map((f) => (
+        {["all", "pending", "in-progress", "resolved", "completed"].map((f) => (
           <button
             key={f}
             className={`filter-tab ${filter === f ? "active" : ""}`}
@@ -95,10 +95,10 @@ export const AdminCibil = ({ embedded = false }) => {
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Amount</th>
+                <th>Registration Details</th>
+                <th>Contact Info</th>
+                <th>Financial Details</th>
+                <th>Location</th>
                 <th>Status</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -107,10 +107,31 @@ export const AdminCibil = ({ embedded = false }) => {
             <tbody>
               {filtered.map((req) => (
                 <tr key={req.id}>
-                  <td>{req.name || req.fullName || "-"}</td>
-                  <td>{req.email}</td>
-                  <td>{req.phone}</td>
-                  <td>₹{req.amount || req.amountPaid || "-"}</td>
+                  <td>
+                    <div className="req-cell-main">
+                      <strong>{req.name || req.fullName || "-"}</strong>
+                    </div>
+                    <div className="req-cell-sub">PAN: {req.pan || "-"}</div>
+                  </td>
+                  <td>
+                    <div>{req.email}</div>
+                    <div>{req.phone}</div>
+                  </td>
+                  <td>
+                    <div>A/C: {req.accountNumber || "-"}</div>
+                    <div>Status: {req.salaryStatus || "-"}</div>
+                    <div className="req-amount">
+                      ₹{req.amount || req.amountPaid || "-"}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="req-address">{req.address || "-"}</div>
+                    <div className="req-city">
+                      {req.city
+                        ? `${req.city}, ${req.state}`
+                        : req.state || "-"}
+                    </div>
+                  </td>
                   <td>
                     <span className={`status-dot ${req.status || "pending"}`}>
                       {req.status || "pending"}
@@ -122,7 +143,13 @@ export const AdminCibil = ({ embedded = false }) => {
                       : "-"}
                   </td>
                   <td>
-                    <div style={{ display: "flex", gap: "0.4rem" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.4rem",
+                      }}
+                    >
                       <select
                         value={req.status || "pending"}
                         onChange={(e) => updateStatus(req.id, e.target.value)}
@@ -130,13 +157,15 @@ export const AdminCibil = ({ embedded = false }) => {
                       >
                         <option value="pending">Pending</option>
                         <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
                         <option value="completed">Completed</option>
                       </select>
                       <button
                         onClick={() => handleDownload(req)}
                         className="download-btn"
+                        title="Download Data"
                       >
-                        ↓
+                        Download TXT
                       </button>
                     </div>
                   </td>

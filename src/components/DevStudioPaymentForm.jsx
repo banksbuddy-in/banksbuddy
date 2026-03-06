@@ -1,4 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import apiFetch from "../lib/api.js";
+import { load } from "@cashfreepayments/cashfree-js";
+import { useAuth } from "../context/AuthContext";
+
+const INDIAN_STATES = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry",
+];
 
 export const DevStudioPaymentForm = ({
   isOpen,
@@ -6,68 +48,273 @@ export const DevStudioPaymentForm = ({
   serviceTitle,
   amount = "",
 }) => {
-  const [payAmount, setPayAmount] = useState(amount);
+  const { currentUser } = useAuth();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    pan: "",
+    address: "",
+    state: "",
+    city: "",
+    accountNumber: "",
+    salaryStatus: "",
+    amount: amount || "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
-      setPayAmount(amount);
+      setFormData((prev) => ({
+        ...prev,
+        amount: amount || "",
+        email: prev.email || currentUser?.email || "",
+        name: prev.name || currentUser?.displayName || "",
+      }));
+      setError("");
     }
-  }, [isOpen, amount]);
+  }, [isOpen, amount, currentUser]);
 
   if (!isOpen) return null;
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!currentUser?.email) {
+      setError("You must be logged in to proceed with the payment.");
+      setLoading(false);
+      return;
+    }
+
+    if (
+      !formData.name ||
+      !formData.phone ||
+      !formData.pan ||
+      !formData.address ||
+      !formData.state ||
+      !formData.city ||
+      !formData.accountNumber ||
+      !formData.salaryStatus ||
+      !formData.amount
+    ) {
+      setError("Please fill in all required fields.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Save email to localStorage for post-payment identification
+      localStorage.setItem("userEmail", formData.email);
+
+      // 1. Create order on backend
+      const { payment_session_id, order_id, request_id } = await apiFetch(
+        "/api/payment/create-order",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (!payment_session_id) throw new Error("Could not initialize payment.");
+
+      // 2. Initialize Cashfree SDK
+      const cashfreeEnv = import.meta.env.VITE_CASHFREE_ENV || "sandbox";
+      const cashfree = await load({ mode: cashfreeEnv });
+
+      // 3. Close the modal so the cashfree popup can take over
+      onClose();
+
+      // 4. Trigger Cashfree checkout
+      const checkoutOptions = {
+        paymentSessionId: payment_session_id,
+        returnUrl: `${window.location.origin}/cibil?order_id={order_id}&request_id=${request_id}`,
+      };
+
+      await cashfree.checkout(checkoutOptions);
+    } catch (err) {
+      console.error("Payment initiation failed:", err);
+      setError(err.message || "Failed to initiate payment. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="pf-modal-overlay" onClick={onClose}>
       <div className="pf-modal-container" onClick={(e) => e.stopPropagation()}>
-        <button className="pf-close-button" onClick={onClose}>
+        <button
+          className="pf-close-button"
+          onClick={onClose}
+          disabled={loading}
+        >
           &times;
         </button>
 
-        <div className="pf-content">
-          {/* <div className="pf-amount-input-wrapper">
-            <label className="pf-amount-label">Enter Payment Amount (₹)</label>
-            <input
-              type="number"
-              className="pf-amount-input"
-              placeholder="e.g. 500"
-              value={payAmount}
-              min="1"
-              onChange={(e) => setPayAmount(e.target.value)}
-            />
-          </div> */}
+        <form className="pf-content" onSubmit={handleSubmit}>
+          <h2 className="pf-title">Checkout Details</h2>
+          <p className="pf-subtitle">{serviceTitle}</p>
 
-          {payAmount && (
-            <div className="pf-amount-badge">
-              Amount to Pay: <strong>₹{payAmount}</strong>
+          {error && <div className="pf-error">{error}</div>}
+
+          <div className="pf-scroll-container">
+            <div className="pf-input-group">
+              <label>Full Name *</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
             </div>
-          )}
 
-          <div className="pf-qr-container">
-            <img src="/payshot.png" alt="Payment QR Code" />
+            <div className="pf-input-group">
+              <label>Phone Number *</label>
+              <input
+                type="tel"
+                name="phone"
+                pattern="[0-9]{10}"
+                title="10 digit mobile number"
+                value={formData.phone}
+                onChange={handleChange}
+                disabled={loading}
+                placeholder="10 digit number"
+                required
+              />
+            </div>
+
+            <div className="pf-input-group pf-email-badge">
+              <label>Paying with Account</label>
+              <div className="pf-email-display">
+                {currentUser?.email || "No account detected"}
+              </div>
+            </div>
+
+            <div className="pf-input-group">
+              <label>PAN Card Number *</label>
+              <input
+                type="text"
+                name="pan"
+                style={{ textTransform: "uppercase" }}
+                value={formData.pan}
+                onChange={handleChange}
+                placeholder="e.g. ABCDE1234F"
+                disabled={loading}
+                required
+              />
+            </div>
+
+            <div className="pf-input-group">
+              <label>Address *</label>
+              <textarea
+                name="address"
+                className="pf-textarea"
+                rows="2"
+                value={formData.address}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <div className="pf-input-group" style={{ flex: 1 }}>
+                <label>State *</label>
+                <select
+                  name="state"
+                  className="pf-select"
+                  value={formData.state}
+                  onChange={handleChange}
+                  disabled={loading}
+                  required
+                >
+                  <option value="" disabled>
+                    Select State
+                  </option>
+                  {INDIAN_STATES.map((st) => (
+                    <option key={st} value={st}>
+                      {st}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="pf-input-group" style={{ flex: 1 }}>
+                <label>City *</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  disabled={loading}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="pf-input-group">
+              <label>Bank Account Number *</label>
+              <input
+                type="text"
+                name="accountNumber"
+                value={formData.accountNumber}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+
+            <div className="pf-input-group">
+              <label>Salary Status *</label>
+              <select
+                name="salaryStatus"
+                className="pf-select"
+                value={formData.salaryStatus}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              >
+                <option value="" disabled>
+                  Select Status
+                </option>
+                <option value="Salaried">Salaried</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Student">Student</option>
+              </select>
+            </div>
           </div>
 
-          <div className="pf-bank-details">
-            <h3>Bank Account Details</h3>
-            <div className="pf-bank-list">
-              <div className="pf-bank-row">
-                <span className="pf-bank-label">Bank Name:</span>
-                <span className="pf-bank-value">Punjab National Bank</span>
-              </div>
-              <div className="pf-bank-row">
-                <span className="pf-bank-label">Account Number:</span>
-                <span className="pf-bank-value pf-mono">2157000100378800</span>
-              </div>
-              <div className="pf-bank-row pf-no-border">
-                <span className="pf-bank-label">IFSC Code:</span>
-                <span className="pf-bank-value pf-mono">PUNB0215700</span>
-              </div>
+          <div className="pf-footer-action">
+            <div className="pf-input-group pf-amount-box">
+              <label>Amount (₹) *</label>
+              <input
+                type="number"
+                name="amount"
+                min="1"
+                value={formData.amount}
+                onChange={handleChange}
+                disabled={!!amount || loading}
+                placeholder="e.g. 500"
+                required
+              />
             </div>
-          </div>
 
-          <button onClick={onClose} className="pf-submit-btn">
-            I have completed the payment
-          </button>
-        </div>
+            <button type="submit" className="pf-submit-btn" disabled={loading}>
+              {loading
+                ? "Processing..."
+                : `Proceed to Pay ₹${formData.amount || "0"}`}
+            </button>
+          </div>
+        </form>
       </div>
 
       <style>{`
@@ -88,12 +335,15 @@ export const DevStudioPaymentForm = ({
         .pf-modal-container {
           background: #ffffff;
           width: 100%;
-          max-width: 440px;
+          max-width: 480px;
           border-radius: 28px;
           padding: 2.5rem 2rem 2rem;
           position: relative;
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
           animation: pf-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
         }
         @keyframes pf-slide-up {
           from { opacity: 0; transform: translateY(30px); }
@@ -122,22 +372,64 @@ export const DevStudioPaymentForm = ({
         .pf-content {
           display: flex;
           flex-direction: column;
+          gap: 1rem;
+          height: 100%;
+          overflow: hidden;
+        }
+        .pf-scroll-container {
+          display: flex;
+          flex-direction: column;
           gap: 1.25rem;
-          align-items: center;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding-right: 0.5rem;
+          margin-right: -0.5rem;
+          /* Add some spacing at the top */
           padding-top: 0.5rem;
         }
-        .pf-amount-input-wrapper {
-          width: 100%;
+        .pf-scroll-container::-webkit-scrollbar {
+          width: 6px;
+        }
+        .pf-scroll-container::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .pf-scroll-container::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1;
+          border-radius: 20px;
+        }
+        .pf-title {
+          margin: 0;
+          font-size: 1.5rem;
+          color: #0f172a;
+          font-weight: 800;
+          flex-shrink: 0;
+        }
+        .pf-subtitle {
+          margin: -0.5rem 0 0.5rem 0;
+          color: #64748b;
+          font-size: 0.95rem;
+          flex-shrink: 0;
+        }
+        .pf-error {
+          background: #fef2f2;
+          color: #b91c1c;
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          flex-shrink: 0;
+        }
+        .pf-input-group {
           display: flex;
           flex-direction: column;
           gap: 0.4rem;
         }
-        .pf-amount-label {
-          font-size: 0.875rem;
+        .pf-input-group label {
+          font-size: 0.85rem;
           font-weight: 600;
           color: #475569;
         }
-        .pf-amount-input {
+        .pf-input-group input, .pf-textarea, .pf-select {
           width: 100%;
           padding: 0.75rem 1rem;
           border: 2px solid #e2e8f0;
@@ -147,83 +439,41 @@ export const DevStudioPaymentForm = ({
           outline: none;
           transition: border-color 0.2s;
           box-sizing: border-box;
+          font-family: inherit;
         }
-        .pf-amount-input:focus {
+        .pf-textarea {
+          resize: vertical;
+        }
+        .pf-select {
+          appearance: none;
+          background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+          background-repeat: no-repeat;
+          background-position: right 1rem center;
+          background-size: 1em;
+        }
+        .pf-input-group input:focus, .pf-textarea:focus, .pf-select:focus {
           border-color: #0ea5e9;
         }
-        .pf-amount-badge {
-          background: #e0f2fe;
-          color: #0284c7;
-          padding: 0.5rem 1.25rem;
-          border-radius: 999px;
-          font-size: 1.125rem;
-          display: inline-block;
-          font-weight: 500;
-        }
-        .pf-amount-badge strong {
-          font-weight: 800;
-          color: #0369a1;
-        }
-        .pf-qr-container {
+        .pf-input-group input:disabled, .pf-textarea:disabled, .pf-select:disabled {
           background: #f8fafc;
-          padding: 1rem;
-          border-radius: 24px;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-          border: 1px solid #f1f5f9;
+          color: #64748b;
         }
-        .pf-qr-container img {
-          width: 260px;
-          height: auto;
-          border-radius: 16px;
-          display: block;
-        }
-        .pf-bank-details {
-          width: 100%;
-          background: #f8fafc;
-          padding: 1.5rem;
-          border-radius: 20px;
-          text-align: left;
-        }
-        .pf-bank-details h3 {
-          margin-top: 0;
-          margin-bottom: 1.25rem;
-          color: #0f172a;
-          font-size: 1.15rem;
-          font-weight: 800;
-        }
-        .pf-bank-list {
+        .pf-footer-action {
+          flex-shrink: 0;
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid #e2e8f0;
           display: flex;
           flex-direction: column;
-          gap: 0;
-          color: #334155;
-          font-size: 0.95rem;
+          gap: 1rem;
         }
-        .pf-bank-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 0.875rem 0;
-          border-bottom: 1px solid #e2e8f0;
-          align-items: center;
-        }
-        .pf-bank-row.pf-no-border {
-          border-bottom: none;
-          padding-bottom: 0;
-        }
-        .pf-bank-label {
+        .pf-amount-box input {
+          background: #f0f9ff;
+          border-color: #bae6fd;
           font-weight: 700;
-          color: #475569;
-        }
-        .pf-bank-value {
-          color: #334155;
-          font-weight: 500;
-        }
-        .pf-mono {
-          font-family: inherit;
-          font-size: 1.05rem;
-          letter-spacing: 0.02em;
+          color: #0369a1;
         }
         .pf-submit-btn {
-          margin-top: 0.5rem;
           padding: 1.125rem;
           width: 100%;
           background: #0ea5e9;
@@ -236,14 +486,31 @@ export const DevStudioPaymentForm = ({
           transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
           box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -2px rgba(14, 165, 233, 0.2);
         }
-        .pf-submit-btn:hover {
+        .pf-submit-btn:hover:not(:disabled) {
           background: #0284c7;
           transform: translateY(-2px);
           box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3), 0 4px 6px -4px rgba(14, 165, 233, 0.3);
         }
-        .pf-submit-btn:active {
+        .pf-submit-btn:active:not(:disabled) {
           transform: translateY(0);
           box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2), 0 2px 4px -2px rgba(14, 165, 233, 0.2);
+        }
+        .pf-submit-btn:disabled {
+          background: #94a3b8;
+          cursor: not-allowed;
+        }
+        .pf-email-badge {
+          background: #f1f5f9;
+          padding: 1rem;
+          border-radius: 12px;
+          border: 1px dashed #cbd5e1;
+          margin-bottom: 0.5rem;
+        }
+        .pf-email-display {
+          font-weight: 700;
+          color: #0f172a;
+          font-size: 0.95rem;
+          margin-top: 0.25rem;
         }
       `}</style>
     </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useSearchParams } from "react-router-dom";
 import { MdBolt, MdOnlinePrediction } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
 import {
@@ -161,32 +161,79 @@ const textarr2 = [
   { elm: <IoTimer />, txt: "Flexible Service Timeline" },
 ];
 
+import { useAuth } from "../context/AuthContext";
+
 export const Cibil = () => {
+  const { currentUser } = useAuth();
   const [faqCategory, setFaqCategory] = useState("Common");
   const [showFormModal, setShowFormModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
   const [formStatus, setFormStatus] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [checkLoading, setCheckLoading] = useState(true);
 
+  // 1. Verify Payment if returning from Cashfree
   useEffect(() => {
-    const savedEmail = localStorage.getItem("userEmail");
-    if (!savedEmail) return;
+    const checkRedirect = async () => {
+      const orderId = searchParams.get("order_id");
+      const requestId = searchParams.get("request_id");
+
+      if (orderId && requestId) {
+        setIsVerifying(true);
+        try {
+          const res = await apiFetch("/api/payment/verify", {
+            method: "POST",
+            body: JSON.stringify({ order_id: orderId, request_id: requestId }),
+          });
+
+          if (res.status === "PAID") {
+            setShowSuccessPopup(true);
+            setHasPaid(true);
+          } else {
+            console.warn("Payment incomplete. Status:", res.status);
+          }
+        } catch (err) {
+          console.error("Payment verification failed:", err);
+        } finally {
+          setIsVerifying(false);
+          // Remove query params from URL
+          const newParams = new URLSearchParams(searchParams);
+          newParams.delete("order_id");
+          newParams.delete("request_id");
+          setSearchParams(newParams);
+        }
+      }
+    };
+    checkRedirect();
+  }, [searchParams, setSearchParams]);
+
+  // 2. Check general payment status on load / auth change
+  useEffect(() => {
+    const savedEmail = currentUser?.email || localStorage.getItem("userEmail");
+    if (!savedEmail) {
+      setCheckLoading(false);
+      return;
+    }
+
     const checkPaymentStatus = async () => {
+      setCheckLoading(true);
       try {
-        const data = await apiFetch("/api/cibil-requests");
-        if (data && typeof data === "object") {
-          const paidRequest = Object.values(data).find(
-            (req) => req.email === savedEmail && req.status === "paid",
-          );
-          if (paidRequest) setHasPaid(true);
+        const res = await apiFetch(
+          `/api/payment/status/${encodeURIComponent(savedEmail)}`,
+        );
+        if (res?.paid) {
+          setHasPaid(true);
         }
       } catch (err) {
         console.error("Error checking payment status:", err);
+      } finally {
+        setCheckLoading(false);
       }
     };
     checkPaymentStatus();
-  }, []);
+  }, [currentUser]);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -218,7 +265,11 @@ export const Cibil = () => {
             <p className="sp-hero-description">{svc.overview[0]}</p>
 
             <div className="sp-hero-actions">
-              {hasPaid ? (
+              {checkLoading || isVerifying ? (
+                <button className="sp-btn-primary" disabled>
+                  {isVerifying ? "Verifying Payment..." : "Checking Status..."}
+                </button>
+              ) : hasPaid ? (
                 <button
                   className="sp-btn-primary cb-btn-report"
                   onClick={() => setShowSuccessPopup(true)}
@@ -228,7 +279,15 @@ export const Cibil = () => {
               ) : (
                 <button
                   className="sp-btn-primary"
-                  onClick={() => setShowFormModal(true)}
+                  onClick={() => {
+                    if (!currentUser) {
+                      alert(
+                        "Please login or signup to proceed with the CIBIL report payment. This ensures your payment is permanently linked to your account.",
+                      );
+                      return;
+                    }
+                    setShowFormModal(true);
+                  }}
                 >
                   Pay now <GoArrowRight />
                 </button>
