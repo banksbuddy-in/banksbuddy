@@ -10,5 +10,8 @@
   "dependencies": {
     "firebase-admin": "^13.7.0",
     "hono": "^4.7.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
   }
 }
