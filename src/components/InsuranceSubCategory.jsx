@@ -265,10 +265,6 @@ Warm regards,
           </div>
         </motion.section>
 
-        <div className="inbnr">
-          <img src="/pb.jpg" alt="" />
-        </div>
-
         {/* About & Details Section (Vertical Layout) */}
         <section className="sp-section" style={{ background: "#fff" }}>
           <motion.div
@@ -287,7 +283,6 @@ Warm regards,
               </p>
             </div>
           </motion.div>
-
           {/* Hardcoding Highlights visually to match exactly, but can be removed if strictly adhering to individual data */}
           <motion.div
             className="sp-details-card full-width-table"
@@ -310,7 +305,32 @@ Warm regards,
             </div>
           </motion.div>
         </section>
+        <div className="inbnr">
+          <img src="/pb.jpg" alt="" />
+        </div>
 
+        <div
+          className="ourbr"
+          style={{
+            padding: "5%  15%",
+          }}
+        >
+          <h1 className="sp-section-title" style={{ textAlign: "center" }}>
+            Our Insurance Partners
+          </h1>
+          <p className="sp-text-block center-text">
+            We have partnered with leading insurance companies to provide you
+            with the best insurance products at affordable prices. Our insurance
+            partners include:
+          </p>
+          <img
+            style={{
+              width: "100%",
+            }}
+            src="/inbr.jpg"
+            alt="insprt"
+          />
+        </div>
         {/* Online Features Horizontal Grid */}
         <section className="sp-section">
           <div className="sp-centered-header">

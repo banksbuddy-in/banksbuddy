@@ -274,6 +274,7 @@ export const Insurance = () => {
             <img src={svc.image} alt={svc.Title} />
           </div>
         </motion.section>
+        
 
         {/* About & Details Section (Vertical Layout) */}
         <section className="sp-section" style={{ background: "#fff" }}>
