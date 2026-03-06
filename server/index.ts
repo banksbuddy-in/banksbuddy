@@ -1,7 +1,6 @@
-import { Hono } from "hono";
+import { Hono, Context } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
-import { serve } from "bun";
 import dbRoutes from "./routes/db.ts";
 import newsRoutes from "./routes/news.ts";
 
@@ -28,20 +27,26 @@ app.route("/api", dbRoutes);
 app.route("/api/news", newsRoutes);
 
 // ─── Health check ─────────────────────────────────────────────────────────────
-app.get("/", (c) => c.json({ status: "BanksBuddy API running 🚀" }));
+app.get("/", (c: Context) => c.json({ status: "BanksBuddy API running 🚀" }));
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-const port = Number(process.env.PORT) || 3000;
-console.log(`🚀 BanksBuddy server running on http://localhost:${port}`);
-
-// ─── Export for Vercel/Bun ────────────────────────────────────────────────────
+// ─── Export for Vercel ────────────────────────────────────────────────────────
 export const GET = handle(app);
 export const POST = handle(app);
 export const PUT = handle(app);
 export const DELETE = handle(app);
+export const PATCH = handle(app);
 export const OPTIONS = handle(app);
 
-export default {
-  port,
-  fetch: app.fetch,
-};
+// ─── Start for Local Bun ──────────────────────────────────────────────────────
+const port = Number(process.env.PORT) || 3000;
+
+if (typeof (globalThis as any).Bun !== "undefined") {
+  console.log(`🚀 BanksBuddy local server running on http://localhost:${port}`);
+  (globalThis as any).Bun.serve({
+    port,
+    fetch: app.fetch,
+  });
+}
+
+export default handle(app);
