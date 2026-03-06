@@ -1,5 +1,5 @@
 // Central API helper — all fetch calls to the backend go through here
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 /**
  * Wrapper around fetch that:

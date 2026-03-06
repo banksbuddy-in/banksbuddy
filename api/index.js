@@ -260,6 +260,12 @@ app.get("/api/payment/status/:email", async (c) => {
 });
 
 // ─── Export ───────────────────────────────────────────────────────────────────
+const port = Number(process.env.PORT) || 3000;
+if (typeof Bun !== "undefined") {
+  console.log(`🚀 Local API: http://localhost:${port}/api`);
+  Bun.serve({ port, fetch: app.fetch });
+}
+
 export const GET = handle(app);
 export const POST = handle(app);
 export const PUT = handle(app);
