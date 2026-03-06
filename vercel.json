@@ -1,3 +1,6 @@
 {
-  "devCommand": "bun run dev"
+  "devCommand": "bun run dev",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }

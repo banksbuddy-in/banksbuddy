@@ -47,10 +47,13 @@ section.ab-values-section {
 }
 div#cover {
   width: 100vw;
-  height: 100vh;
+  height: 65vh;
   background-size: cover;
 }
-
+.inbnr img {
+  width: 100%;
+  border-radius: 23rem;
+}
 .pgcntt {
   margin-top: 30%;
 }
@@ -67,4 +70,15 @@ div#cover {
 
 .sp-doc-card.sp-doc-card-shadow {
   max-width: 10rem;
+}
+#cover h1 {
+  line-height: 115%;
+  margin-bottom: 2%;
+}
+.cibprt {
+  display: flex;
+  flex-direction: column;
+  margin: 2% 0;
+  align-content: center;
+  align-items: center;
 }

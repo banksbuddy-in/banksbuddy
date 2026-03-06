@@ -168,7 +168,6 @@ export const Cibil = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [hasPaid, setHasPaid] = useState(false);
   const [formStatus, setFormStatus] = useState("");
-  const [paymentAmount, setPaymentAmount] = useState(200);
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
@@ -261,6 +260,16 @@ export const Cibil = () => {
           </div>
         </motion.section>
 
+        <div className="cibprt">
+          <h1 className=" sp-section-title" style={{textAlign:"center"}}>
+            Our Trusted Bureaus Partners
+          </h1>
+          <p className="sp-text-block center-text">
+            Partnering with India's leading credit bureaus to provide expert analysis and help improve your credit score.
+          </p>
+          <img src="/bureaus.png"  style={{width:"80%"}} alt="" />
+        </div>
+
         {/* About & Highlights */}
         <section className="sp-section" style={{ background: "#fff" }}>
           <motion.div
@@ -316,7 +325,7 @@ export const Cibil = () => {
           </div>
 
           <motion.div
-            className="sp-features-horizontal"
+            className={`sp-features-horizontal${textarr2.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -384,7 +393,9 @@ export const Cibil = () => {
               <h2 className="sp-section-title">Required Documents</h2>
             </div>
 
-            <div className="sp-docs-grid">
+            <div
+              className={`sp-docs-grid${svc.Docs.length > 5 ? " multi-row" : ""}`}
+            >
               {svc.Docs.map((doc, i) => (
                 <div key={i} className="sp-doc-card sp-doc-card-shadow">
                   <div className="sp-doc-icon-wrapper">{getDocIcon(doc)}</div>
@@ -406,7 +417,7 @@ export const Cibil = () => {
             <h2 className="sp-section-title">Our Services</h2>
           </div>
           <motion.div
-            className="sp-types-horizontal"
+            className={`sp-types-horizontal${svc.Types.length > 5 ? " multi-row" : ""}`}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -416,30 +427,9 @@ export const Cibil = () => {
             {svc.Types.map((type, i) => (
               <div key={i} className="sp-type-card">
                 <h3 className="sp-type-title">{type.titl}</h3>
-                <p className="sp-type-desc">{type.des}</p>
               </div>
             ))}
           </motion.div>
-        </section>
-
-        {/* Bottom CTA */}
-        <section className="sp-bottom-cta">
-          <h2>Ready to improve your CIBIL Score?</h2>
-          {hasPaid ? (
-            <button
-              className="sp-btn-white cb-btn-report"
-              onClick={() => setShowSuccessPopup(true)}
-            >
-              Get a Report <GoArrowRight />
-            </button>
-          ) : (
-            <button
-              className="sp-btn-white"
-              onClick={() => setShowFormModal(true)}
-            >
-              Pay now — ₹{paymentAmount} <GoArrowRight />
-            </button>
-          )}
         </section>
 
         {/* FAQ Section */}
@@ -491,7 +481,6 @@ export const Cibil = () => {
       <DevStudioPaymentForm
         isOpen={showFormModal}
         onClose={() => setShowFormModal(false)}
-        amount={paymentAmount}
         serviceTitle={svc.Title}
       />
 

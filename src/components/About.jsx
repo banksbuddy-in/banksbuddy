@@ -74,12 +74,10 @@ export const About = () => {
         <div className="ab-story-content">
           <h2>Our Story</h2>
           <p>
-            Banksbuddy is a trusted financial services partner dedicated to empowering individuals and businesses across India with smart, accessible, and tailored financial solutions. Established with a vision to simplify finance for everyone, Banksbuddy bridges the gap between customers and financial opportunities — whether it’s loans, insurance, credit improvement, or business financial services.
-
-
+            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide. From our humble beginnings, we have strived to provide exceptional services that empower our clients to make informed decisions.
           </p>
           <p>
-            At Banksbuddy, we believe that financial freedom is the key to personal growth and business success. Our mission is to make financial services transparent, efficient, and customized to meet the unique needs of each customer. With a customer-first mindset, we focus on delivering solutions that are simple to understand, affordable, and backed by expert guidance.
+            Over time, we have expanded our portfolio to include CIBIL score improvement, education loans, and diverse CA services. Today, we stand proud as one of the fastest-growing platforms in the finance industry, turning financial dreams into reality—from education to enterprise.
 
           </p>
         </div>
@@ -132,28 +130,7 @@ export const About = () => {
           <h2>Our Values</h2>
           <div
             className="vanen">
-            <div className="ab-video-wrapper">
-              <video src="/mnv.mp4" autoPlay muted loop playsInline />
-              {/* <img src="/mnv.jpg" alt="mission and vision" /> */}
-            </div>
-            <ul className="ab-values-list">
-              <motion.li variants={fadeUp}>
-                <strong>Integrity:</strong> We operate with honesty and
-                transparency in every transaction.
-              </motion.li>
-              <motion.li variants={fadeUp}>
-                <strong>Customer Commitment:</strong> Your goals are our
-                priority - we support you at every step.
-              </motion.li>
-              <motion.li variants={fadeUp}>
-                <strong>Innovation:</strong> Leveraging technology and insights
-                to bring smarter financial solutions.
-              </motion.li>
-              <motion.li variants={fadeUp}>
-                <strong>Inclusivity:</strong> Making finance accessible for all
-                individuals and businesses, big or small.
-              </motion.li>
-            </ul>
+            <img className="v-full" style={{width:"100%"}} src="/values.png" alt="values" />
           </div>
         </div>
       </motion.section>

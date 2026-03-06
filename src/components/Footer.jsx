@@ -96,7 +96,7 @@ export const Footer = () => {
           </ul>
         </div>
         <div className="c2">
-          <p className="fct">Other Services</p>
+          <p className="fct">Services</p>
           <ul>
             <li>
               <Link className="fct" to="/consultation">
@@ -173,39 +173,61 @@ export const Footer = () => {
       </div>
       <div className="r2">
         <div className="flr2">© 2025 BanksBuddy, Inc. All rights reserved.</div>
-        <ul className="frr2">
-          <li>
-            <a target="_blank" href="https://www.instagram.com/banksbuddy2023/">
-              <FaInstagram />
-            </a>
-          </li>
-          <li>
-            <a
-              target="_blank"
-              href="https://www.facebook.com/share/1AJUxAHeHV/"
-            >
-              <FaFacebook />
-            </a>
-          </li>
-          <li>
-            <a target="_blank" href="https://wa.me/+916377956633">
-              <FaWhatsapp />
-            </a>
-          </li>
-          <li>
-            <a
-              target="_blank"
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
-            >
-              <MdEmail />
-            </a>
-          </li>
-          <li>
-            <a target="_blank" href="https://wa.me/+916377956633">
-              <FaLinkedin />
-            </a>
-          </li>
-        </ul>
+        <div
+          className="frr2-wrapper"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              paddingBottom: "8px",
+              fontSize: "0.95rem",
+              opacity: 0.9,
+            }}
+          >
+            remotely working across India
+          </p>
+          <ul className="frr2">
+            <li>
+              <a
+                target="_blank"
+                href="https://www.instagram.com/banksbuddy2023/"
+              >
+                <FaInstagram />
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://www.facebook.com/share/1AJUxAHeHV/"
+              >
+                <FaFacebook />
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="https://wa.me/+916377956633">
+                <FaWhatsapp />
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
+              >
+                <MdEmail />
+              </a>
+            </li>
+            <li>
+              <a target="_blank" href="https://wa.me/+916377956633">
+                <FaLinkedin />
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
       <p className="r3">
         BanksBuddy represents a secure, digital-first financial platform. We act

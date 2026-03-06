@@ -213,7 +213,7 @@ Warm regards,
   return (
     <div id="ServicePage" className="service-page-container">
       <Cover
-        tagline={subCategory.tagline || subCategory.overview}
+        tagline={subCategory.tagline}
         title={subCategory.title}
         description={subCategory.description}
         image={subCategory.inr || subCategory.image}
@@ -230,7 +230,7 @@ Warm regards,
           variants={fadeUp}
         >
           <div className="sp-hero-content">
-            <span className="sp-hero-tagline">{subCategory.overview}</span>
+            <span className="sp-hero-tagline">{subCategory.tagline}</span>
             <h1>{subCategory.title}</h1>
             <p className="sp-hero-description">{subCategory.description}</p>
 
@@ -243,11 +243,11 @@ Warm regards,
               >
                 Apply Now <GoArrowRight />
               </a>
-              <BuyNowPayment
+              {/* <BuyNowPayment
                 serviceId={subCategory.id}
                 serviceTitle={subCategory.title}
                 mainCategory="Insurance Services"
-              />
+              /> */}
               <a
                 className="sp-btn-whatsapp"
                 target="_blank"
@@ -264,6 +264,10 @@ Warm regards,
             <img src={subCategory.image} alt={subCategory.title} />
           </div>
         </motion.section>
+
+        <div className="inbnr">
+          <img src="/pb.jpg" alt="" />
+        </div>
 
         {/* About & Details Section (Vertical Layout) */}
         <section className="sp-section" style={{ background: "#fff" }}>

@@ -21,11 +21,11 @@ export const specSv = [
       "Personalized loan consultancy to find the best financial solutions.",
   },
   {
-    id: "website_development",
-    title: "Website Development",
-    URL: "/website-development",
+    id: "tax-services",
+    title: "Tax Consultancy Services",
+    URL: "/tax-services",
     smg: "/ss5.jpg",
-    overview: "Custom financial Web solutions to streamline your operations.",
+    overview: "Expert Guidance for Smart, Compliant, and Stress-Free Taxation.",
   },
 ];
 export const Insur = [
@@ -53,7 +53,7 @@ export const Insur = [
         title: "Life Insurance",
         image: "/spc1.jpg",
         isg: "/ins2.jpeg",
-        inr: "/inr3.avif",
+        inr: "/inr3.jpg",
         icon: <GiReceiveMoney size={40} color="#ff451f" />,
         overview:
           "Secure your family's financial future with comprehensive life insurance plans that provide protection and investment benefits.",

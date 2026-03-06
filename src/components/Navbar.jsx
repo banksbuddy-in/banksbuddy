@@ -41,7 +41,6 @@ const servicesMenu = {
     title: "Other Services",
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
-      { title: "Website Development", slug: "/website-development" },
       { title: "Tax Services", slug: "/tax-services" }
     ]
   },

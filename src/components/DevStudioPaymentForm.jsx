@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 
-export const DevStudioPaymentForm = ({ isOpen, onClose, serviceTitle }) => {
-  const [payAmount, setPayAmount] = useState("");
+export const DevStudioPaymentForm = ({
+  isOpen,
+  onClose,
+  serviceTitle,
+  amount = "",
+}) => {
+  const [payAmount, setPayAmount] = useState(amount);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setPayAmount(amount);
+    }
+  }, [isOpen, amount]);
 
   if (!isOpen) return null;
 
@@ -13,7 +24,7 @@ export const DevStudioPaymentForm = ({ isOpen, onClose, serviceTitle }) => {
         </button>
 
         <div className="pf-content">
-          <div className="pf-amount-input-wrapper">
+          {/* <div className="pf-amount-input-wrapper">
             <label className="pf-amount-label">Enter Payment Amount (₹)</label>
             <input
               type="number"
@@ -23,7 +34,7 @@ export const DevStudioPaymentForm = ({ isOpen, onClose, serviceTitle }) => {
               min="1"
               onChange={(e) => setPayAmount(e.target.value)}
             />
-          </div>
+          </div> */}
 
           {payAmount && (
             <div className="pf-amount-badge">
@@ -32,7 +43,7 @@ export const DevStudioPaymentForm = ({ isOpen, onClose, serviceTitle }) => {
           )}
 
           <div className="pf-qr-container">
-            <img src="/paymentshot.jpeg" alt="Payment QR Code" />
+            <img src="/payshot.png" alt="Payment QR Code" />
           </div>
 
           <div className="pf-bank-details">

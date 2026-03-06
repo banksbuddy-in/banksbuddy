@@ -199,7 +199,7 @@ const NewServices = [
   {
     id: "auto_loan",
     Title: "Auto Loan",
-    image: "/cc89.jpg", // Real image (updated to Vehicle relevant)
+    image: "/kf1.jpg", // Real image (updated to Vehicle relevant)
     overview: [
       "An auto loan helps you purchase your desired vehicle without financial strain. Whether it's a car or two-wheeler for personal or commercial use, we offer competitive interest rates and flexible repayment options.",
       "With quick approvals, minimal documentation, and simple processing, owning your vehicle becomes smooth and hassle-free.",
@@ -246,7 +246,7 @@ const NewServices = [
   {
     id: "business_loan",
     Title: "Business Loan",
-    image: "/ll9.jpg", // Real image
+    image: "/ll5.jpg", // Real image
     overview: [
       "A business loan empowers entrepreneurs and businesses with the capital they need to grow and scale. Whether you’re launching a startup, expanding operations, or managing working capital, our business loans provide quick funding with minimal hassle.",
       "Enjoy flexible repayment options, competitive interest rates, and fast approvals—designed to support your business vision.",
@@ -443,7 +443,7 @@ const NewServices = [
     id: "tax-services",
     Title: "Tax Consultancy Services",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&auto=format&fit=crop&q=80", // Tax image
+      "/tax.png", // Tax image
     overview: [
       "Expert Guidance for Smart, Compliant, and Stress-Free Taxation. From proactive tax planning and accurate filing to notice handling and long-term tax optimization, our experienced tax consultants support you at every step.",
       "We help you maximize exemptions, ensure compliance with the latest laws, and resolve any tax notices efficiently. Say goodbye to tax stress and fines.",
