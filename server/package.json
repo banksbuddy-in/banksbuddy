@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "bun-types": "^1.1.0",
-    "@types/node": "^20.11.0"
+    "@types/node": "^20.11.0",
+    "typescript": "^5.0.0"
   }
 }

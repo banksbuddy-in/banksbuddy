@@ -12,7 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "types": ["bun", "node"],
+    "baseUrl": ".",
+    "types": ["bun-types", "node"],
     "noEmit": true
-  }
+  },
+  "include": ["**/*.ts", "node_modules/bun-types/index.d.ts"]
 }
