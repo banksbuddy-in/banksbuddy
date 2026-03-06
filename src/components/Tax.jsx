@@ -249,12 +249,6 @@ export const Tax = () => {
             </a>
           </div>
         </div>
-        <div className="tax-hero-image">
-          <img
-            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop&q=80"
-            alt="Tax Consultancy"
-          />
-        </div>
       </section>
 
       {/* Stats Counter Section */}

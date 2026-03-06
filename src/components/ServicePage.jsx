@@ -233,7 +233,7 @@ Warm regards,
     loan_against_property: "/cc6.png",
     cibil_improvement: "/cc7.png",
     website_development: "/cc8.png",
-    tax_services: "/cc2.jpg",
+    "tax-services": "/tax.png",
     auto_loan: "/lll9.jpg",
   };
 
@@ -245,9 +245,9 @@ Warm regards,
     machinery_loan: "Loan Services",
     business_loan: "Loan Services",
     loan_against_property: "Loan Services",
-    "cibil-improvement": "Cibil Improvement",
-    "website-development": "Other Services",
-    "tax-services": "Other Services",
+    cibil_improvement: "Cibil Improvement",
+    website_development: "Other Services",
+    tax_services: "Other Services",
   };
 
   const mainCategory = serviceCategoryMap[svc.id] || "Other Services";
