@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite --port 5173\" \"cd server && bun run dev\"",
+    "dev": "concurrently \"vite --port 5173\" \"bun api/index.js\"",
     "dev:frontend": "vite --port 5173",
-    "dev:backend": "cd server && bun run dev",
+    "dev:backend": "bun api/index.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
