@@ -1,8 +1,8 @@
 import { Hono, Context } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
-import dbRoutes from "./routes/db.ts";
-import newsRoutes from "./routes/news.ts";
+import dbRoutes from "./routes/db";
+import newsRoutes from "./routes/news";
 
 const app = new Hono();
 

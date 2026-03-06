@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { dbGet, dbPush, dbUpdate, dbDelete, dbSet } from "../firebase-admin.ts";
+import { dbGet, dbPush, dbUpdate, dbDelete, dbSet } from "../firebase-admin";
 
 const router = new Hono();
 
