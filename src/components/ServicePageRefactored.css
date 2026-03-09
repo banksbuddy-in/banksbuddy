@@ -5,6 +5,10 @@
   overflow-x: hidden;
   background: #fff;
   color: #333;
+  box-sizing: border-box;
+}
+.service-page-container * {
+  box-sizing: border-box;
 }
 
 /* ==================== Hero Section ==================== */
@@ -1051,6 +1055,8 @@
 }
 
 /* ==================== Responsive ==================== */
+
+/* Tablet */
 @media (max-width: 1024px) {
   .sp-hero {
     flex-direction: column;
@@ -1073,11 +1079,61 @@
     flex-direction: column;
     gap: 1.5rem;
   }
+
+  /* Hide the cover image banner on tablets */
+  div#cover {
+    display: none !important;
+  }
+
+  /* Reset content top offset since cover is hidden */
+  .pgcntt {
+    margin-top: 0 !important;
+    top: 0 !important;
+    position: static !important;
+    border-radius: 0;
+  }
+
+  .sp-types-horizontal .sp-type-card {
+    min-width: 220px;
+    max-width: 300px;
+  }
+
+  .sp-bottom-cta {
+    margin: 2rem 4% 2rem;
+    padding: 2.5rem 5%;
+    border-radius: 16px;
+  }
+
+  .sp-bottom-cta h2 {
+    font-size: 1.3rem;
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+  div#cover {
+    display: none !important;
+  }
+
+  .pgcntt {
+    margin-top: 0 !important;
+    top: 0 !important;
+    position: static !important;
+    border-radius: 0;
+    background: white;
+  }
+
+  .sp-hero {
+    padding: 2rem 1.5rem !important;
+    gap: 1.5rem;
+  }
+
   .sp-hero h1 {
     font-size: 1.5rem;
+  }
+
+  .sp-hero-image img {
+    max-width: 260px;
   }
 
   .sp-section-title {
@@ -1085,7 +1141,16 @@
   }
 
   .sp-section {
-    padding: 1.5rem 5%;
+    padding: 1.5rem 1.5rem;
+  }
+
+  .sp-split-image {
+    text-align: center;
+  }
+
+  .sp-split-image img {
+    max-width: 80%;
+    margin: 0 auto;
   }
 
   .ned-highlight-result strong {
@@ -1094,39 +1159,178 @@
 
   .ned-header,
   .ned-body {
-    padding: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .ned-panel-left {
+    flex: none;
+    padding: 1.25rem;
+    border-right: none;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .sp-features-horizontal {
+    justify-content: flex-start;
   }
 
   .sp-features-horizontal.multi-row .sp-feature-card,
   .sp-docs-grid.multi-row .sp-doc-card {
     flex: 1 1 calc(45% - 1rem);
-    /* 2 per row on tablet/mobile */
   }
 
-  div#cover {
-    margin: 0;
-    border-radius: 5rem;
+  .sp-types-horizontal {
+    gap: 1rem;
   }
 
-  #cover h1,
-  #cover p,
-  #cover button {
-    display: none;
+  .sp-types-horizontal .sp-type-card {
+    min-width: 100%;
+    max-width: 100%;
+    padding: 1.25rem;
+    border-radius: 16px;
   }
 
-  .pgcntt {
-    top: -7rem;
-    position: relative;
-    background: white;
-    border-radius: 3rem;
+  .sp-bottom-cta {
+    margin: 1.5rem 1.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
+  }
+
+  .sp-bottom-cta h2 {
+    font-size: 1.2rem;
+  }
+
+  .sp-detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .sp-detail-value {
+    text-align: left;
+  }
+
+  .sp-faq-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .sp-faq-tab {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.9rem;
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
+  div#cover {
+    display: none !important;
+  }
+
+  .pgcntt {
+    margin-top: 0 !important;
+    top: 0 !important;
+    position: static !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden;
+  }
+
+  .sp-hero {
+    padding: 2rem 1rem !important;
+    width: 100%;
+    margin: 0;
+  }
+
+  .sp-hero h1 {
+    font-size: 1.3rem;
+  }
+
+  .sp-hero-description {
+    font-size: 0.85rem;
+  }
+
+  .sp-hero-image img {
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .sp-section {
+    padding: 1.5rem 1rem !important;
+    width: 100%;
+    margin: 0;
+  }
+
+  .sp-section-title {
+    font-size: 1.15rem;
+  }
+
   .sp-features-horizontal.multi-row .sp-feature-card,
   .sp-docs-grid.multi-row .sp-doc-card {
     flex: 1 1 100%;
-    /* 1 per row on tiny screens */
+    max-width: 100%;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .sp-types-horizontal {
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+
+  .sp-types-horizontal .sp-type-card {
+    padding: 1.25rem 1rem;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .sp-type-title {
+    font-size: 0.95rem;
+  }
+
+  .sp-bottom-cta {
+    margin: 1.5rem 1rem;
+    padding: 2rem 1.25rem;
+    border-radius: 12px;
+    width: calc(100% - 2rem);
+    box-sizing: border-box;
+  }
+
+  .sp-bottom-cta h2 {
+    font-size: 1.1rem;
+  }
+
+  .sp-btn-white {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .sp-check-item {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .sp-check-text {
+    font-size: 0.8rem;
+  }
+
+  .ned-details-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .ned-charts-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ned-panel-right,
+  .ned-panel-left {
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

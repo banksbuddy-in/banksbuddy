@@ -190,8 +190,8 @@ export const Footer = () => {
               fontStyle:"italic",
               fontWeight:"100",
               width: "100%",
-              textAlign: "end",
             }}
+            className="remote"
           >
             Remotely working across India
           </p>
