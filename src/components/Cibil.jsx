@@ -272,7 +272,29 @@ export const Cibil = () => {
               ) : hasPaid ? (
                 <button
                   className="sp-btn-primary cb-btn-report"
-                  onClick={() => setShowSuccessPopup(true)}
+                  onClick={async () => {
+                    setShowSuccessPopup(true);
+                    const savedEmail =
+                      currentUser?.email ||
+                      localStorage.getItem("userEmail") ||
+                      "Unknown User";
+                    const safeEmail = savedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+                    try {
+                      await apiFetch(`/api/cibil-notifications/${safeEmail}`, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                          email: savedEmail,
+                          type: "report_request",
+                          message: `${savedEmail} asked for a CIBIL report.`,
+                          read: false,
+                          status: "pending",
+                          createdAt: new Date().toISOString(),
+                        }),
+                      });
+                    } catch (err) {
+                      console.error("Error creating notification:", err);
+                    }
+                  }}
                 >
                   Get a Report <GoArrowRight />
                 </button>

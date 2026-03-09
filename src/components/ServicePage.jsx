@@ -495,6 +495,20 @@ Warm regards,
             {svc.Types.map((type, i) => (
               <div key={i} className="sp-type-card">
                 <h3 className="sp-type-title">{type.titl}</h3>
+                {svc.id === "tax-services" && type.des && (
+                  <div
+                    className="sp-type-desc"
+                    style={{
+                      marginTop: "0.8rem",
+                      fontSize: "0.9rem",
+                      color: "rgba(255, 255, 255, 0.85)",
+                      whiteSpace: "pre-line",
+                      lineHeight: "1.6",
+                    }}
+                  >
+                    {type.des}
+                  </div>
+                )}
               </div>
             ))}
           </motion.div>

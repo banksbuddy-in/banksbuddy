@@ -159,6 +159,14 @@ export const InsuranceSubCategory = () => {
     );
   }
 
+  const getInbrImage = () => {
+    const cat = category.toLowerCase();
+    if (cat.includes("life")) return "/3.jpg";
+    if (cat.includes("health")) return "/4.jpg";
+    if (cat.includes("general")) return "/5.jpg";
+    return "/inbr.jpg";
+  };
+
   const getFilteredFaqs = () => {
     const allFaqs = getFAQsByServiceId(subCategory.id);
     const commonFaqs = allFaqs.slice(0, 3);
@@ -284,7 +292,7 @@ Warm regards,
             </div>
           </motion.div>
           {/* Hardcoding Highlights visually to match exactly, but can be removed if strictly adhering to individual data */}
-          <motion.div
+          {/* <motion.div
             className="sp-details-card full-width-table"
             initial="hidden"
             whileInView="visible"
@@ -303,18 +311,13 @@ Warm regards,
                 </div>
               ))}
             </div>
-          </motion.div>
+          </motion.div> */}
         </section>
         <div className="inbnr">
           <img src="/pb.jpg" alt="" />
         </div>
 
-        <div
-          className="ourbr"
-          style={{
-            padding: "5%  15%",
-          }}
-        >
+        <div className="ourbr">
           <h1 className="sp-section-title" style={{ textAlign: "center" }}>
             Our Insurance Partners
           </h1>
@@ -323,13 +326,7 @@ Warm regards,
             with the best insurance products at affordable prices. Our insurance
             partners include:
           </p>
-          <img
-            style={{
-              width: "100%",
-            }}
-            src="/inbr.jpg"
-            alt="insprt"
-          />
+          <img src={getInbrImage()} alt="insprt" />
         </div>
         {/* Online Features Horizontal Grid */}
         <section className="sp-section">

@@ -20,6 +20,8 @@ const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
         </h2>
         {loading ? (
           <p>Loading news...</p>
+        ) : news.length === 0 ? (
+          <p className="no-offers">No news available at the moment</p>
         ) : (
           <div className="news-grid">
             {news.map((article, index) => (
@@ -213,6 +215,8 @@ const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
         </h2>
         {loading ? (
           <p>Loading news...</p>
+        ) : news.length === 0 ? (
+          <p className="no-offers">No news available at the moment</p>
         ) : (
           <MobileCarousel
             items={news}
@@ -310,10 +314,13 @@ export const NewsnOffers = () => {
       const data = await apiFetch("/api/news");
       if (data && data.articles) {
         setNews(data.articles);
+      } else {
+        setNews([]);
       }
       setLoading(false);
     } catch (error) {
       console.error("Error fetching news:", error);
+      setNews([]);
       setLoading(false);
     }
   };

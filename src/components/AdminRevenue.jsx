@@ -85,37 +85,40 @@ export const AdminRevenue = ({ embedded }) => {
         apiFetch("/api/revenue/cashfree"),
       ]);
 
-      const cibilList = Object.entries(cibilData || {}).map(([k, v]) => ({
-        id: k,
-        source: "Cibil",
+      const processData = (data, source, mapper) => {
+        if (Array.isArray(data)) {
+          return data.map((v) => ({ ...mapper(v), id: v.id, source }));
+        }
+        return Object.entries(data || {}).map(([k, v]) => ({
+          ...mapper(v),
+          id: k,
+          source,
+        }));
+      };
+
+      const cibilList = processData(cibilData, "Cibil", (v) => ({
         mainCategory: "Cibil Improvement",
         subCategory: "CIBIL Score Improvement",
         username: v.name,
         email: v.email,
         mobile: v.phone,
-        // Prioritize DB status, fallback to paymentId check for auto-verification
         status: v.status || (v.paymentId ? "paid" : "pending"),
         amount: v.amount || 200,
         date: v.createdAt,
       }));
 
-      const manualList = Object.entries(manualData || {}).map(([k, v]) => ({
-        id: k,
-        source: "Manual",
+      const manualList = processData(manualData, "Manual", (v) => ({
         username: v.fullName,
         ...v,
       }));
 
-      const cashfreeList = Object.entries(cashfreeData || {}).map(([k, v]) => ({
-        id: k,
-        source: "Cashfree",
+      const cashfreeList = processData(cashfreeData, "Cashfree", (v) => ({
         username: v.username || v.customer_name,
         email: v.email,
         mobile: v.mobile,
         mainCategory: v.mainCategory || "Other Services",
         subCategory: v.serviceTitle || v.serviceId,
         serviceType: v.serviceTitle,
-        // Honor existing status, else default to paid for historical reasons
         status: v.status || "paid",
         amount: v.amount,
         date: v.date || v.createdAt,

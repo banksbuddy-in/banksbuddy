@@ -17,8 +17,11 @@ const servicesMenu = {
       { title: "Machinery Loan", slug: "/services/machinery-loan" },
       { title: "Business Loan", slug: "/services/business-loan" },
       { title: "Auto Loan", slug: "/services/auto-loan" },
-      { title: "Loan Against Property", slug: "/services/loan-against-property" }
-    ]
+      {
+        title: "Loan Against Property",
+        slug: "/services/loan-against-property",
+      },
+    ],
   },
 
   insuranceServices: {
@@ -26,23 +29,21 @@ const servicesMenu = {
     items: [
       { title: "Life Insurance", slug: "/insurance/life-insurance" },
       { title: "Health Insurance", slug: "/insurance/health-insurance" },
-      { title: "General Insurance", slug: "/insurance/general-insurance" }
-    ]
+      { title: "General Insurance", slug: "/insurance/general-insurance" },
+    ],
   },
 
   cibilImprovement: {
     title: "CIBIL Improvement",
-    items: [
-      { title: "CIBIL Score Improvement", slug: "/cibil" },
-    ]
+    items: [{ title: "CIBIL Score Improvement", slug: "/cibil" }],
   },
 
   coreServices: {
     title: "Other Services",
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
-      { title: "Tax Services", slug: "/tax-services" }
-    ]
+      { title: "Tax Services", slug: "/tax-services" },
+    ],
   },
 };
 
@@ -53,7 +54,7 @@ const LogoutButton = () => {
 
   return (
     <li>
-      <button className="lgout" onClick={logout} >
+      <button className="lgout" onClick={logout}>
         <RiLogoutBoxRLine title="Logout" />
       </button>
     </li>
@@ -80,7 +81,6 @@ export const Navbar = () => {
 
   // Brief Message / Additional Details:
   // [Short paragraph describing purpose / urgency / additional context]
-
 
   // Thank you for your time.
   // Warm regards,
@@ -134,19 +134,13 @@ export const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link
-            onClick={handleLinkClick}
-            className="nvanime"
-            to="/about-us"
-          >
+          <Link onClick={handleLinkClick} className="nvanime" to="/about-us">
             About
           </Link>
         </li>
         {/* Desktop Hover Menu */}
         <li className="services-dropdown-wrapper desktop-only">
-          <span className="nvanime services-trigger">
-            Services
-          </span>
+          <span className="nvanime services-trigger">Services</span>
           <div className="services-dropdown-menu">
             {Object.entries(servicesMenu).map(([key, category]) => (
               <div key={key} className="category-item">
@@ -189,7 +183,7 @@ export const Navbar = () => {
                   >
                     {category.title}
                     <MdKeyboardArrowRight
-                      className={`mobile-arrow ${mobileSubMenuOpen === key ? 'rotate' : ''}`}
+                      className={`mobile-arrow ${mobileSubMenuOpen === key ? "rotate" : ""}`}
                     />
                   </button>
                   {mobileSubMenuOpen === key && (
@@ -213,11 +207,7 @@ export const Navbar = () => {
         </li>
 
         <li>
-          <Link
-            onClick={handleLinkClick}
-            className="nvanime"
-            to="/careers"
-          >
+          <Link onClick={handleLinkClick} className="nvanime" to="/careers">
             Careers
           </Link>
         </li>
@@ -231,7 +221,9 @@ export const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link className="nvanime" to="/contact-banksbuddy">Contact Us</Link>
+          <Link className="nvanime" to="/contact-banksbuddy">
+            Contact Us
+          </Link>
         </li>
         <li className="nbtn">
           <Link className="btns" to="https://wa.me/+916377956633">

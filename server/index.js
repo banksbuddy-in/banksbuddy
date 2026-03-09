@@ -167,7 +167,7 @@ app.put("/api/revenue/cibil/:id", async (c) => {
 app.get("/api/news", async (c) => {
   const API_KEY = process.env.GNEWS_API_KEY || process.env.VITE_GNEWS_API_KEY;
   const res = await fetch(
-    `https://gnews.io/api/v4/search?q=finance+banking&country=in&lang=en&max=4&apikey=${API_KEY}`,
+    `https://gnews.io/api/v4/search?q=finance OR banking&country=in&lang=en&max=4&apikey=${API_KEY}`,
   );
   return c.json(await res.json());
 });

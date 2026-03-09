@@ -442,7 +442,7 @@ const NewServices = [
   {
     id: "tax-services",
     Title: "Tax Consultancy Services",
-    image:"/taxs.png", // Tax image
+    image: "/taxs.png", // Tax image
     overview: [
       "Expert Guidance for Smart, Compliant, and Stress-Free Taxation. From proactive tax planning and accurate filing to notice handling and long-term tax optimization, our experienced tax consultants support you at every step.",
       "We help you maximize exemptions, ensure compliance with the latest laws, and resolve any tax notices efficiently. Say goodbye to tax stress and fines.",
@@ -475,20 +475,20 @@ const NewServices = [
     ],
     Types: [
       {
-        titl: "ITR Filing",
-        des: "Accurate filing for individuals and businesses.",
+        titl: "Income Tax & Advisory",
+        des: "• Individual and corporate income tax return filing.\n• Tax planning and consulting.\n• TDS return filing.\n• Handling tax assessments, notices, and litigation.\n• Comprehensive tax health checks and risk management.",
       },
       {
         titl: "GST Services",
-        des: "Registration, filing, and compliance for businesses.",
+        des: "• GST registration and amendments.\n• GST return filing and reconciliation.\n• GST audits and health checkups.\n• GST litigation, revocation, and cancellation services.",
       },
       {
-        titl: "Tax Planning",
-        des: "Strategic planning to minimize liability legally.",
+        titl: "Corporate & Business Compliance",
+        des: "• Startup registration and advisory (DIPP).\n• Company Incorporation and ROC filings.\n• Import Export Code (IEC) registration.\n• MSME/Udyog Aadhar registration.\n• Trademark, Copyright, and Patent Registration.\n• EPF and ESI registration.",
       },
       {
-        titl: "Notice Handling",
-        des: "Expert resolution for Income Tax notices.",
+        titl: "Accounting & Financial Services",
+        des: "• Bookkeeping and accounting services.\n• Financial statement preparation and auditing.\n• Projected balance sheet creation.",
       },
     ],
   },

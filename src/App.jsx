@@ -71,7 +71,6 @@ function App() {
           <AdminButton />
           <Footer />
           <img src="/paygt.png" alt="" className="pygt" />
-          
         </AuthProvider>
       </BrowserRouter>
     </div>

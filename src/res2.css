@@ -82,3 +82,27 @@ div#cover {
   align-content: center;
   align-items: center;
 }
+.inbnr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inbnr img {
+  width: 60%;
+}
+.ourbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5% 10%;
+}
+
+.ourbr img {
+  width: 85%;
+}
+
+.ourbr p {
+  padding: 0 9%;
+}
