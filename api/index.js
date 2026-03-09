@@ -58,6 +58,7 @@ app.use(
   "*",
   cors({
     origin: [
+      "https://banksbuddy.vercel.app",
       "https://banks-buddy.vercel.app",
       "https://banksbuddy.in",
       "http://localhost:5173",
@@ -275,4 +276,10 @@ export const PUT = handle(app);
 export const DELETE = handle(app);
 export const PATCH = handle(app);
 export const OPTIONS = handle(app);
+
+// Use Edge runtime for better performance and Web Standard Request/Response compatibility
+export const config = {
+  runtime: "edge",
+};
+
 export default handle(app);

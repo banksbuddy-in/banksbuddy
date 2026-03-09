@@ -1010,17 +1010,20 @@ p.abtdes {
   width: 60%;
 }
 p.fdes {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -2px;
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -2px;
 }
 
 .revcardsa p {
-    text-align: justify;
-    white-space: break-spaces;
-    word-spacing: -1px;
-}.job-card {max-width: 100%;}
+  text-align: justify;
+  white-space: break-spaces;
+  word-spacing: -1px;
+}
+.job-card {
+  max-width: 100%;
+}
 
 .service-card.spec {
-    max-width: 30%;
+  max-width: 30%;
 }
