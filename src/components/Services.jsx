@@ -74,10 +74,16 @@ export const Services = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
+          style={{
+            padding:"4% 1.5%",
+            margin:"0 4%"
+          }}
         >
           <img src={cibilSv.smg} alt={cibilSv.title} />
           <div className="service-title">{cibilSv.title}</div>
-          <div className="service-overview">{cibilSv.overview}</div>
+          <div style={{
+            padding: "0 1%"
+          }} className="service-overview">{cibilSv.overview}</div>
         </motion.div>
       </div>
 
@@ -109,6 +115,7 @@ export const Services = () => {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
             variants={fadeUp}
+            style={{padding:"5%"}}
           >
             <img src={s.smg} alt={s.title} />
             <div className="service-title">{s.title}</div>

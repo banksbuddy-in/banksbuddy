@@ -95,7 +95,11 @@ export const SpecInsur = () => {
     <>
       {/* Desktop static view */}
       {!isMobileOrTablet && (
-        <div className="services-list spec" >
+        <div className="services-list spec"
+        style={{
+          padding:"0 9%"
+        }}
+         >
           {insuranceCategories.map((category, index) => (
             <div 
               key={index} 

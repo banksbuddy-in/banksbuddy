@@ -154,7 +154,7 @@ export const ServicesCards = () => {
     >
       <div
         className="carousel-container"
-        style={{ position: "relative", overflow: "hidden", padding: "2rem 0" }}
+        style={{ position: "relative", overflow: "hidden", padding: "2rem 5%" }}
       >
         {/* Previous Button */}
         <button
