@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiFetch from "../lib/api.js";
 import { useNavigate } from "react-router-dom";
 import { FiRefreshCw, FiArrowLeft } from "react-icons/fi";
+import { FaWhatsapp, FaPhone, FaEnvelope } from "react-icons/fa";
 import "./AdminCibil.css";
 
 export const AdminCibil = ({ embedded = false }) => {
@@ -341,6 +342,51 @@ export const AdminCibil = ({ embedded = false }) => {
                           </span>
                         </td>
                         <td className="modern-notif-actions">
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "0.5rem",
+                              marginBottom: "0.5rem",
+                            }}
+                          >
+                            <a
+                              href={`https://wa.me/91${(
+                                notif.phone ||
+                                linkedReq.phone ||
+                                ""
+                              ).replace(
+                                /\D/g,
+                                "",
+                              )}?text=Hello,%20this%20is%20regarding%20your%20CIBIL%20profile.`}
+                              target="_blank"
+                              rel="noreferrer"
+                              title="WhatsApp"
+                              className="icon-btn"
+                              style={{ color: "#25D366" }}
+                            >
+                              <FaWhatsapp size={18} />
+                            </a>
+                            <a
+                              href={`tel:${notif.phone || linkedReq.phone || ""}`}
+                              title="Call"
+                              className="icon-btn"
+                              style={{ color: "#007BFF" }}
+                            >
+                              <FaPhone size={18} />
+                            </a>
+                            <a
+                              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${
+                                notif.email || linkedReq.email || ""
+                              }&su=Regarding%20your%20CIBIL%20profile`}
+                              target="_blank"
+                              rel="noreferrer"
+                              title="Email via Gmail"
+                              className="icon-btn"
+                              style={{ color: "#D44638" }}
+                            >
+                              <FaEnvelope size={18} />
+                            </a>
+                          </div>
                           <select
                             value={notif.status || "pending"}
                             onChange={(e) =>

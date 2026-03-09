@@ -112,7 +112,7 @@ const NewServices = [
     ],
     tagline: "Invest in Your Future",
     TbData: [
-      "₹40 Lakhs",
+      "₹ 3 Cr",
       "Tenure from 12 months to 84 months*",
       "Starting from 6.85% p.a.",
       "Up to 2% of loan amount + GST",
@@ -163,7 +163,7 @@ const NewServices = [
     ],
     tagline: "Power Your Growth",
     TbData: [
-      "₹40 Lakhs",
+      "₹5 Cr",
       "Tenure from 12 months to 84 months*",
       "Starting from 7.40% p.a.",
       "Up to 2% of loan amount + GST",
@@ -207,7 +207,7 @@ const NewServices = [
     ],
     tagline: "Drive Your Dreams",
     TbData: [
-      "₹25 Lakhs",
+      "₹1 Cr",
       "Tenure from 12 months to 84 months*",
       "Starting from 8.10% p.a.",
       "Up to 2% of loan amount + GST",
@@ -254,7 +254,7 @@ const NewServices = [
     ],
     tagline: "Expand & Succeed Without Limits",
     TbData: [
-      "₹40 Lakhs",
+      "₹5 Cr",
       "Tenure from 12 months to 84 months*",
       "Starting from 7.25% p.a.",
       "Up to 2% of loan amount + GST",
@@ -301,7 +301,7 @@ const NewServices = [
     ],
     tagline: "Unlock the Power of Your Property",
     TbData: [
-      "₹40 Lakhs (may vary based on property value)",
+      "₹5 Cr (may vary based on property value)",
       "Tenure up to 15 years (varies by lender)",
       "Starting from 8.55% p.a.",
       "Up to 2% of loan amount + GST",

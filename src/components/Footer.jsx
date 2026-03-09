@@ -185,13 +185,25 @@ export const Footer = () => {
             style={{
               margin: 0,
               paddingBottom: "8px",
-              fontSize: "0.95rem",
+              fontSize: "2rem",
               opacity: 0.9,
+              fontStyle:"italic",
+              fontWeight:"100",
+              width: "100%",
+              textAlign: "end",
             }}
           >
-            remotely working across India
+            Remotely working across India
           </p>
-          <ul className="frr2">
+          <ul className="frr2"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "end",
+            justifyContent: "end",
+            width: "100%",
+          }}
+          >
             <li>
               <a
                 target="_blank"

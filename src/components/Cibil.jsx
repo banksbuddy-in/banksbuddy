@@ -76,7 +76,7 @@ const getDocIcon = (docText) => {
 
 const InsuranceData = [
   {
-    id: "Cibil Improvement",
+    id: "CIBIL Improvement",
     Title: "CIBIL Score Improvement Service",
     overview: [
       "Your CIBIL score is a critical factor that determines your loan and credit card approval chances. A strong credit score opens doors to better interest rates, higher loan amounts, and faster approvals from financial institutions.",
@@ -148,7 +148,7 @@ const InsuranceData = [
   },
 ];
 
-const svc = InsuranceData.find((s) => s.id === "Cibil Improvement");
+const svc = InsuranceData.find((s) => s.id === "CIBIL Improvement");
 
 const textarr2 = [
   { elm: <FaHandHoldingUsd />, txt: "Expert Credit Analysis & Strategy" },

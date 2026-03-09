@@ -106,3 +106,176 @@ div#cover {
 .ourbr p {
   padding: 0 9%;
 }
+img.ab-partner-logo.desai {
+  max-width: none;
+  max-height: none;
+  padding: 1%;
+  width: 10em;
+  height: 6em;
+  margin: 7px;
+  border: 1px solid black;
+  border-radius: 2rem;
+}
+
+/* Pan-India Carousel Styles */
+#panindia {
+  color: white;
+  text-align: center;
+}
+
+.pntxt {
+  background: var(--darkbl);
+  padding: 3%;
+  padding-bottom: 6%;
+}
+
+.pancarousel-container {
+  padding: 2rem 2rem 4rem 2rem; /* Added bottom padding for dots */
+  bottom: 2em;
+  position: relative;
+  bottom: 6rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pancarousel-container .slick-slide {
+  padding: 10px;
+}
+
+.pan-slide-wrapper {
+  display: flex !important;
+  justify-content: center;
+}
+
+.pan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  background: #fff;
+  border-radius: 5rem;
+  padding: 2em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+}
+
+.pan:hover {
+  transform: translateY(-5px);
+}
+
+.pan img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.pan p {
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Slick Carousel Optional Overrides */
+.pancarousel-container .slick-dots {
+  bottom: -20px;
+}
+
+.pancarousel-container .slick-dots li button:before {
+  color: var(--darkbl, #0f172a);
+  opacity: 0.3;
+  font-size: 14px;
+}
+
+.pancarousel-container .slick-dots li.slick-active button:before {
+  color: var(--darkbl, #0f172a);
+  opacity: 0.8;
+}
+
+.pancarousel-container .slick-prev:before,
+.pancarousel-container .slick-next:before {
+  color: #000;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  width: 30px;
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+}
+
+/* Specific arrow positioning relative to the slide list */
+.pancarousel-container .slick-prev {
+  left: -15px;
+  z-index: 1;
+}
+.pancarousel-container .slick-next {
+  right: -5px;
+  z-index: 1;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .pancarousel-container {
+    padding: 1rem 1rem 3rem 1rem;
+    bottom: 3em;
+  }
+
+  .pan {
+    min-width: 110px;
+    padding: 1.5em 1em;
+    border-radius: 3rem;
+  }
+
+  .pan img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .pan p {
+    font-size: 0.9rem;
+  }
+
+  .pntxt {
+    padding: 5%;
+    padding-bottom: 8%;
+  }
+
+  .pntxt h1 {
+    font-size: 1.8rem;
+  }
+
+  .pntxt p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pancarousel-container {
+    padding: 0px 10px 30px 10px;
+    bottom: 4em;
+  }
+
+  .pan {
+    min-width: 90px;
+    padding: 1em 0.5em;
+    border-radius: 2rem;
+  }
+
+  .pan img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .pan p {
+    font-size: 0.8rem;
+  }
+}

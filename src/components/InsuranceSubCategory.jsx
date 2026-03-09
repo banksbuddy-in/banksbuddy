@@ -204,19 +204,37 @@ Warm regards,
     )}&body=${encodeURIComponent(plainBody)}`;
   })();
 
-  // Fixed attributes mapping for highlight card
-  const txtarr = [
-    "Coverage Amount",
-    "Policy Tenure",
-    "Premium Starting",
-    "Processing Fees",
-  ];
-  const tbData = [
-    "₹40 Lakhs",
-    "Tenure from 12 months to 84 months",
-    "Starting from 11.1% p.a.",
-    "Up to 2% of loan amount + GST",
-  ];
+  // Dynamic attributes mapping for highlight card
+  let txtarr = [];
+  let tbData = [];
+
+  if (subCategory.id === "life_insurance") {
+    txtarr = [
+      "Entry Age",
+      "Maximum Age",
+      "Coverage Range",
+      "Eligibility & Documents",
+    ];
+    tbData = [
+      "18 Years",
+      "65–70 Years",
+      "5 Lakh – 10 Crore",
+      "Valid income source; Aadhaar, PAN, Income Proof",
+    ];
+  } else if (subCategory.id === "health_insurance") {
+    txtarr = [
+      "Entry Age",
+      "Maximum Age",
+      "Coverage Range",
+      "Eligibility & Documents",
+    ];
+    tbData = [
+      "18 Years",
+      "65–75 Years",
+      "2 Lakh – 1 Crore",
+      "Good health condition; Aadhaar, Age Proof, Medical History",
+    ];
+  }
 
   return (
     <div id="ServicePage" className="service-page-container">
@@ -274,6 +292,7 @@ Warm regards,
         </motion.section>
 
         {/* About & Details Section (Vertical Layout) */}
+
         <section className="sp-section" style={{ background: "#fff" }}>
           <motion.div
             className="sp-about-centered"
@@ -292,27 +311,31 @@ Warm regards,
             </div>
           </motion.div>
           {/* Hardcoding Highlights visually to match exactly, but can be removed if strictly adhering to individual data */}
-          {/* <motion.div
-            className="sp-details-card full-width-table"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            variants={fadeUp}
-          >
-            <div className="sp-details-header">
-              <h3>Key Highlights of {subCategory.title}</h3>
-            </div>
-            <div className="sp-details-list">
-              {txtarr.map((k, i) => (
-                <div key={i} className="sp-detail-item">
-                  <span className="sp-detail-label">{k}</span>
-                  <span className="sp-detail-value">{tbData[i]}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div> */}
+
+          {txtarr.length > 0 && (
+            <motion.div
+              className="sp-details-card full-width-table"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              variants={fadeUp}
+            >
+              <div className="sp-details-header">
+                <h3>Key Highlights of {subCategory.title}</h3>
+              </div>
+              <div className="sp-details-list">
+                {txtarr.map((k, i) => (
+                  <div key={i} className="sp-detail-item">
+                    <span className="sp-detail-label">{k}</span>
+                    <span className="sp-detail-value">{tbData[i]}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </section>
+
         <div className="inbnr">
           <img src="/pb.jpg" alt="" />
         </div>

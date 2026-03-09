@@ -112,7 +112,12 @@ export const About = () => {
             financial landscape, one success story at a time.
           </p>
         </div>
-        <div className="ab-video-wrapper">
+        <div className="ab-video-wrapper"
+          style={{
+            borderRadius:"6rem",
+            overflow:"hidden"
+          }}
+        >
           {/* <video src="/mnv.mp4" autoPlay muted loop playsInline /> */}
           <img src="/mnv.jpg" alt="mission and vision" />
         </div>
@@ -160,15 +165,16 @@ export const About = () => {
         <div className="ab-partners-grid">
           {[
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23, 24, 25, 26, 27, 28,
+            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+            37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52
           ]
-            .slice(0, expandPartners ? 28 : 12)
+            .slice(0, expandPartners ? 52 : 12)
             .map((num) => (
               <img
                 key={num}
-                src={`a${num}.webp`}
+                src={`/part/${num}.png`}
                 alt={`Partner ${num}`}
-                className="ab-partner-logo"
+                className="ab-partner-logo desai"
               />
             ))}
         </div>
