@@ -40,12 +40,22 @@ export const AdminTeam = ({ embedded = false }) => {
       return;
     }
     try {
-      const memberId = editingId || Date.now().toString();
-      await apiFetch(`/api/team/${memberId}`, {
-        method: "POST",
-        body: JSON.stringify({ name, role, image }),
-      });
-      alert(editingId ? "Updated!" : "Added!");
+      if (editingId) {
+        // Update existing member
+        await apiFetch(`/api/team/${editingId}`, {
+          method: "PUT",
+          body: JSON.stringify({ name, role, image }),
+        });
+        alert("Updated!");
+      } else {
+        // Create new member
+        const memberId = Date.now().toString();
+        await apiFetch(`/api/team/${memberId}`, {
+          method: "POST",
+          body: JSON.stringify({ name, role, image }),
+        });
+        alert("Added!");
+      }
       resetForm();
       fetchTeamMembers();
       // eslint-disable-next-line no-unused-vars

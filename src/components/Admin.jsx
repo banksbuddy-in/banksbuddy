@@ -279,7 +279,6 @@ const DashboardContent = ({ stats, setActiveModule, adminModules }) => {
     { label: "Team Members", value: stats.team, icon: "👥" },
     { label: "Active Offers", value: stats.offers, icon: "🎁" },
     { label: "Testimonials", value: stats.reviews, icon: "⭐" },
-    { label: "Testimonials", value: stats.reviews, icon: "⭐" },
     { label: "Job Postings", value: stats.careers, icon: "💼" },
     { label: "Partner Apps", value: stats.partners, icon: "🤝" },
     { label: "Cibil Requests", value: stats.cibil, icon: "📊" },

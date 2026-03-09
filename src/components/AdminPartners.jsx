@@ -118,6 +118,7 @@ export const AdminPartners = ({ embedded }) => {
       filter === "all" || (app.status || "pending") === filter;
     const matchesSearch =
       app.companyName?.toLowerCase().includes(search.toLowerCase()) ||
+      app.name?.toLowerCase().includes(search.toLowerCase()) ||
       app.fullName?.toLowerCase().includes(search.toLowerCase()) ||
       app.email?.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;

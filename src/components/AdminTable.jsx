@@ -8,22 +8,23 @@ const AdminTable = ({ embedded = false }) => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchRows = async () => {
+    setLoading(true);
+    try {
+      const data = await apiFetch("/api/consultations");
+      data.sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+      setRows(data);
+    } catch (err) {
+      console.error("Error fetching consultations:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadConsultations = async () => {
-      try {
-        const data = await apiFetch("/api/consultations");
-        // Sort by createdAt descending
-        data.sort((a, b) =>
-          (b.createdAt || "").localeCompare(a.createdAt || ""),
-        );
-        setRows(data);
-      } catch (err) {
-        console.error("Error fetching consultations:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadConsultations();
+    fetchRows();
+    const interval = setInterval(fetchRows, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const escapeCsv = (v) => {
@@ -82,6 +83,9 @@ const AdminTable = ({ embedded = false }) => {
           disabled={rows.length === 0}
         >
           Download CSV
+        </button>
+        <button className="btn" onClick={fetchRows} disabled={loading}>
+          {loading ? "Refreshing…" : "↻ Refresh"}
         </button>
       </div>
 
