@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { MdBolt, MdOnlinePrediction } from "react-icons/md";
 import { HiMiniClipboardDocumentCheck } from "react-icons/hi2";
 import {
@@ -171,6 +171,7 @@ export const Cibil = () => {
   const [hasPaid, setHasPaid] = useState(false);
   const [formStatus, setFormStatus] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [isVerifying, setIsVerifying] = useState(false);
   const [checkLoading, setCheckLoading] = useState(true);
 
@@ -298,20 +299,19 @@ export const Cibil = () => {
                 >
                   Get a Report <GoArrowRight />
                 </button>
+              ) : !currentUser ? (
+                <button
+                  className="sp-btn-primary"
+                  onClick={() => navigate("/login")}
+                >
+                  Apply Now <GoArrowRight />
+                </button>
               ) : (
                 <button
                   className="sp-btn-primary"
-                  onClick={() => {
-                    if (!currentUser) {
-                      alert(
-                        "Please login or signup to proceed with the CIBIL report payment. This ensures your payment is permanently linked to your account.",
-                      );
-                      return;
-                    }
-                    setShowFormModal(true);
-                  }}
+                  onClick={() => setShowFormModal(true)}
                 >
-                  Pay now <GoArrowRight />
+                  Pay Now <GoArrowRight />
                 </button>
               )}
 

@@ -171,8 +171,16 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="r2">
-        <div className="flr2">© 2025 BanksBuddy, Inc. All rights reserved.</div>
+      <div className="r2" 
+      style={{alignItems:"flex-end"}}
+      >
+        <p className="r3">
+          {" "}
+          © 2025 BanksBuddy, Inc. All rights reserved. <br /> <br />
+          BanksBuddy represents a secure, digital-first financial platform. We
+          act as a bridge between borrowers and authorized lending partners to
+          facilitate seamless credit solutions.
+        </p>
         <div
           className="frr2-wrapper"
           style={{
@@ -187,22 +195,24 @@ export const Footer = () => {
               paddingBottom: "8px",
               fontSize: "2rem",
               opacity: 0.9,
-              fontStyle:"italic",
-              fontWeight:"100",
+              fontStyle: "italic",
+              fontWeight: "500",
+              letterSpacing: "-0.01em",
               width: "100%",
             }}
             className="remote"
           >
             Remotely working across India
           </p>
-          <ul className="frr2"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "end",
-            justifyContent: "end",
-            width: "100%",
-          }}
+          <ul
+            className="frr2"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "end",
+              justifyContent: "end",
+              width: "100%",
+            }}
           >
             <li>
               <a
@@ -241,11 +251,6 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      <p className="r3">
-        BanksBuddy represents a secure, digital-first financial platform. We act
-        as a bridge between borrowers and authorized lending partners to
-        facilitate seamless credit solutions.
-      </p>
       {/* <PayslipAd /> */}
     </footer>
   );

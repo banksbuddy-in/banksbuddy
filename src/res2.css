@@ -180,15 +180,23 @@ img.ab-partner-logo.desai {
   gap: 0.5rem;
   transition: transform 0.3s ease;
   margin: 0 auto;
+  scale: 1;
+  transition: all ease 0.25s;
 }
 
-.pan:hover {
-  transform: translateY(-5px);
+.pan:hover{
+  scale: 1.1;
+}
+.pan img {
+  transition: all ease 0.25s;
+}
+.pan img:hover {
+  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5) saturate(5.5);
 }
 
 .pan img {
-  width: 80px;
-  height: 80px;
+  width: 45px;
+  height: 45px;
   object-fit: contain;
 }
 
@@ -196,6 +204,7 @@ img.ab-partner-logo.desai {
   font-weight: 700;
   color: #1e293b;
   margin: 0;
+  font-size: 13px;
 }
 
 /* Slick Carousel Optional Overrides */
@@ -259,8 +268,8 @@ img.ab-partner-logo.desai {
   }
 
   .pan img {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
 
   .pan p {

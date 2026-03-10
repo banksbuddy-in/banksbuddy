@@ -223,9 +223,11 @@ export const ServicesCards = () => {
                 display: "flex",
               }}
             >
+              <div className="service-icon">
               {service.media}
-              <h1 style={{ whiteSpace: "normal" }}>{service.title}</h1>
-              <p>{service.description}</p>
+              </div>
+              <h1 className="service-title" style={{ whiteSpace: "normal" }}>{service.title}</h1>
+              <p className="service-description">{service.description}</p>
             </motion.div>
           ))}
         </div>
