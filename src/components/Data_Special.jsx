@@ -5,7 +5,7 @@ import { GiReceiveMoney } from "react-icons/gi";
 export const cibilSv = {
   id: "cibil_improvement",
   title: "CIBIL Improvement",
-  URL: "/cibil-improvement",
+  URL: "/cibil",
   smg: "/ss4.jpg",
   overview:
     "Strategies to enhance your CIBIL score for better credit opportunities.",
