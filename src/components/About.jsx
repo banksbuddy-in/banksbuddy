@@ -3,10 +3,19 @@ import "./AboutRefactored.css";
 import { motion } from "framer-motion";
 import apiFetch from "../lib/api.js";
 import { Awards } from "./Awards";
+import { Mile } from "./Mile.jsx";
 
 export const About = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [expandPartners, setExpandPartners] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -66,7 +75,7 @@ export const About = () => {
         variants={fadeUp}
       >
         <div className="ab-story-content">
-          <h2>Our Story</h2>
+          <h2>CEO & Founder</h2>
           <p>
             BanksBuddy was founded by Ashwin Kumar Singh with a singular vision:
             to be the most trusted and innovative financial partner for
@@ -82,10 +91,28 @@ export const About = () => {
             enterprise.
           </p>
         </div>
-        <div className="ab-story-image">
-          <img src="ab1.jpg" alt="BanksBuddy Story" />
+        <div
+          className="ab-story-image"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img
+            style={{
+              width: "100%",
+              height: "32rem",
+              objectFit: "cover",
+              borderRadius: "18rem",
+            }}
+            src="/real.jpeg"
+            alt="BanksBuddy Story"
+          />
         </div>
       </motion.section>
+      <Mile />
+      
 
       {/* Mission / Video Section */}
       <motion.section
@@ -112,14 +139,21 @@ export const About = () => {
             financial landscape, one success story at a time.
           </p>
         </div>
-        <div className="ab-video-wrapper"
+        <div
+          className="ab-video-wrapper"
           style={{
-            borderRadius:"6rem",
-            overflow:"hidden"
+            borderRadius: "6rem",
+            overflow: "hidden",
           }}
         >
           {/* <video src="/mnv.mp4" autoPlay muted loop playsInline /> */}
-          <img src="/mnv.jpg" alt="mission and vision" />
+          <img
+            style={{
+              width: "100%",
+            }}
+            src="/mnv.jpg"
+            alt="mission and vision"
+          />
         </div>
       </motion.section>
 
@@ -138,7 +172,7 @@ export const About = () => {
             <img
               className="v-full"
               style={{ width: "100%" }}
-              src="/values.png"
+              src={isMobile ? "/mobilevalues.png" : "/values.png"}
               alt="values"
             />
           </div>
@@ -204,7 +238,7 @@ export const About = () => {
       </motion.section>
 
       {/* Team Section */}
-      <section className="ab-team-section">
+      {/* <section className="ab-team-section">
         <div className="ab-section-header">
           <h2>Meet Our Team</h2>
           <p>Growth is the result of forces working together.</p>
@@ -233,7 +267,7 @@ export const About = () => {
             </motion.div>
           ))}
         </motion.div>
-      </section>
+      </section> */}
 
       <Awards />
     </div>
