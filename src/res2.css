@@ -62,9 +62,6 @@ section.sp-hero {
 }
 
 @media (max-width: 1024px) {
-  div#cover {
-    display: none !important;
-  }
   .pgcntt {
     margin-top: 0 !important;
   }
@@ -358,7 +355,9 @@ img.ab-partner-logo.desai {
   }
   .sctn span {
     padding: 4% 0;
-  }
+  }div#cover {
+    border-radius: 0rem 0rem 4rem 4rem;
+}
 }
 .ab-services-section {
   padding: 3% 10%;

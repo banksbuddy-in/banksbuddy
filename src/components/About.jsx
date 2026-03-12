@@ -91,7 +91,7 @@ export const About = () => {
               paddingTop:"1%"
             }}
           >
-            Founded in 2023, BanksBuddy was built with a clear vision — to become the most trusted partner for improving financial health. The platform primarily focuses on CIBIL Score Improvement, helping individuals strengthen their credit profiles, understand their credit reports, and unlock better financial opportunities. Alongside this, we offer Loans, Insurance, and Tax Services, providing a complete suite of solutions to manage finances efficiently and confidently.
+            Founded in 2023, BanksBuddy was built with a clear vision — to become the most trusted partner for improving financial health. The platform primarily focuses on CIBIL Score Improvement, helping individuals strengthen their Credit profiles, understand their Credit reports, and unlock better financial opportunities. Alongside this, we offer Loans, Insurance, and Tax Services, providing a complete suite of solutions to manage finances efficiently and confidently.
             <span>
              Over the years, we have helped thousands of clients improve their Credit Scores, secure the right Loans, protect their assets with Insurance, and Optimize their Taxes. Our approach combines personalized guidance with trusted financial strategies, making complex processes simple and transparent. By focusing on CIBIL improvement as the foundation of financial empowerment, BanksBuddy ensures clients are better positioned to achieve stability, access opportunities, and make informed decisions.
             </span>
