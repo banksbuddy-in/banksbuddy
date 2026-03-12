@@ -150,8 +150,12 @@ export const Reviews = () => {
     <section id="review">
       <div className="reviews-container">
         <div className="reviews-header">
-          <span className="reviews-badge">Testimonials</span>
-          <h2 className="reviews-title shead">What Our Clients Say</h2>
+          <span
+          style={{
+            margin:"1% 0"
+          }}
+          className="reviews-badge">Testimonials</span>
+          <h2 className="sp-section-title shead">What Our Clients Say</h2>
           <p className="reviews-subtitle">
             Trusted by thousands of individuals and businesses across India
           </p>

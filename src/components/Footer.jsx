@@ -210,7 +210,6 @@ export const Footer = () => {
               display: "flex",
               flexDirection: "row",
               alignItems: "end",
-              justifyContent: "end",
               width: "100%",
             }}
           >

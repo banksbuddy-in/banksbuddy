@@ -12,7 +12,12 @@ const truncateText = (text, wordLimit) => {
 
 const NewsnOffersDesktop = ({ news, offers, loading, offersLoading }) => (
   <div id="NewsnOffers">
-    <h1 className="shead">News and Offers</h1>
+    <h1 
+    style={{
+      textAlign:"center",
+      fontSize:"2em"
+    }}
+    className="sp-section-title">News and Offers</h1>
     <div className="nnf">
       <div className="news">
         <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>

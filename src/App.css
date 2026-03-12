@@ -79,7 +79,6 @@ h1.fhed {
 ul.frr2 {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: nowrap;
   gap: 0.85em;
   flex-direction: row;

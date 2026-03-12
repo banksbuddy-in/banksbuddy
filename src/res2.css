@@ -305,6 +305,45 @@ img.ab-partner-logo.desai {
   .remote {
     text-align: center;
   }
+  #cover h1,
+  #cover p,
+  #cover button {
+    display: none;
+  }
+  img.ab-partner-logo.desai {
+    border: none;
+    width: 5em;
+  }
+  .ab-story-image img {
+    width: 100%;
+    border-radius: 5em;
+  }
+  .ab-story-section {
+    flex-direction: column-reverse;
+  }
+  .ab-mission-section {
+    flex-direction: column-reverse;
+  }
+  .ab-mission-section img {
+    border-radius: 2em;
+  }
+  .sctn span {
+    padding: 4% 0;
+  }
+  div#cover {
+    border-radius: 0rem 0rem 4rem 4rem;
+  }
+  .frr2 {
+    justify-content: center;
+  }
+  #cover h1,
+  #cover p,
+  #cover button {
+    display: none;
+  }
+}
+.frr2 {
+  justify-content: end;
 }
 
 @media (max-width: 480px) {
@@ -355,9 +394,18 @@ img.ab-partner-logo.desai {
   }
   .sctn span {
     padding: 4% 0;
-  }div#cover {
+  }
+  div#cover {
     border-radius: 0rem 0rem 4rem 4rem;
-}
+  }
+  .frr2 {
+    justify-content: center;
+  }
+  #cover h1,
+  #cover p,
+  #cover button {
+    display: none;
+  }
 }
 .ab-services-section {
   padding: 3% 10%;
@@ -370,7 +418,7 @@ section.ab-values-section {
   border-radius: 3rem;
   color: var(--darkbl);
 }
-.ab-service-card:hover{
+.ab-service-card:hover {
   background-color: var(--darkbl);
   color: white;
 }
