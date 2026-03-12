@@ -257,7 +257,7 @@ footer.foot {
   overflow: hidden;
 }
 
-.foot img {
+.foot > img {
   position: absolute;
   right: 14%;
   top: 0;

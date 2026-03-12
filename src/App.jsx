@@ -22,7 +22,6 @@ import "./ch.css";
 import "./res2.css";
 import { Cursor } from "./components/Cursor";
 import { RiAdminFill } from "react-icons/ri";
-import { PayslipAd } from "./components/PayslipAd";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -70,7 +69,6 @@ function App() {
           </Link>
           <AdminButton />
           <Footer />
-          <img src="/paygt.png" alt="" className="pygt" />
         </AuthProvider>
       </BrowserRouter>
     </div>

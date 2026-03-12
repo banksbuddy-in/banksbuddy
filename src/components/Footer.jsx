@@ -10,7 +10,6 @@ import { FaPhoneVolume } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import "./newserv.css";
 import { PayslipAd } from "./PayslipAd";
-
 export const Footer = () => {
   // const productName = "Loan Support";
   //   const subject = `Banksbuddy - INQUIRY Regarding ${productName}`;
@@ -41,7 +40,7 @@ export const Footer = () => {
   //   )}&body=${encodeURIComponent(body)}`;
   return (
     <footer className="foot">
-      <img src="onlyi.png" alt="BanksBuddy Logo" />
+      {/* <img src="onlyi.png" alt="BanksBuddy Logo" /> */}
       {/* <video className="fbg" src="fbg.mp4" autoPlay muted loop></video> */}
       <div className="r1">
         <div className="c1">
@@ -171,9 +170,7 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="r2" 
-      style={{alignItems:"flex-end"}}
-      >
+      <div className="r2" style={{ alignItems: "flex-end" }}>
         <p className="r3">
           {" "}
           © 2025 BanksBuddy, Inc. All rights reserved. <br /> <br />
@@ -250,7 +247,8 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      {/* <PayslipAd /> */}
+      <PayslipAd />
+      {/* <P /> */}
     </footer>
   );
 };

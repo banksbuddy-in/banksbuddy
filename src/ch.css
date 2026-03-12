@@ -33,16 +33,23 @@ div#imggrid {
   width: 100%;
   padding: 2% 10%;
   gap: 2rem;
-  background: white;
+  flex-wrap: wrap;
+  align-content: center;
 }
 
-img.psa {
-  height: 35px;
-  width: auto;
+img.psa { 
+  width: 10rem;
+  background-color: white;
+  height: 4rem;
+  padding: 1.67% 3%;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  filter: contrast(1.1);
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 
 img.consult.partner {
   position: relative;

@@ -212,7 +212,12 @@ const MobileCarousel = ({ items, renderItem }) => {
 
 const NewsnOffersMobile = ({ news, offers, loading, offersLoading }) => (
   <div id="NewsnOffers" className="mobile">
-    <h1 className="shead">News and Offers</h1>
+    <h1 className="sp-section-title"
+    style={{
+      textAlign:"center",
+      fontSize:"1.67em"
+    }}
+    >News and Offers</h1>
     <div className="nnf mobile-col">
       <div className="news">
         <h2 style={{ fontWeight: "900", margin: "3%", color: "var(--bl)" }}>

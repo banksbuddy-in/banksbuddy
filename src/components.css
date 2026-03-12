@@ -929,10 +929,6 @@ footer.foot {
   background: #00265f;
 }
 
-.foot img {
-  display: none;
-  padding: 2%;
-}
 .btns a {
   padding: 10%;
   white-space: nowrap;

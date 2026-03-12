@@ -406,6 +406,9 @@ img.ab-partner-logo.desai {
   #cover button {
     display: none;
   }
+  img.psa{
+    height: 3rem;
+  }
 }
 .ab-services-section {
   padding: 3% 10%;
