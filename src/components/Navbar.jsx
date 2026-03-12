@@ -113,7 +113,7 @@ export const Navbar = () => {
     <nav className="navbar">
       <div className="navlist suv"></div>
       <a href="/" className="logo">
-        <img src="/logo1.png" alt="Banks Buddy" />
+        <img src="/logo1.png" alt="BanksBuddy" />
       </a>
 
       <button

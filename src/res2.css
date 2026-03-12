@@ -184,14 +184,15 @@ img.ab-partner-logo.desai {
   transition: all ease 0.25s;
 }
 
-.pan:hover{
+.pan:hover {
   scale: 1.1;
 }
 .pan img {
   transition: all ease 0.25s;
 }
 .pan img:hover {
-  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5) saturate(5.5);
+  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5)
+    saturate(5.5);
 }
 
 .pan img {
@@ -240,7 +241,10 @@ img.ab-partner-logo.desai {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 18px;
 }
-
+.ab-story-image img {
+  width: 75%;
+  border-radius: 18em;
+}
 /* Specific arrow positioning relative to the slide list */
 .pancarousel-container .slick-prev {
   left: -15px;
@@ -252,6 +256,19 @@ img.ab-partner-logo.desai {
 }
 .remote {
   text-align: end;
+}
+
+.ab-mission-section img {
+  border-radius: 6em;
+  width: 100%;
+}
+
+.sctn {
+  gap: 5px;
+  padding-top: 3%;
+}
+.sctn span {
+  padding: 1% 0;
 }
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
@@ -321,4 +338,40 @@ img.ab-partner-logo.desai {
   .remote {
     text-align: center;
   }
+
+  img.ab-partner-logo.desai {
+    border: none;
+    width: 5em;
+  }
+  .ab-story-image img {
+    width: 100%;
+    border-radius: 5em;
+  }
+  .ab-story-section {
+    flex-direction: column-reverse;
+  }
+  .ab-mission-section {
+    flex-direction: column-reverse;
+  }
+  .ab-mission-section img {
+    border-radius: 2em;
+  }
+  .sctn span {
+    padding: 4% 0;
+  }
+}
+.ab-services-section {
+  padding: 3% 10%;
+}
+section.ab-values-section {
+  padding: 3% 10%;
+}
+.ab-service-card {
+  border: 1px solid #000aff;
+  border-radius: 3rem;
+  color: var(--darkbl);
+}
+.ab-service-card:hover{
+  background-color: var(--darkbl);
+  color: white;
 }

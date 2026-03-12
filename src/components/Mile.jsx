@@ -8,28 +8,28 @@ const Timeline = [
     year: 2023,
     title: "Company Founded",
     description:
-      "Banks Buddy, founded in 2003, is driven by a clear vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide.",
+      "BanksBuddy, founded in 2023, is driven by a clear vision: to be the most trusted and innovative financial partner for individuals and businesses worldwide.",
   },
   {
     step: "02",
     year: 2024,
     title: "First Expansion",
     description:
-      "The Beginning in Rajasthan: Banks Buddy was established with a strong vision to provide all types of loan services to customers under one roof. After establishing a strong presence in Rajasthan, we successfully expanded our operations into Madhya Pradesh, marking our first major growth.",
+      "The Beginning in Rajasthan: BanksBuddy was established with a strong vision to offer a wide range of Financial and Tax services to customers under one roof. After building a strong foundation and trusted presence in Rajasthan, we took our first major step toward growth by successfully expanding our operations into Madhya Pradesh, marking an important milestone in our journey. ",
   },
   {
     step: "03",
     year: 2025,
     title: "Business Expansion",
     description:
-      "As we expanded our presence, we built strong strategic partnerships with 450+ public and private sector banks across India regarding loans and insurance. We also launched our specialized CIBIL Improvement Service, designed to help individuals enhance their credit profiles.",
+      "As we expanded our presence, we built strong strategic partnerships with 450+ public and private sector banks across India for loan and insurance services. We also launched our specialized CIBIL Improvement Service, designed to help individuals enhance their credit profiles by working closely with credit bureaus such as TransUnion CIBIL, Experian, Equifax, and CRIF.",
   },
   {
     step: "04",
     year: 2026,
     title: "PAN India Expansion",
     description:
-      "From a single-state beginning to becoming a multi-service financial platform across India, Banks Buddy continues to grow with one clear mission: to empower individuals and businesses with trusted, innovative, and comprehensive financial solutions.",
+      "From a single-state beginning to becoming a multi-service financial platform across India, BanksBuddy continues to grow with one clear mission: to empower individuals and businesses with trusted, innovative, and comprehensive financial solutions.",
   },
 ];
 
@@ -53,7 +53,13 @@ export const Mile = () => {
     <div id="milestone" className="dt-section" ref={containerRef}>
       <div className="dt-max-width">
         <motion.h1
-          className="dt-title"
+          className="sp-section-title"
+          style={{
+            color:"white",
+            textAlign:"center",
+            paddingBottom:"7%",
+            fontSize:"2.25em"
+          }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

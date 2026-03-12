@@ -2,7 +2,7 @@
 .dt-section {
   background-color: #0b0a15;
   color: #fff;
-  padding: 8rem 5%;
+  padding: 3rem 5%;
   font-family: inherit;
   overflow: hidden;
   position: relative;
@@ -81,7 +81,7 @@
 
 .dt-item {
   display: flex;
-  margin-bottom: 10rem;
+  margin-bottom: 3rem;
   position: relative;
 }
 

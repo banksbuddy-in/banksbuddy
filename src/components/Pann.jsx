@@ -58,7 +58,7 @@ export const Pann = () => {
   return (
     <div id="panindia">
       <div className="pntxt">
-        <h1>Banks Buddy</h1>
+        <h1>BanksBuddy</h1>
         <p>We are available throughout the Pan India</p>
       </div>
       <div className="pancarousel-container">

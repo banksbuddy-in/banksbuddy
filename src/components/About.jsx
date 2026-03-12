@@ -4,6 +4,12 @@ import { motion } from "framer-motion";
 import apiFetch from "../lib/api.js";
 import { Awards } from "./Awards";
 import { Mile } from "./Mile.jsx";
+import {
+  FaChartLine,
+  FaMoneyCheckAlt,
+  FaCalculator,
+  FaShieldAlt,
+} from "react-icons/fa";
 
 export const About = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -64,6 +70,92 @@ export const About = () => {
           </p>
         </div>
       </motion.section>
+      <motion.section
+        className="ab-story-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        variants={fadeUp}
+      >
+        <div className="ab-story-content">
+          <h2>Company Overview</h2>
+          <p
+            className="sctn"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "justify",
+              justifyContent: "center",
+              paddingTop:"1%"
+            }}
+          >
+            Founded in 2023, BanksBuddy was built with a clear vision — to become the most trusted partner for improving financial health. The platform primarily focuses on CIBIL Score Improvement, helping individuals strengthen their credit profiles, understand their credit reports, and unlock better financial opportunities. Alongside this, we offer Loans, Insurance, and Tax Services, providing a complete suite of solutions to manage finances efficiently and confidently.
+            <span>
+             Over the years, we have helped thousands of clients improve their Credit Scores, secure the right Loans, protect their assets with Insurance, and Optimize their Taxes. Our approach combines personalized guidance with trusted financial strategies, making complex processes simple and transparent. By focusing on CIBIL improvement as the foundation of financial empowerment, BanksBuddy ensures clients are better positioned to achieve stability, access opportunities, and make informed decisions.
+            </span>
+            At BanksBuddy, we believe that the right financial guidance can
+            transform lives. That’s why we focus on delivering simple,
+            personalized, and reliable financial solutions that empower
+            individuals, students, and businesses to make informed decisions,
+            achieve financial stability, and reach their goals.
+          </p>
+        </div>
+      </motion.section>
+      <motion.section
+        className="ab-services-section"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        variants={fadeUp}
+      >
+        <div className="ab-services-header">
+          <h2>What We Do</h2>
+          <p>
+            We offer a comprehensive range of financial solutions designed to
+            support individuals, families, and businesses at every stage of
+            their financial journey. Our goal is to simplify financial processes
+            and help you make confident decisions for a secure future.
+          </p>
+        </div>
+        <div className="ab-services-grid">
+          <div className="ab-service-card">
+            <FaChartLine className="ab-service-icon" />
+            <h3>CIBIL Score Improvement</h3>
+            <p>
+              Helping individuals strengthen their credit profiles with expert
+              guidance and proven strategies.
+            </p>
+          </div>
+          <div className="ab-service-card">
+            <FaMoneyCheckAlt className="ab-service-icon" />
+            <h3>Loan Assistance</h3>
+            <p>
+              We help you find and secure the right loan based on your needs and
+              eligibility. Complete support for Personal, Education, Business,
+              Auto, and Home Loans.
+            </p>
+          </div>
+          <div className="ab-service-card">
+            <FaCalculator className="ab-service-icon" />
+            <h3>CA Services</h3>
+            <p>
+              Professional assistance for ITR filing, business registrations,
+              and comprehensive compliance services.
+            </p>
+          </div>
+          <div className="ab-service-card">
+            <FaShieldAlt className="ab-service-icon" />
+            <h3>Insurance Advisory</h3>
+            <p>
+              Expert guidance to choose the right protection and coverage for
+              you and your family's secure future.
+            </p>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Story Section */}
       <motion.section
@@ -76,19 +168,30 @@ export const About = () => {
       >
         <div className="ab-story-content">
           <h2>CEO & Founder</h2>
-          <p>
-            BanksBuddy was founded by Ashwin Kumar Singh with a singular vision:
-            to be the most trusted and innovative financial partner for
-            individuals and businesses worldwide. From our humble beginnings, we
-            have strived to provide exceptional services that empower our
-            clients to make informed decisions.
+          <p
+            style={{
+              textAlign: "justify",
+            }}
+          >
+            BanksBuddy was founded by Ashwin Kumar Singh with the vision of
+            simplifying the loan process and eliminating unnecessary commissions
+            charged by DSAs and third-party agents. The platform allows
+            individuals to apply for loans directly from home and connect with
+            trusted banks without visiting multiple branches. Its goal is to
+            make borrowing faster, easier, and more transparent for customers.
           </p>
-          <p>
-            Over time, we have expanded our portfolio to include CIBIL score
-            improvement, education loans, and diverse CA services. Today, we
-            stand proud as one of the fastest-growing platforms in the finance
-            industry, turning financial dreams into reality—from education to
-            enterprise.
+          <p
+            style={{
+              textAlign: "justify",
+            }}
+          >
+            With over five years of experience in the finance industry, Ashwin
+            has built strong expertise in financial services, loan assistance,
+            and credit advisory. He also introduced CIBIL score improvement
+            guidance to help individuals strengthen their credit profiles and
+            increase their chances of loan approval. Under his leadership,
+            BanksBuddy focuses on trust, transparency, and customer-centric
+            financial solutions.
           </p>
         </div>
         <div
@@ -101,10 +204,7 @@ export const About = () => {
         >
           <img
             style={{
-              width: "100%",
-              height: "32rem",
               objectFit: "cover",
-              borderRadius: "18rem",
             }}
             src="/real.jpeg"
             alt="BanksBuddy Story"
@@ -112,7 +212,6 @@ export const About = () => {
         </div>
       </motion.section>
       <Mile />
-      
 
       {/* Mission / Video Section */}
       <motion.section
@@ -142,8 +241,8 @@ export const About = () => {
         <div
           className="ab-video-wrapper"
           style={{
-            borderRadius: "6rem",
             overflow: "hidden",
+            boxShadow: "none",
           }}
         >
           {/* <video src="/mnv.mp4" autoPlay muted loop playsInline /> */}
