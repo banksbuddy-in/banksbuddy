@@ -387,6 +387,10 @@ img.ab-partner-logo.desai {
     text-align: left;
     font-weight: 500;
   }
+
+  img.psa {
+    width: 6.5rem;
+  }
 }
 
 .frr2 {
@@ -465,6 +469,23 @@ img.ab-partner-logo.desai {
 
   img.psa {
     height: 3rem;
+  }
+
+  .mobile-services-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: inherit;
+    padding: 0;
+    width: 100%;
+    letter-spacing: 0.015em;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  img.psa {
+    width: 6.5rem;
   }
 }
 
