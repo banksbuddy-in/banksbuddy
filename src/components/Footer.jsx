@@ -112,11 +112,6 @@ export const Footer = () => {
                 CIBIL Improvement
               </Link>
             </li>
-            <li>
-              <Link className="fct" to="/website-development">
-                Website Development
-              </Link>
-            </li>
           </ul>
         </div>
         <div className="c2">
@@ -190,7 +185,7 @@ export const Footer = () => {
             style={{
               margin: 0,
               paddingBottom: "8px",
-              fontSize: "2rem",
+              fontSize: "1.67rem",
               opacity: 0.9,
               fontStyle: "italic",
               fontWeight: "500",

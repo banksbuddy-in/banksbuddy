@@ -181,7 +181,7 @@ export const Insur = [
         icon: <FaShieldAlt size={40} color="#ff451f" />,
         overview:
           "Comprehensive protection for your assets including vehicles, home, travel, and business with customized general insurance plans.",
-        tagline: "Comprehensive Protection for Your Assets",
+        tagline: "Safeguarding Your Valuable Assets.",
         description:
           "General insurance covers non-life assets and liabilities including motor vehicles, property, travel, business risks, and third-party liabilities. Get peace of mind knowing your valuable assets are protected against damages, theft, and unforeseen events.",
         keyBenefits: [

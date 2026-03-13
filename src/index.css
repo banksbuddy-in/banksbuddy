@@ -8,22 +8,32 @@
   text-decoration: none;
   list-style: none;
   scroll-behavior: smooth;
-  transition:  all ease 0.2s;
+  transition: all ease 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
+
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-thumb {
   display: none;
 }
+
 :root {
   --bl: #0869ff;
-  --darkbl:#003990;
+  --darkbl: #003990;
   --rd: rgb(255, 69, 31);
 }
 
-:focus-visible,:focus {
+:focus-visible,
+:focus {
   outline: none;
 }
-.App{
+
+.App {
   overflow-x: hidden;
+}
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
 }

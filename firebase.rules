@@ -1,0 +1,68 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+        ".write": "auth != null && (auth.uid === $uid || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+        "role": {
+          ".write": "auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+        }
+      }
+    },
+
+    "consultations": {
+      ".read": true,
+      ".write": true
+    },
+
+    "offers": {
+      ".read": true,
+      ".write": true
+    },
+
+    "reviews": {
+      ".read": true,
+      ".write": true
+    },
+
+    "team": {
+      ".read": true,
+      ".write": true
+    },
+
+    "careers": {
+      ".read": true,
+      ".write": true
+    },
+
+    "policyReminders": {
+      ".read": true,
+      ".write": true
+    },
+
+    "partner_applications": {
+      ".read": true,
+      ".write": true
+    },
+
+    "cibil_requests": {
+      ".read": true,
+      ".write": true
+    },
+
+    "cibil_notifications": {
+      ".read": true,
+      ".write": true
+    },
+
+    "manual_revenue": {
+      ".read": true,
+      ".write": true
+    },
+
+    "cashfree_revenue": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

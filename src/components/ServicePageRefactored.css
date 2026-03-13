@@ -7,6 +7,7 @@
   color: #333;
   box-sizing: border-box;
 }
+
 .service-page-container * {
   box-sizing: border-box;
 }
@@ -358,11 +359,9 @@
 .sp-feature-icon {
   width: 38px;
   height: 38px;
-  background: linear-gradient(
-    135deg,
-    rgba(8, 105, 255, 0.1) 0%,
-    rgba(0, 57, 144, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(8, 105, 255, 0.1) 0%,
+      rgba(0, 57, 144, 0.05) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -833,11 +832,9 @@
 .sp-doc-icon-wrapper {
   width: 38px;
   height: 38px;
-  background: linear-gradient(
-    135deg,
-    rgba(8, 105, 255, 0.1) 0%,
-    rgba(0, 57, 144, 0.05) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(8, 105, 255, 0.1) 0%,
+      rgba(0, 57, 144, 0.05) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -873,17 +870,21 @@
 /* ==================== Types Section - compact single row ==================== */
 .sp-types-horizontal {
   display: flex;
-  flex-wrap: wrap; /* Changed to wrap so cards don't blow out horizontal width */
-  gap: 1.5rem; /* Increased gap for better spacing */
+  flex-wrap: wrap;
+  /* Changed to wrap so cards don't blow out horizontal width */
+  gap: 1.5rem;
+  /* Increased gap for better spacing */
   padding: 0.5rem 0.25rem 2rem 0.25rem;
-  justify-content: center; /* Center the wrapped items */
+  justify-content: center;
+  /* Center the wrapped items */
   max-width: 1200px;
   margin: 0 auto;
 }
 
 @media (min-width: 1024px) {
   .sp-types-horizontal {
-    justify-content: center; /* center on large screens if they fit */
+    justify-content: center;
+    /* center on large screens if they fit */
   }
 }
 
@@ -892,7 +893,8 @@
   flex-wrap: wrap;
   overflow-x: hidden;
   justify-content: center;
-  max-width: 1200px; /* Constrain container so it forces neat wrapping */
+  max-width: 1200px;
+  /* Constrain container so it forces neat wrapping */
   margin: 0 auto;
 }
 
@@ -1104,10 +1106,9 @@
 /* Mobile */
 @media (max-width: 768px) {
   div#cover {
-    height: auto !important;
+    height: auto;
     min-height: 35vh;
     padding: 15% 6% 10% 6% !important;
-    align-items: center !important;
     text-align: center;
   }
 
@@ -1121,6 +1122,7 @@
     text-align: center;
     padding: 4% 0 6% 0 !important;
   }
+
   .pgcntt {
     margin-top: 0 !important;
     top: 0 !important;
@@ -1231,7 +1233,7 @@
 @media (max-width: 480px) {
   div#cover {
     min-height: 30vh;
-    padding: 20% 5% 10% 5% !important;
+    padding: 15% 5% 10% 5% !important;
   }
 
   #cover h1 {
@@ -1242,6 +1244,7 @@
     font-size: 0.95rem;
     padding: 5% 0 8% 0 !important;
   }
+
   .pgcntt {
     margin-top: 0 !important;
     top: 0 !important;

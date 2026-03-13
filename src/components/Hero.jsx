@@ -43,11 +43,22 @@ export const Hero = () => {
             About <span style={{ color: "#ff451f" }}>Us</span>
           </h1>
           <p className="hdes">Your trusted partner in loans</p>
-          <p className="abtdes" style={{paddingBottom:"0"}}>
-            Banksbuddy is a trusted financial services partner dedicated to empowering individuals and businesses across India with smart, accessible, and tailored financial solutions. Established with a vision to simplify finance for everyone, Banksbuddy bridges the gap between customers and financial opportunities — whether it’s loans, insurance, credit improvement, or business financial services.
+          <p className="abtdes" style={{ paddingBottom: "0" }}>
+            BanksBuddy is a trusted financial platform focused on helping
+            individuals and businesses across India access simple, reliable, and
+            personalized financial solutions. Built with a vision to make
+            finance easier for everyone, BanksBuddy connects customers with
+            suitable financial opportunities such as loans, insurance plans,
+            credit improvement services, and business finance support through a
+            transparent and efficient digital platform.
           </p>
           <p className="abtdes">
-            At Banksbuddy, we believe that financial freedom is the key to personal growth and business success. Our mission is to make financial services transparent, efficient, and customized to meet the unique needs of each customer. With a customer-first mindset, we focus on delivering solutions that are simple to understand, affordable, and backed by expert guidance.
+            At Banksbuddy, we believe that financial freedom is the key to
+            personal growth and business success. Our mission is to make
+            financial services transparent, efficient, and customized to meet
+            the unique needs of each customer. With a customer-first mindset, we
+            focus on delivering solutions that are simple to understand,
+            affordable, and backed by expert guidance.
           </p>
           <div className="btnnss">
             <Link className="abtsn" to="/about-us">
@@ -98,7 +109,7 @@ export const Hero = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 1.6, ease: "easeOut", delay:0 }}
+          transition={{ duration: 1.6, ease: "easeOut", delay: 0 }}
           variants={fadeUp}
         >
           <img className="rhrimg" src="heroman.png" alt="Hero Image" />

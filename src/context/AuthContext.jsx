@@ -15,6 +15,9 @@ import { initializeApp } from "firebase/app";
 const auth = getAuth();
 const googleProvider = new GoogleAuthProvider();
 
+// Hardcoded admin UID — only this user gets admin access
+const ADMIN_UID = "YNzKifqerZSPHAFVqfpUFxbwcRB2";
+
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -38,7 +41,7 @@ export function AuthProvider({ children }) {
     await set(ref(db, "users/" + user.uid), {
       username: name,
       email: email,
-      role: "user", // Default role
+      role: user.uid === ADMIN_UID ? "admin" : "user",
     });
 
     return userCredential;
@@ -57,7 +60,7 @@ export function AuthProvider({ children }) {
       await set(ref(db, "users/" + user.uid), {
         username: user.displayName,
         email: user.email,
-        role: "user",
+        role: user.uid === ADMIN_UID ? "admin" : "user",
       });
     }
 
@@ -76,17 +79,10 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
-        // Fetch role
-        const dbRef = ref(db);
-        try {
-          const snapshot = await get(child(dbRef, `users/${user.uid}/role`));
-          if (snapshot.exists()) {
-            setUserRole(snapshot.val());
-          } else {
-            setUserRole("user"); // Fallback
-          }
-        } catch (error) {
-          console.error("Error fetching user role:", error);
+        // Admin is determined by UID, no database read needed
+        if (user.uid === ADMIN_UID) {
+          setUserRole("admin");
+        } else {
           setUserRole("user");
         }
       } else {
