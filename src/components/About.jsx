@@ -167,7 +167,7 @@ export const About = () => {
         variants={fadeUp}
       >
         <div className="ab-story-content">
-          <h2>CEO & Founder</h2>
+          <h2>Meet our founder</h2>
           <p
             style={{
               textAlign: "justify",
