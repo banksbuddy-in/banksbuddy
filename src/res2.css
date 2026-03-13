@@ -17,6 +17,7 @@ a.btns:hover {
   color: white;
   background: blue;
 }
+
 .pf-modal-container {
   scale: 0.75;
 }
@@ -27,6 +28,7 @@ img.pygt {
   width: 100%;
   padding: 1% 25%;
 }
+
 section.ab-values-section {
   width: 100%;
   display: flex;
@@ -45,18 +47,22 @@ section.ab-values-section {
 .navlist.suv::after {
   display: none;
 }
+
 div#cover {
   width: 100vw;
   height: 65vh;
   background-size: cover;
 }
+
 .inbnr img {
   width: 100%;
   border-radius: 23rem;
 }
+
 .pgcntt {
   margin-top: 30%;
 }
+
 section.sp-hero {
   padding: 5% 4%;
 }
@@ -66,6 +72,7 @@ section.sp-hero {
     margin-top: 0 !important;
   }
 }
+
 @media (max-width: 480px) {
   .pgcntt {
     width: 100% !important;
@@ -74,10 +81,12 @@ section.sp-hero {
     box-sizing: border-box;
   }
 }
+
 div#cover {
   display: flex;
   justify-content: flex-start;
 }
+
 .sp-docs-grid {
   padding: 0;
 }
@@ -85,10 +94,12 @@ div#cover {
 .sp-doc-card.sp-doc-card-shadow {
   max-width: 10rem;
 }
+
 #cover h1 {
   line-height: 115%;
   margin-bottom: 2%;
 }
+
 .cibprt {
   display: flex;
   flex-direction: column;
@@ -96,6 +107,7 @@ div#cover {
   align-content: center;
   align-items: center;
 }
+
 .inbnr {
   display: flex;
   align-items: center;
@@ -105,6 +117,7 @@ div#cover {
 .inbnr img {
   width: 60%;
 }
+
 .ourbr {
   display: flex;
   align-items: center;
@@ -120,6 +133,7 @@ div#cover {
 .ourbr p {
   padding: 0 9%;
 }
+
 img.ab-partner-logo.desai {
   max-width: none;
   max-height: none;
@@ -144,7 +158,8 @@ img.ab-partner-logo.desai {
 }
 
 .pancarousel-container {
-  padding: 2rem 2rem 4rem 2rem; /* Added bottom padding for dots */
+  padding: 2rem 2rem 4rem 2rem;
+  /* Added bottom padding for dots */
   bottom: 2em;
   position: relative;
   bottom: 6rem;
@@ -184,12 +199,13 @@ img.ab-partner-logo.desai {
 .pan:hover {
   scale: 1.1;
 }
+
 .pan img {
   transition: all ease 0.25s;
 }
+
 .pan img:hover {
-  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5)
-    saturate(5.5);
+  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5) saturate(5.5);
 }
 
 .pan img {
@@ -238,19 +254,23 @@ img.ab-partner-logo.desai {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 18px;
 }
+
 .ab-story-image img {
   width: 75%;
   border-radius: 18em;
 }
+
 /* Specific arrow positioning relative to the slide list */
 .pancarousel-container .slick-prev {
   left: -15px;
   z-index: 1;
 }
+
 .pancarousel-container .slick-next {
   right: -5px;
   z-index: 1;
 }
+
 .remote {
   text-align: end;
 }
@@ -264,9 +284,11 @@ img.ab-partner-logo.desai {
   gap: 5px;
   padding-top: 3%;
 }
+
 .sctn span {
   padding: 1% 0;
 }
+
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .pancarousel-container {
@@ -302,46 +324,71 @@ img.ab-partner-logo.desai {
   .pntxt p {
     font-size: 0.95rem;
   }
+
   .remote {
     text-align: center;
   }
+
   #cover h1,
   #cover p,
   #cover button {
     display: none;
   }
+
   img.ab-partner-logo.desai {
     border: none;
     width: 5em;
   }
+
   .ab-story-image img {
     width: 100%;
     border-radius: 5em;
   }
+
   .ab-story-section {
     flex-direction: column-reverse;
   }
+
   .ab-mission-section {
     flex-direction: column-reverse;
   }
+
   .ab-mission-section img {
     border-radius: 2em;
   }
+
   .sctn span {
     padding: 4% 0;
   }
+
   div#cover {
     border-radius: 0rem 0rem 4rem 4rem;
   }
+
   .frr2 {
     justify-content: center;
   }
+
   #cover h1,
   #cover p,
   #cover button {
     display: none;
   }
+
+  .mobile-services-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: inherit;
+    padding: 0;
+    width: 100%;
+    letter-spacing: 0.015em;
+    text-align: left;
+    font-weight: 500;
+  }
 }
+
 .frr2 {
   justify-content: end;
 }
@@ -371,6 +418,7 @@ img.ab-partner-logo.desai {
   .pan p {
     font-size: 0.8rem;
   }
+
   .remote {
     text-align: center;
   }
@@ -379,48 +427,61 @@ img.ab-partner-logo.desai {
     border: none;
     width: 5em;
   }
+
   .ab-story-image img {
     width: 100%;
     border-radius: 5em;
   }
+
   .ab-story-section {
     flex-direction: column-reverse;
   }
+
   .ab-mission-section {
     flex-direction: column-reverse;
   }
+
   .ab-mission-section img {
     border-radius: 2em;
   }
+
   .sctn span {
     padding: 4% 0;
   }
+
   div#cover {
     border-radius: 0rem 0rem 4rem 4rem;
   }
+
   .frr2 {
     justify-content: center;
   }
+
   #cover h1,
   #cover p,
   #cover button {
     display: none;
   }
+
   img.psa {
     height: 3rem;
   }
 }
+
 .ab-services-section {
   padding: 3% 10%;
 }
+
 section.ab-values-section {
   padding: 3% 10%;
 }
+
 .ab-service-card {
   border: 1px solid #000aff;
   border-radius: 3rem;
   color: var(--darkbl);
 }
+
 .ab-service-card:hover {
   background-color: var(--darkbl);
   color: white;
