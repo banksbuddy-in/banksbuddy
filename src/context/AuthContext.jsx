@@ -72,6 +72,8 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    localStorage.removeItem("cibilPaid");
+    localStorage.removeItem("userEmail");
     return signOut(auth);
   }
 

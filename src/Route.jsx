@@ -90,7 +90,11 @@ export const Dat = [
   {
     path: "/admin-career",
     label: "Add Career",
-    element: <AddCareer />,
+    element: (
+      <AdminRoute>
+        <AddCareer />
+      </AdminRoute>
+    ),
   },
   {
     path: "/consultation",
@@ -99,27 +103,47 @@ export const Dat = [
   {
     path: "/admin-table",
     label: "Admin Table",
-    element: <AdminTable />,
+    element: (
+      <AdminRoute>
+        <AdminTable />
+      </AdminRoute>
+    ),
   },
   {
     path: "/admin-reviews",
     label: "Admin Reviews",
-    element: <AdminReviews />,
+    element: (
+      <AdminRoute>
+        <AdminReviews />
+      </AdminRoute>
+    ),
   },
   {
     path: "/admin-offers",
     label: "Admin Offers",
-    element: <AdminOffers />,
+    element: (
+      <AdminRoute>
+        <AdminOffers />
+      </AdminRoute>
+    ),
   },
   {
     path: "/admin-team",
     label: "Admin Team",
-    element: <AdminTeam />,
+    element: (
+      <AdminRoute>
+        <AdminTeam />
+      </AdminRoute>
+    ),
   },
   {
     path: "/admin-policy-reminder",
     label: "Policy Reminders",
-    element: <AdminPolicyReminder />,
+    element: (
+      <AdminRoute>
+        <AdminPolicyReminder />
+      </AdminRoute>
+    ),
   },
   {
     path: "/insurance-assistance",

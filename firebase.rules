@@ -11,58 +11,58 @@
     },
 
     "consultations": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null"
     },
 
     "offers": {
       ".read": true,
-      ".write": true
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "reviews": {
       ".read": true,
-      ".write": true
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "team": {
       ".read": true,
-      ".write": true
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "careers": {
       ".read": true,
-      ".write": true
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "policyReminders": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null",
+      ".write": "auth != null"
     },
 
     "partner_applications": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null"
     },
 
     "cibil_requests": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null"
     },
 
     "cibil_notifications": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "manual_revenue": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
     "cashfree_revenue": {
-      ".read": true,
-      ".write": true
+      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
+      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     }
   }
 }

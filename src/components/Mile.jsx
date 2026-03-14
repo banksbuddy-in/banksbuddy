@@ -104,7 +104,11 @@ const TimelineItem = ({ item, index }) => {
         >
           <span className="dt-tagline">Year {item.year}</span>
           <h2 className="dt-heading">{item.title}</h2>
-          <p className="dt-description">{item.description}</p>
+          <p
+          style={{
+            textAlign:"justify"
+          }}
+          className="dt-description">{item.description}</p>
         </motion.div>
       </div>
     </div>

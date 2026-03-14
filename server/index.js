@@ -53,6 +53,52 @@ const toArray = (data) => {
   return Object.entries(data).map(([id, val]) => ({ id, ...val }));
 };
 
+// ─── Auth Helpers ─────────────────────────────────────────────────────────────
+const ADMIN_UID = "YNzKifqerZSPHAFVqfpUFxbwcRB2";
+
+const verifyFirebaseToken = async (idToken) => {
+  const apiKey = process.env.FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY;
+  const res = await fetch(
+    `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
+    },
+  );
+  if (!res.ok) throw new Error("Token verification request failed");
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  const user = data.users?.[0];
+  if (!user) throw new Error("No user found for token");
+  return user;
+};
+
+const requireAdmin = async (c, next) => {
+  const authHeader = c.req.header("Authorization") || "";
+  const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (!idToken) return c.json({ error: "Unauthorized — no token" }, 401);
+  try {
+    const user = await verifyFirebaseToken(idToken);
+    if (user.localId !== ADMIN_UID) return c.json({ error: "Forbidden — admin only" }, 403);
+    await next();
+  } catch {
+    return c.json({ error: "Unauthorized — invalid token" }, 401);
+  }
+};
+
+const requireAuth = async (c, next) => {
+  const authHeader = c.req.header("Authorization") || "";
+  const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (!idToken) return c.json({ error: "Unauthorized — please log in" }, 401);
+  try {
+    await verifyFirebaseToken(idToken);
+    await next();
+  } catch {
+    return c.json({ error: "Unauthorized — invalid token" }, 401);
+  }
+};
+
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(
   "*",
@@ -76,15 +122,15 @@ app.get("/api", (c) => c.json({ status: "BanksBuddy Unified API running 🚀" })
 // Stats
 app.get("/api/stats", async (c) => {
   const [cs, pl, tm, of, rv, cr, pr, cb, rn] = await Promise.all([
-    dbGet("consultations"),
-    dbGet("policyReminders"),
-    dbGet("team"),
-    dbGet("offers"),
-    dbGet("reviews"),
-    dbGet("careers"),
-    dbGet("partner_applications"),
-    dbGet("cibil_requests"),
-    dbGet("manual_revenue"),
+    dbGet("consultations").catch(() => null),
+    dbGet("policyReminders").catch(() => null),
+    dbGet("team").catch(() => null),
+    dbGet("offers").catch(() => null),
+    dbGet("reviews").catch(() => null),
+    dbGet("careers").catch(() => null),
+    dbGet("partner_applications").catch(() => null),
+    dbGet("cibil_requests").catch(() => null),
+    dbGet("manual_revenue").catch(() => null),
   ]);
   const cnt = (d) => (d ? Object.keys(d).length : 0);
   return c.json({
@@ -115,6 +161,19 @@ const collections = [
   "cashfree_revenue",
   "cibil_notifications",
 ];
+// Collections where anyone (logged in) can submit a form (public-facing forms)
+// Split into two tiers:
+// - trulyPublicWrite: no auth needed (public contact/consultation forms)
+// - authWriteCollections: requires any authenticated user
+const trulyPublicWrite = new Set([
+  "consultations",
+  "partner_applications",
+]);
+const authWriteCollections = new Set([
+  "policyReminders",
+  "cibil_requests",
+]);
+
 collections.forEach((col) => {
   const path =
     col === "policyReminders"
@@ -130,50 +189,86 @@ collections.forEach((col) => {
               : col === "cashfree_revenue"
                 ? "revenue/cashfree"
                 : col;
-  app.get(`/api/${path}`, async (c) => {
-    const data = await dbGet(col);
-    if (!data) return c.json([]);
-    return c.json(toArray(data));
-  });
-  app.post(`/api/${path}`, async (c) => {
-    const body = await c.req.json();
-    return c.json(
-      {
-        id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }),
-      },
-      201,
-    );
-  });
-  app.put(`/api/${path}/:id`, async (c) => {
+  const isSensitive = [
+    "users", "cibil_requests", "cibil_notifications",
+    "manual_revenue", "cashfree_revenue", "consultations",
+    "partner_applications",
+  ].includes(col);
+  if (isSensitive) {
+    app.get(`/api/${path}`, requireAdmin, async (c) => {
+      const data = await dbGet(col);
+      if (!data) return c.json([]);
+      return c.json(toArray(data));
+    });
+  } else {
+    app.get(`/api/${path}`, async (c) => {
+      const data = await dbGet(col);
+      if (!data) return c.json([]);
+      return c.json(toArray(data));
+    });
+  }
+  // POST: explicit if/else for each auth tier
+  if (trulyPublicWrite.has(col)) {
+    app.post(`/api/${path}`, async (c) => {
+      const body = await c.req.json();
+      return c.json(
+        { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
+        201,
+      );
+    });
+  } else if (authWriteCollections.has(col)) {
+    app.post(`/api/${path}`, requireAuth, async (c) => {
+      const body = await c.req.json();
+      return c.json(
+        { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
+        201,
+      );
+    });
+  } else {
+    app.post(`/api/${path}`, requireAdmin, async (c) => {
+      const body = await c.req.json();
+      return c.json(
+        { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
+        201,
+      );
+    });
+  }
+  app.put(`/api/${path}/:id`, requireAdmin, async (c) => {
     await dbUpdate(`${col}/${c.req.param("id")}`, await c.req.json());
     return c.json({ ok: true });
   });
-  app.delete(`/api/${path}/:id`, async (c) => {
+  app.delete(`/api/${path}/:id`, requireAdmin, async (c) => {
     await dbDelete(`${col}/${c.req.param("id")}`);
     return c.json({ ok: true });
   });
 });
 
-// Revenue Special Routes (GETs are now handled by loop above, keeping some for compatibility if needed)
-app.get("/api/revenue/cibil", async (c) =>
+// Revenue Special Routes (compat — read is admin-only)
+app.get("/api/revenue/cibil", requireAdmin, async (c) =>
   c.json((await dbGet("cibil_requests")) || {}),
 );
-app.put("/api/revenue/cibil/:id", async (c) => {
+app.put("/api/revenue/cibil/:id", requireAdmin, async (c) => {
   await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
   return c.json({ ok: true });
 });
 
 // News
 app.get("/api/news", async (c) => {
-  const API_KEY = process.env.GNEWS_API_KEY || process.env.VITE_GNEWS_API_KEY;
-  const res = await fetch(
-    `https://gnews.io/api/v4/search?q=finance OR banking&country=in&lang=en&max=4&apikey=${API_KEY}`,
-  );
-  return c.json(await res.json());
+  try {
+    const API_KEY = process.env.GNEWS_API_KEY;
+    if (!API_KEY) return c.json({ articles: [] });
+    const res = await fetch(
+      `https://gnews.io/api/v4/search?q=finance OR banking&country=in&lang=en&max=4&apikey=${API_KEY}`,
+    );
+    if (!res.ok) return c.json({ articles: [] });
+    return c.json(await res.json());
+  } catch {
+    return c.json({ articles: [] });
+  }
 });
 
-// Payments
-app.post("/api/payment/create-order", async (c) => {
+// Payments — create-order requires an authenticated user
+app.post("/api/payment/create-order", requireAuth, async (c) => {
   const data = await c.req.json();
   const order_id = `cibil_${Date.now()}`;
   const requestId = await dbPush("cibil_requests", {
@@ -183,15 +278,15 @@ app.post("/api/payment/create-order", async (c) => {
     createdAt: new Date().toISOString(),
   });
 
-  const isProd = process.env.VITE_CASHFREE_API_ENV === "production";
+  const isProd = process.env.CASHFREE_API_ENV === "production";
   const cfRes = await fetch(
     `${isProd ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg"}/orders`,
     {
       method: "POST",
       headers: {
         "x-api-version": "2023-08-01",
-        "x-client-id": process.env.VITE_CASHFREE_APP_ID || "",
-        "x-client-secret": process.env.VITE_CASHFREE_SECRET_KEY || "",
+        "x-client-id": process.env.CASHFREE_APP_ID || "",
+        "x-client-secret": process.env.CASHFREE_SECRET_KEY || "",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -214,16 +309,16 @@ app.post("/api/payment/create-order", async (c) => {
   });
 });
 
-app.post("/api/payment/verify", async (c) => {
+app.post("/api/payment/verify", requireAuth, async (c) => {
   const { order_id, request_id } = await c.req.json();
-  const isProd = process.env.VITE_CASHFREE_API_ENV === "production";
+  const isProd = process.env.CASHFREE_API_ENV === "production";
   const res = await fetch(
     `${isProd ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg"}/orders/${order_id}`,
     {
       headers: {
         "x-api-version": "2023-08-01",
-        "x-client-id": process.env.VITE_CASHFREE_APP_ID,
-        "x-client-secret": process.env.VITE_CASHFREE_SECRET_KEY,
+        "x-client-id": process.env.CASHFREE_APP_ID,
+        "x-client-secret": process.env.CASHFREE_SECRET_KEY,
       },
     },
   );
@@ -247,7 +342,8 @@ app.post("/api/payment/verify", async (c) => {
   return c.json({ status: order.order_status });
 });
 
-app.get("/api/payment/status/:email", async (c) => {
+// Payment status check — requires auth
+app.get("/api/payment/status/:email", requireAuth, async (c) => {
   const email = c.req.param("email");
   const users = await dbGet("users");
   if (Object.values(users || {}).some((u) => u.email === email && u.cibilPaid))
@@ -262,11 +358,30 @@ app.get("/api/payment/status/:email", async (c) => {
   return c.json({ paid: false });
 });
 
+// ─── Global error handler
+app.onError((err, c) => {
+  console.error("[API Error]", err.message);
+  return c.json({ error: "Internal server error" }, 500);
+});
+
 // ─── Export ───────────────────────────────────────────────────────────────────
 const port = Number(process.env.PORT) || 3000;
 if (typeof Bun !== "undefined") {
   console.log(`🚀 Local API: http://localhost:${port}/api`);
-  Bun.serve({ port, fetch: app.fetch });
+  Bun.serve({
+    port,
+    fetch: async (req) => {
+      try {
+        return await app.fetch(req);
+      } catch (err) {
+        console.error("[Bun Unhandled]", err);
+        return new Response(JSON.stringify({ error: "Server error" }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    },
+  });
 }
 
 export const GET = handle(app);

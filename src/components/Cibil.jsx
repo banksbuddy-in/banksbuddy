@@ -25,7 +25,8 @@ import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
 import apiFetch from "../lib/api.js";
 import { motion } from "framer-motion";
-import { BuyNowPayment } from "./BuyNowPayment";
+import { ref, get } from "firebase/database";
+import { db } from "../firebase";
 
 import DevStudioPaymentForm from "./DevStudioPaymentForm"; // Helper to select icon based on document text (Reusing logic from ServicePage)
 const getDocIcon = (docText) => {
@@ -168,12 +169,15 @@ export const Cibil = () => {
   const [faqCategory, setFaqCategory] = useState("Common");
   const [showFormModal, setShowFormModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [hasPaid, setHasPaid] = useState(false);
+  // Initialize hasPaid from localStorage so it shows immediately on re-visits
+  const [hasPaid, setHasPaid] = useState(() => {
+    return localStorage.getItem("cibilPaid") === "true";
+  });
   const [formStatus, setFormStatus] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isVerifying, setIsVerifying] = useState(false);
-  const [checkLoading, setCheckLoading] = useState(true);
+  const [checkLoading, setCheckLoading] = useState(!localStorage.getItem("cibilPaid"));
 
   // 1. Verify Payment if returning from Cashfree
   useEffect(() => {
@@ -192,6 +196,7 @@ export const Cibil = () => {
           if (res.status === "PAID") {
             setShowSuccessPopup(true);
             setHasPaid(true);
+            localStorage.setItem("cibilPaid", "true");
           } else {
             console.warn("Payment incomplete. Status:", res.status);
           }
@@ -210,10 +215,17 @@ export const Cibil = () => {
     checkRedirect();
   }, [searchParams, setSearchParams]);
 
-  // 2. Check general payment status on load / auth change
+  // 2. Check payment status: read users/{uid}/cibilPaid directly from Firebase RTDB
   useEffect(() => {
-    const savedEmail = currentUser?.email || localStorage.getItem("userEmail");
-    if (!savedEmail) {
+    // If already cached in localStorage, no need to check again
+    if (localStorage.getItem("cibilPaid") === "true") {
+      setHasPaid(true);
+      setCheckLoading(false);
+      return;
+    }
+
+    // If user is not logged in, nothing to check
+    if (!currentUser) {
       setCheckLoading(false);
       return;
     }
@@ -221,11 +233,21 @@ export const Cibil = () => {
     const checkPaymentStatus = async () => {
       setCheckLoading(true);
       try {
+        // Primary check: read users/{uid}/cibilPaid from Firebase RTDB directly
+        const snapshot = await get(ref(db, `users/${currentUser.uid}/cibilPaid`));
+        if (snapshot.exists() && snapshot.val() === true) {
+          setHasPaid(true);
+          localStorage.setItem("cibilPaid", "true");
+          return;
+        }
+
+        // Fallback: also check cibil_requests collection for paid status by email
         const res = await apiFetch(
-          `/api/payment/status/${encodeURIComponent(savedEmail)}`,
+          `/api/payment/status/${encodeURIComponent(currentUser.email)}`,
         );
         if (res?.paid) {
           setHasPaid(true);
+          localStorage.setItem("cibilPaid", "true");
         }
       } catch (err) {
         console.error("Error checking payment status:", err);
