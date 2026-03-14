@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import apiFetch from "../lib/api.js";
 import { useNavigate } from "react-router-dom";
+import { FaTimes } from "react-icons/fa";
 // import "./PartnerForm.css"; // Removing custom CSS to use global classes
 import { motion } from "framer-motion";
 // import "./g.css"; // Removed as per consolidation to ch.css
@@ -224,17 +225,20 @@ export const PartnerForm = () => {
         />
       </div>
       {status && (
-        <p
-          className="sactatus"
-          style={{
-            textAlign: "center",
-            marginTop: "1rem",
-            color: "var(--bl)",
-            fontWeight: "bold",
-          }}
-        >
-          {status}
-        </p>
+        <div className="cb-success-overlay" onClick={() => setStatus("")}>
+          <div className="cb-success-card" onClick={(e) => e.stopPropagation()}>
+            <button className="cb-close-btn" onClick={() => setStatus("")}>
+              <FaTimes />
+            </button>
+            <div className="cb-success-icon">
+              {status.includes("Failed") || status.includes("Error") ? "❌" : "✅"}
+            </div>
+            <h2 className="cb-success-title">
+              {status.includes("Failed") || status.includes("Error") ? "Submission Failed" : "Request Successful!"}
+            </h2>
+            <p className="cb-success-text">{status}</p>
+          </div>
+        </div>
       )}
     </motion.div>
   );

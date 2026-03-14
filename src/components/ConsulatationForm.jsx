@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaTimes } from "react-icons/fa";
 import apiFetch from "../lib/api.js";
 import "./AddCareer.css";
 import { useNavigate } from "react-router-dom";
@@ -45,6 +46,7 @@ export const ConsulatationForm = () => {
         body: JSON.stringify(payload),
       });
       setStatus("Request submitted — we will contact you soon.");
+      setTimeout(() => setStatus(""), 2500);
       setName("");
       setEmail("");
       setPhone("");
@@ -58,6 +60,7 @@ export const ConsulatationForm = () => {
     } catch (err) {
       console.error(err);
       setStatus("Failed to submit request. Please try again later.");
+      setTimeout(() => setStatus(""), 2500);
     }
   };
   const na = useNavigate();
@@ -258,7 +261,22 @@ export const ConsulatationForm = () => {
         </form>
         <img src="/consult.png" alt="form" className="consult" />
       </div>
-      {status && <p className="sactatus">{status}</p>}
+      {status && (
+        <div className="cb-success-overlay" onClick={() => setStatus("")}>
+          <div className="cb-success-card" onClick={(e) => e.stopPropagation()}>
+            <button className="cb-close-btn" onClick={() => setStatus("")}>
+              <FaTimes />
+            </button>
+            <div className="cb-success-icon">
+              {status.includes("Failed") || status.includes("Error") ? "❌" : "✅"}
+            </div>
+            <h2 className="cb-success-title">
+              {status.includes("Failed") || status.includes("Error") ? "Submission Failed" : "Request Successful!"}
+            </h2>
+            <p className="cb-success-text">{status}</p>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
