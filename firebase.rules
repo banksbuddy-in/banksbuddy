@@ -60,7 +60,7 @@
       ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     },
 
-    "cashfree_revenue": {
+    "razorpay_revenue": {
       ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
       ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
     }

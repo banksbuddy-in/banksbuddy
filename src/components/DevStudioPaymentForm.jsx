@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import apiFetch from "../lib/api.js";
-import { load } from "@cashfreepayments/cashfree-js";
 import { useAuth } from "../context/AuthContext";
 
 const INDIAN_STATES = [
@@ -113,8 +112,8 @@ export const DevStudioPaymentForm = ({
       // Save email to localStorage for post-payment identification
       localStorage.setItem("userEmail", formData.email);
 
-      // 1. Create order on backend
-      const { payment_session_id, order_id, request_id } = await apiFetch(
+      // 1. Create Razorpay order on backend
+      const { razorpay_order_id, razorpay_key_id, request_id, amount } = await apiFetch(
         "/api/payment/create-order",
         {
           method: "POST",
@@ -122,22 +121,71 @@ export const DevStudioPaymentForm = ({
         },
       );
 
-      if (!payment_session_id) throw new Error("Could not initialize payment.");
+      if (!razorpay_order_id) throw new Error("Could not initialize payment.");
 
-      // 2. Initialize Cashfree SDK
-      const cashfreeEnv = import.meta.env.VITE_CASHFREE_ENV || "sandbox";
-      const cashfree = await load({ mode: cashfreeEnv });
+      // 2. Load Razorpay checkout.js script dynamically
+      await new Promise((resolve, reject) => {
+        if (window.Razorpay) return resolve();
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("Failed to load Razorpay SDK"));
+        document.body.appendChild(script);
+      });
 
-      // 3. Close the modal so the cashfree popup can take over
+      // 3. Open Razorpay checkout modal
+      await new Promise((resolve, reject) => {
+        const options = {
+          key: razorpay_key_id,
+          amount: amount, // in paise
+          currency: "INR",
+          name: "BanksBuddy",
+          description: "CIBIL Score Improvement Service",
+          order_id: razorpay_order_id,
+          prefill: {
+            name: formData.name,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          theme: { color: "#0ea5e9" },
+          handler: async (response) => {
+            // 4. Verify payment on backend
+            try {
+              const verifyRes = await apiFetch("/api/payment/verify", {
+                method: "POST",
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  request_id,
+                }),
+              });
+              if (verifyRes.status === "PAID") {
+                localStorage.setItem("cibilPaid", "true");
+                // Navigate to cibil page with success params
+                window.location.href = `${window.location.origin}/cibil?payment=success&request_id=${request_id}`;
+              } else {
+                reject(new Error("Payment verification failed."));
+              }
+            } catch (verifyErr) {
+              reject(verifyErr);
+            }
+            resolve();
+          },
+          modal: {
+            ondismiss: () => {
+              reject(new Error("Payment was cancelled."));
+            },
+          },
+        };
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", (response) => {
+          reject(new Error(response.error?.description || "Payment failed."));
+        });
+        rzp.open();
+      });
+
       onClose();
-
-      // 4. Trigger Cashfree checkout
-      const checkoutOptions = {
-        paymentSessionId: payment_session_id,
-        returnUrl: `${window.location.origin}/cibil?order_id={order_id}&request_id=${request_id}`,
-      };
-
-      await cashfree.checkout(checkoutOptions);
     } catch (err) {
       console.error("Payment initiation failed:", err);
       setError(err.message || "Failed to initiate payment. Please try again.");

@@ -176,44 +176,29 @@ export const Cibil = () => {
   const [formStatus, setFormStatus] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [isVerifying, setIsVerifying] = useState(false);
   const [checkLoading, setCheckLoading] = useState(!localStorage.getItem("cibilPaid"));
 
-  // 1. Verify Payment if returning from Cashfree
+  // 1. Show success popup if returning from Razorpay payment (inline verification done in modal)
   useEffect(() => {
-    const checkRedirect = async () => {
-      const orderId = searchParams.get("order_id");
-      const requestId = searchParams.get("request_id");
-
-      if (orderId && requestId) {
-        setIsVerifying(true);
-        try {
-          const res = await apiFetch("/api/payment/verify", {
-            method: "POST",
-            body: JSON.stringify({ order_id: orderId, request_id: requestId }),
-          });
-
-          if (res.status === "PAID") {
-            setShowSuccessPopup(true);
-            setHasPaid(true);
-            localStorage.setItem("cibilPaid", "true");
-          } else {
-            console.warn("Payment incomplete. Status:", res.status);
-          }
-        } catch (err) {
-          console.error("Payment verification failed:", err);
-        } finally {
-          setIsVerifying(false);
-          // Remove query params from URL
-          const newParams = new URLSearchParams(searchParams);
-          newParams.delete("order_id");
-          newParams.delete("request_id");
-          setSearchParams(newParams);
-        }
-      }
-    };
-    checkRedirect();
+    const paymentParam = searchParams.get("payment");
+    if (paymentParam === "success") {
+      setShowSuccessPopup(true);
+      setHasPaid(true);
+      localStorage.setItem("cibilPaid", "true");
+      // Remove query params from URL
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete("payment");
+      newParams.delete("request_id");
+      setSearchParams(newParams);
+    }
   }, [searchParams, setSearchParams]);
+
+  // Reset hasPaid immediately on logout so the button reverts to "Apply Now"
+  useEffect(() => {
+    if (!currentUser) {
+      setHasPaid(false);
+    }
+  }, [currentUser]);
 
   // 2. Check payment status: read users/{uid}/cibilPaid directly from Firebase RTDB
   useEffect(() => {
@@ -288,19 +273,37 @@ export const Cibil = () => {
             <p className="sp-hero-description">{svc.overview[0]}</p>
 
             <div className="sp-hero-actions">
-              {checkLoading || isVerifying ? (
+              {checkLoading ? (
                 <button className="sp-btn-primary" disabled>
-                  {isVerifying ? "Verifying Payment..." : "Checking Status..."}
+                  Checking Status...
                 </button>
               ) : hasPaid ? (
                 <button
                   className="sp-btn-primary cb-btn-report"
                   onClick={async () => {
-                    setShowSuccessPopup(true);
                     const savedEmail =
                       currentUser?.email ||
                       localStorage.getItem("userEmail") ||
-                      "Unknown User";
+                      "";
+                    if (!savedEmail) return;
+
+                    // Re-verify payment before allowing report request
+                    try {
+                      const res = await apiFetch(
+                        `/api/payment/status/${encodeURIComponent(savedEmail)}`,
+                      );
+                      if (!res?.paid) {
+                        // Payment not confirmed — reset state so user sees Pay Now
+                        localStorage.removeItem("cibilPaid");
+                        setHasPaid(false);
+                        return;
+                      }
+                    } catch (err) {
+                      console.error("Payment status check failed:", err);
+                      // Proceed optimistically if the check errors
+                    }
+
+                    setShowSuccessPopup(true);
                     const safeEmail = savedEmail.replace(/[^a-zA-Z0-9]/g, "_");
                     try {
                       await apiFetch(`/api/cibil-notifications/${safeEmail}`, {

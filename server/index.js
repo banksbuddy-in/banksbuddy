@@ -158,7 +158,7 @@ const collections = [
   "users",
   "cibil_requests",
   "manual_revenue",
-  "cashfree_revenue",
+  "razorpay_revenue",
   "cibil_notifications",
 ];
 // Collections where anyone (logged in) can submit a form (public-facing forms)
@@ -184,14 +184,14 @@ collections.forEach((col) => {
           ? "cibil-requests"
           : col === "cibil_notifications"
             ? "cibil-notifications"
-            : col === "manual_revenue"
-              ? "revenue/manual"
-              : col === "cashfree_revenue"
-                ? "revenue/cashfree"
-                : col;
+              : col === "manual_revenue"
+                ? "revenue/manual"
+                : col === "razorpay_revenue"
+                  ? "revenue/razorpay"
+                  : col;
   const isSensitive = [
     "users", "cibil_requests", "cibil_notifications",
-    "manual_revenue", "cashfree_revenue", "consultations",
+    "manual_revenue", "razorpay_revenue", "consultations",
     "partner_applications",
   ].includes(col);
   if (isSensitive) {
@@ -278,68 +278,69 @@ app.post("/api/payment/create-order", requireAuth, async (c) => {
     createdAt: new Date().toISOString(),
   });
 
-  const isProd = process.env.CASHFREE_API_ENV === "production";
-  const cfRes = await fetch(
-    `${isProd ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg"}/orders`,
-    {
-      method: "POST",
-      headers: {
-        "x-api-version": "2023-08-01",
-        "x-client-id": process.env.CASHFREE_APP_ID || "",
-        "x-client-secret": process.env.CASHFREE_SECRET_KEY || "",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        order_amount: data.amount,
-        order_currency: "INR",
-        order_id,
-        customer_details: {
-          customer_id: data.phone || "cust",
-          customer_phone: data.phone,
-          customer_email: data.email,
-        },
-      }),
+  const amountPaise = Math.round(Number(data.amount) * 100); // Razorpay needs paise
+  const rzpRes = await fetch("https://api.razorpay.com/v1/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Basic " + Buffer.from(
+        `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`
+      ).toString("base64"),
     },
-  );
-  const cfData = await cfRes.json();
+    body: JSON.stringify({
+      amount: amountPaise,
+      currency: "INR",
+      receipt: order_id,
+      notes: {
+        email: data.email,
+        phone: data.phone,
+        request_id: requestId,
+      },
+    }),
+  });
+  const rzpData = await rzpRes.json();
+  if (!rzpData.id) {
+    console.error("Razorpay order creation failed:", rzpData);
+    return c.json({ error: "Failed to create Razorpay order" }, 500);
+  }
   return c.json({
-    payment_session_id: cfData.payment_session_id,
-    order_id,
+    razorpay_order_id: rzpData.id,
+    razorpay_key_id: process.env.RAZORPAY_KEY_ID,
+    amount: amountPaise,
     request_id: requestId,
   });
 });
 
 app.post("/api/payment/verify", requireAuth, async (c) => {
-  const { order_id, request_id } = await c.req.json();
-  const isProd = process.env.CASHFREE_API_ENV === "production";
-  const res = await fetch(
-    `${isProd ? "https://api.cashfree.com/pg" : "https://sandbox.cashfree.com/pg"}/orders/${order_id}`,
-    {
-      headers: {
-        "x-api-version": "2023-08-01",
-        "x-client-id": process.env.CASHFREE_APP_ID,
-        "x-client-secret": process.env.CASHFREE_SECRET_KEY,
-      },
-    },
-  );
-  const order = await res.json();
-  if (order.order_status === "PAID") {
-    await dbUpdate(`cibil_requests/${request_id}`, {
-      status: "paid",
-      paymentVerifiedAt: new Date().toISOString(),
-    });
-    const orderSnap = await dbGet(`cibil_requests/${request_id}`);
-    if (orderSnap?.email) {
-      const users = await dbGet("users");
-      const userEntry = Object.entries(users || {}).find(
-        ([uid, u]) => u.email === orderSnap.email,
-      );
-      if (userEntry)
-        await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: true });
-    }
-    return c.json({ status: "PAID" });
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, request_id } = await c.req.json();
+
+  // Verify HMAC-SHA256 signature using Node.js crypto
+  const crypto = await import("node:crypto");
+  const expectedSignature = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  if (expectedSignature !== razorpay_signature) {
+    return c.json({ status: "SIGNATURE_MISMATCH" }, 400);
   }
-  return c.json({ status: order.order_status });
+
+  // Mark request as paid in Firebase
+  await dbUpdate(`cibil_requests/${request_id}`, {
+    status: "paid",
+    razorpayPaymentId: razorpay_payment_id,
+    paymentVerifiedAt: new Date().toISOString(),
+  });
+  const orderSnap = await dbGet(`cibil_requests/${request_id}`);
+  if (orderSnap?.email) {
+    const users = await dbGet("users");
+    const userEntry = Object.entries(users || {}).find(
+      ([, u]) => u.email === orderSnap.email,
+    );
+    if (userEntry)
+      await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: true });
+  }
+  return c.json({ status: "PAID" });
 });
 
 // Payment status check — requires auth

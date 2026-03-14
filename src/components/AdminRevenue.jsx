@@ -79,10 +79,10 @@ export const AdminRevenue = ({ embedded }) => {
   // Fetch Data from all 3 sources via REST
   const fetchAll = async () => {
     try {
-      const [cibilData, manualData, cashfreeData] = await Promise.all([
+      const [cibilData, manualData, razorpayData] = await Promise.all([
         apiFetch("/api/revenue/cibil"),
         apiFetch("/api/revenue/manual"),
-        apiFetch("/api/revenue/cashfree"),
+        apiFetch("/api/revenue/razorpay"),
       ]);
 
       const processData = (data, source, mapper) => {
@@ -112,7 +112,7 @@ export const AdminRevenue = ({ embedded }) => {
         ...v,
       }));
 
-      const cashfreeList = processData(cashfreeData, "Cashfree", (v) => ({
+      const razorpayList = processData(razorpayData, "Razorpay", (v) => ({
         username: v.username || v.customer_name,
         email: v.email,
         mobile: v.mobile,
@@ -124,7 +124,7 @@ export const AdminRevenue = ({ embedded }) => {
         date: v.date || v.createdAt,
       }));
 
-      const all = [...cibilList, ...manualList, ...cashfreeList].sort(
+      const all = [...cibilList, ...manualList, ...razorpayList].sort(
         (a, b) => new Date(b.date) - new Date(a.date),
       );
       setTransactions(all);
@@ -148,8 +148,8 @@ export const AdminRevenue = ({ embedded }) => {
       if (txn.source === "Manual") {
         endpoint = `/api/revenue/manual/${txn.id}`;
         payload = { status: newStatus };
-      } else if (txn.source === "Cashfree") {
-        endpoint = `/api/revenue/cashfree/${txn.id}`;
+      } else if (txn.source === "Razorpay") {
+        endpoint = `/api/revenue/razorpay/${txn.id}`;
         payload = { status: newStatus };
       } else {
         endpoint = `/api/revenue/cibil/${txn.id}`;
@@ -252,8 +252,8 @@ export const AdminRevenue = ({ embedded }) => {
         if (editingTxn.source === "Manual") {
           endpoint = `/api/revenue/manual/${editingTxn.id}`;
           finalPayload = payload;
-        } else if (editingTxn.source === "Cashfree") {
-          endpoint = `/api/revenue/cashfree/${editingTxn.id}`;
+        } else if (editingTxn.source === "Razorpay") {
+          endpoint = `/api/revenue/razorpay/${editingTxn.id}`;
           finalPayload = {
             username: formData.fullName,
             email: formData.email,
