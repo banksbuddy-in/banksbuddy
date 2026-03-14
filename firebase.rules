@@ -2,67 +2,73 @@
   "rules": {
     "users": {
       "$uid": {
-        ".read": "auth != null && (auth.uid === $uid || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-        ".write": "auth != null && (auth.uid === $uid || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-        "role": {
-          ".write": "auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
-        }
+        ".read": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+        ".write": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+        ".validate": "newData.child('role').val() === (data.exists() ? data.child('role').val() : null) || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
       }
     },
 
     "consultations": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      "$consultationId": {
+        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      }
     },
 
     "offers": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "reviews": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "team": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "careers": {
       ".read": true,
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "policyReminders": {
       ".read": "auth != null",
-      ".write": "auth != null"
+      "$pushId": {
+        ".write": "auth != null && (!data.exists() || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      }
     },
 
     "partner_applications": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      "$applicationId": {
+        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      }
     },
 
     "cibil_requests": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      "$requestId": {
+        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      }
     },
 
     "cibil_notifications": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "manual_revenue": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     },
 
     "razorpay_revenue": {
-      ".read": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'",
-      ".write": "auth != null && auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
     }
   }
 }
