@@ -35,7 +35,7 @@ export const Footer = () => {
   // Warm regards,
   // [Your Full Name]`;
 
-  //   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+  //   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=info@banksbuddy.in&su=${encodeURIComponent(
   //     subject
   //   )}&body=${encodeURIComponent(body)}`;
   return (
@@ -52,7 +52,7 @@ export const Footer = () => {
             individuals and businesses, helping them grow and succeed.
           </p>
           <p className="number">
-            <FaPhoneVolume /> +91-63779 56633
+            <FaPhoneVolume /> +91-63779 56633 &nbsp; | &nbsp;<MdEmail/> info@banksbuddy.in
           </p>
           <div className="btns">
             <a className="chat" href="https://wa.me/+916377956633">
@@ -60,7 +60,7 @@ export const Footer = () => {
             </a>
             <a
               className="chat"
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=info@banksbuddy.in&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
             >
               <span>
                 <MdEmail />
@@ -229,7 +229,7 @@ export const Footer = () => {
             <li>
               <a
                 target="_blank"
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=info@banksbuddy.in&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
               >
                 <MdEmail />
               </a>
