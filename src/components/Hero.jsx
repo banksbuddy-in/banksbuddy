@@ -96,7 +96,7 @@ export const Hero = () => {
             <Link className="hrca" to="/consultation">
               Book a Consultation
             </Link>
-            <a className="hrc" href="https://wa.me/+917723926058">
+            <a className="hrc" href="https://wa.me/+916377956633">
               <span>
                 <MdWhatsapp />
               </span>{" "}

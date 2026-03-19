@@ -51,8 +51,22 @@ export const Footer = () => {
             BanksBuddy provides customized loans and funding solutions to
             individuals and businesses, helping them grow and succeed.
           </p>
-          <p className="number">
-            <FaPhoneVolume /> +91-63779 56633 &nbsp; | &nbsp;<MdEmail/> info@banksbuddy.in
+          <p className="number"
+          style={{
+            display:"flex",
+            flexDirection:"row",
+            alignItems:"center",
+            justifyContent:"center",
+            flexWrap:"wrap",
+            gap:"0.5em",
+            margin:"7% 0"
+          }}
+          >
+            <FaPhoneVolume /> +91-63779 56633 &nbsp;
+            <span>
+              &nbsp;
+              <MdEmail /> info@banksbuddy.in
+            </span>
           </p>
           <div className="btns">
             <a className="chat" href="https://wa.me/+916377956633">
