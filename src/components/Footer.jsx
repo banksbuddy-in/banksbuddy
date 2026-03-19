@@ -208,7 +208,7 @@ export const Footer = () => {
             <li>
               <a
                 target="_blank"
-                href="https://www.instagram.com/banksbuddy2023/"
+                href="https://www.instagram.com/banksbuddy.in/"
               >
                 <FaInstagram />
               </a>
