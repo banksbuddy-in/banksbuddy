@@ -79,10 +79,10 @@ export const AdminRevenue = ({ embedded }) => {
   // Fetch Data from all 3 sources via REST
   const fetchAll = async () => {
     try {
-      const [cibilData, manualData, razorpayData] = await Promise.all([
+      const [cibilData, manualData, instamojoData] = await Promise.all([
         apiFetch("/api/revenue/cibil"),
         apiFetch("/api/revenue/manual"),
-        apiFetch("/api/revenue/razorpay"),
+        apiFetch("/api/revenue/instamojo"),
       ]);
 
       const processData = (data, source, mapper) => {
@@ -112,19 +112,19 @@ export const AdminRevenue = ({ embedded }) => {
         ...v,
       }));
 
-      const razorpayList = processData(razorpayData, "Razorpay", (v) => ({
-        username: v.username || v.customer_name,
+      const instamojoList = processData(instamojoData, "Instamojo", (v) => ({
+        username: v.username || v.buyer_name,
         email: v.email,
-        mobile: v.mobile,
-        mainCategory: v.mainCategory || "Other Services",
-        subCategory: v.serviceTitle || v.serviceId,
+        mobile: v.mobile || v.phone,
+        mainCategory: v.mainCategory || "Cibil Improvement",
+        subCategory: v.serviceTitle || "CIBIL Score Improvement",
         serviceType: v.serviceTitle,
         status: v.status || "paid",
         amount: v.amount,
         date: v.date || v.createdAt,
       }));
 
-      const all = [...cibilList, ...manualList, ...razorpayList].sort(
+      const all = [...cibilList, ...manualList, ...instamojoList].sort(
         (a, b) => new Date(b.date) - new Date(a.date),
       );
       setTransactions(all);
@@ -148,8 +148,8 @@ export const AdminRevenue = ({ embedded }) => {
       if (txn.source === "Manual") {
         endpoint = `/api/revenue/manual/${txn.id}`;
         payload = { status: newStatus };
-      } else if (txn.source === "Razorpay") {
-        endpoint = `/api/revenue/razorpay/${txn.id}`;
+      } else if (txn.source === "Instamojo") {
+        endpoint = `/api/revenue/instamojo/${txn.id}`;
         payload = { status: newStatus };
       } else {
         endpoint = `/api/revenue/cibil/${txn.id}`;
@@ -252,8 +252,8 @@ export const AdminRevenue = ({ embedded }) => {
         if (editingTxn.source === "Manual") {
           endpoint = `/api/revenue/manual/${editingTxn.id}`;
           finalPayload = payload;
-        } else if (editingTxn.source === "Razorpay") {
-          endpoint = `/api/revenue/razorpay/${editingTxn.id}`;
+        } else if (editingTxn.source === "Instamojo") {
+          endpoint = `/api/revenue/instamojo/${editingTxn.id}`;
           finalPayload = {
             username: formData.fullName,
             email: formData.email,

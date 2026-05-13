@@ -179,7 +179,7 @@ const collections = [
   "users",
   "cibil_requests",
   "manual_revenue",
-  "razorpay_revenue",
+  "instamojo_revenue",
   "cibil_notifications",
 ];
 // Collections where anyone (logged in) can submit a form (public-facing forms)
@@ -207,13 +207,13 @@ collections.forEach((col) => {
             ? "cibil-notifications"
               : col === "manual_revenue"
               ? "revenue/manual"
-              : col === "razorpay_revenue"
-                ? "revenue/razorpay"
+              : col === "instamojo_revenue"
+                ? "revenue/instamojo"
                 : col;
   // GET: admin-only for sensitive data, public for display data
   const isSensitive = [
     "users", "cibil_requests", "cibil_notifications",
-    "manual_revenue", "razorpay_revenue", "consultations",
+    "manual_revenue", "instamojo_revenue", "consultations",
     "partner_applications",
   ].includes(col);
   if (isSensitive) {
@@ -293,10 +293,22 @@ app.get("/api/news", async (c) => {
   }
 });
 
-// Payments — create-order requires an authenticated user (any logged-in user)
+// ─── Instamojo Payments ───────────────────────────────────────────────────────
+const INSTAMOJO_BASE_URL =
+  process.env.INSTAMOJO_BASE_URL || "https://www.instamojo.com/api/1.1";
+
+const instamojoHeaders = () => ({
+  "Content-Type": "application/x-www-form-urlencoded",
+  "X-Api-Key": process.env.INSTAMOJO_API_KEY || "",
+  "X-Auth-Token": process.env.INSTAMOJO_AUTH_TOKEN || "",
+});
+
+// POST /api/payment/create-order — creates an Instamojo payment request & returns redirect URL
 app.post("/api/payment/create-order", requireAuth, async (c) => {
   const data = await c.req.json();
   const order_id = `cibil_${Date.now()}`;
+
+  // 1. Store pending request in Firebase first to get a request_id
   const requestId = await dbPush("cibil_requests", {
     ...data,
     status: "pending",
@@ -304,67 +316,100 @@ app.post("/api/payment/create-order", requireAuth, async (c) => {
     createdAt: new Date().toISOString(),
   });
 
-  const amountPaise = Math.round(Number(data.amount) * 100); // Razorpay needs paise
-  const rzpRes = await fetch("https://api.razorpay.com/v1/orders", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Basic " + btoa(
-        `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`
-      ),
-    },
-    body: JSON.stringify({
-      amount: amountPaise,
-      currency: "INR",
-      receipt: order_id,
-      notes: {
-        email: data.email,
-        phone: data.phone,
-        request_id: requestId,
-      },
-    }),
+  // 2. Build Instamojo redirect URL — includes request_id so we can link payment back
+  const redirectUrl = `${process.env.INSTAMOJO_REDIRECT_URL || "https://banksbuddy.in/cibil"}?request_id=${requestId}`;
+  const webhookUrl = process.env.INSTAMOJO_WEBHOOK_URL || "";
+
+  // 3. Create Instamojo payment request
+  const params = new URLSearchParams({
+    purpose: "CIBIL Score Improvement Service",
+    amount: String(Number(data.amount).toFixed(2)),
+    buyer_name: data.name || "",
+    email: data.email || "",
+    phone: data.phone || "",
+    redirect_url: redirectUrl,
+    send_email: "false",
+    send_sms: "false",
+    allow_repeated_payments: "false",
   });
-  const rzpData = await rzpRes.json();
-  if (!rzpData.id) {
-    console.error("Razorpay order creation failed:", rzpData);
-    return c.json({ error: "Failed to create Razorpay order" }, 500);
+  if (webhookUrl) params.set("webhook", webhookUrl);
+
+  let imRes;
+  let imData;
+  try {
+    imRes = await fetch(`${INSTAMOJO_BASE_URL}/payment-requests/`, {
+      method: "POST",
+      headers: instamojoHeaders(),
+      body: params.toString(),
+    });
+    imData = await imRes.json();
+  } catch (err) {
+    console.error("Instamojo connection error:", err.message);
+    return c.json({ error: "Failed to connect to Instamojo payment gateway" }, 500);
   }
+
+  if (!imData.success) {
+    console.error("Instamojo payment request creation failed:", imData);
+    return c.json({ error: imData.message || "Failed to create payment request" }, 500);
+  }
+
+  // Store Instamojo payment_request_id for later verification
+  await dbUpdate(`cibil_requests/${requestId}`, {
+    instamojoPaymentRequestId: imData.payment_request.id,
+  });
+
   return c.json({
-    razorpay_order_id: rzpData.id,
-    razorpay_key_id: process.env.RAZORPAY_KEY_ID,
-    amount: amountPaise,
+    payment_url: imData.payment_request.longurl,
     request_id: requestId,
   });
 });
 
+// POST /api/payment/verify — verifies Instamojo payment after redirect return
+// Receives { payment_id, payment_request_id, payment_status, request_id } from frontend
 app.post("/api/payment/verify", requireAuth, async (c) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, request_id } = await c.req.json();
+  const { payment_id, payment_request_id, payment_status, request_id } = await c.req.json();
 
-  // Verify HMAC-SHA256 signature
-  const body = `${razorpay_order_id}|${razorpay_payment_id}`;
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(process.env.RAZORPAY_KEY_SECRET),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
+  // Quick guard: Instamojo sets payment_status=Credit on success
+  if (payment_status !== "Credit") {
+    return c.json({ status: "PAYMENT_NOT_CREDITED" }, 400);
+  }
+
+  // Server-side confirmation: fetch the payment request from Instamojo to prevent spoofing
+  let verifyData;
+  try {
+    const verifyRes = await fetch(
+      `${INSTAMOJO_BASE_URL}/payment-requests/${payment_request_id}/`,
+      { method: "GET", headers: instamojoHeaders() },
+    );
+    verifyData = await verifyRes.json();
+  } catch (err) {
+    console.error("Instamojo verify connection error:", err.message);
+    return c.json({ status: "VERIFICATION_NETWORK_ERROR" }, 500);
+  }
+
+  if (!verifyData.success) {
+    console.error("Instamojo verification fetch failed:", verifyData);
+    return c.json({ status: "VERIFICATION_FAILED" }, 400);
+  }
+
+  // Find the specific payment within the payment request
+  const payments = verifyData.payment_request?.payments || [];
+  const confirmedPayment = payments.find(
+    (p) => p.payment_id === payment_id && p.status === "Credit",
   );
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
-  const expectedSignature = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
 
-  if (expectedSignature !== razorpay_signature) {
-    return c.json({ status: "SIGNATURE_MISMATCH" }, 400);
+  if (!confirmedPayment) {
+    return c.json({ status: "PAYMENT_NOT_CONFIRMED" }, 400);
   }
 
   // Mark request as paid in Firebase
   await dbUpdate(`cibil_requests/${request_id}`, {
     status: "paid",
-    razorpayPaymentId: razorpay_payment_id,
+    instamojoPaymentId: payment_id,
+    instamojoPaymentRequestId: payment_request_id,
     paymentVerifiedAt: new Date().toISOString(),
   });
+
   const orderSnap = await dbGet(`cibil_requests/${request_id}`);
   if (orderSnap?.email) {
     const users = await dbGet("users");
@@ -374,6 +419,7 @@ app.post("/api/payment/verify", requireAuth, async (c) => {
     if (userEntry)
       await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: true });
   }
+
   return c.json({ status: "PAID" });
 });
 

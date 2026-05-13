@@ -62,6 +62,8 @@ export const DevStudioPaymentForm = ({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showQR, setShowQR] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -84,11 +86,9 @@ export const DevStudioPaymentForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
     if (!currentUser?.email) {
       setError("You must be logged in to proceed with the payment.");
-      setLoading(false);
       return;
     }
 
@@ -104,95 +104,128 @@ export const DevStudioPaymentForm = ({
       !formData.amount
     ) {
       setError("Please fill in all required fields.");
-      setLoading(false);
       return;
     }
 
+    setShowQR(true);
+  };
+
+  const handleIPaid = async () => {
+    setLoading(true);
+    setError("");
     try {
-      // Save email to localStorage for post-payment identification
-      localStorage.setItem("userEmail", formData.email);
-
-      // 1. Create Razorpay order on backend
-      const { razorpay_order_id, razorpay_key_id, request_id, amount } = await apiFetch(
-        "/api/payment/create-order",
-        {
-          method: "POST",
-          body: JSON.stringify(formData),
-        },
-      );
-
-      if (!razorpay_order_id) throw new Error("Could not initialize payment.");
-
-      // 2. Load Razorpay checkout.js script dynamically
-      await new Promise((resolve, reject) => {
-        if (window.Razorpay) return resolve();
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.onload = resolve;
-        script.onerror = () => reject(new Error("Failed to load Razorpay SDK"));
-        document.body.appendChild(script);
+      const res = await apiFetch("/api/cibil-requests", {
+        method: "POST",
+        body: JSON.stringify({
+          ...formData,
+          status: "Verification Pending",
+          paymentMethod: "UPI Manual",
+        }),
       });
 
-      // 3. Open Razorpay checkout modal
-      await new Promise((resolve, reject) => {
-        const options = {
-          key: razorpay_key_id,
-          amount: amount, // in paise
-          currency: "INR",
-          name: "BanksBuddy",
-          description: "CIBIL Score Improvement Service",
-          order_id: razorpay_order_id,
-          prefill: {
-            name: formData.name,
-            email: formData.email,
-            contact: formData.phone,
-          },
-          theme: { color: "#0ea5e9" },
-          handler: async (response) => {
-            // 4. Verify payment on backend
-            try {
-              const verifyRes = await apiFetch("/api/payment/verify", {
-                method: "POST",
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  request_id,
-                }),
-              });
-              if (verifyRes.status === "PAID") {
-                localStorage.setItem("cibilPaid", "true");
-                // Navigate to cibil page with success params
-                window.location.href = `${window.location.origin}/cibil?payment=success&request_id=${request_id}`;
-              } else {
-                reject(new Error("Payment verification failed."));
-              }
-            } catch (verifyErr) {
-              reject(verifyErr);
-            }
-            resolve();
-          },
-          modal: {
-            ondismiss: () => {
-              reject(new Error("Payment was cancelled."));
-            },
-          },
-        };
-        const rzp = new window.Razorpay(options);
-        rzp.on("payment.failed", (response) => {
-          reject(new Error(response.error?.description || "Payment failed."));
-        });
-        rzp.open();
-      });
-
-      onClose();
+      if (res.id) {
+        setShowQR(false);
+        setShowSuccess(true);
+      } else {
+        throw new Error("Failed to record payment.");
+      }
     } catch (err) {
-      console.error("Payment initiation failed:", err);
-      setError(err.message || "Failed to initiate payment. Please try again.");
+      console.error("Payment recording failed:", err);
+      setError("Failed to record payment. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  const upiLink = `upi://pay?pa=7723926058@ptaxis&pn=BanksBuddy&am=${formData.amount}&cu=INR`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
+
+  if (showSuccess) {
+    return (
+      <div className="pf-modal-overlay" onClick={onClose}>
+        <div className="pf-modal-container" onClick={(e) => e.stopPropagation()} style={{ alignItems: 'center', textAlign: 'center', padding: '2.5rem 2rem' }}>
+          <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem', boxShadow: '0 8px 24px rgba(16,185,129,0.35)' }}>
+            <span style={{ fontSize: '2rem' }}>✓</span>
+          </div>
+          <h2 style={{ margin: '0 0 0.5rem', fontSize: '1.5rem', fontWeight: 800, color: '#0f172a' }}>Payment Submitted!</h2>
+          <p style={{ margin: '0 0 2rem', color: '#64748b', fontSize: '0.95rem', lineHeight: 1.6 }}>Your payment has been recorded.<br/>Our admin will verify it shortly and your report will be ready soon.</p>
+          <button onClick={onClose} className="pf-submit-btn" style={{ background: '#10b981' }}>Done</button>
+        </div>
+        <style>{`
+          .pf-modal-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.4);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem; }
+          .pf-modal-container { background:#fff;width:100%;max-width:480px;border-radius:28px;padding:2.5rem 2rem;position:relative;box-shadow:0 25px 50px -12px rgba(0,0,0,0.2);animation:pf-slide-up 0.3s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column; }
+          @keyframes pf-slide-up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+          .pf-submit-btn { padding:1.125rem;width:100%;color:#fff;border:none;border-radius:16px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:transform 0.2s,background 0.2s; }
+          .pf-submit-btn:disabled { background:#94a3b8;cursor:not-allowed; }
+        `}</style>
+      </div>
+    );
+  }
+
+  if (showQR) {
+    return (
+      <div className="pf-modal-overlay" onClick={onClose}>
+        <div className="pf-modal-container" onClick={(e) => e.stopPropagation()} style={{ alignItems: 'center', textAlign: 'center', padding: '2rem' }}>
+          <button className="pf-close-button" onClick={onClose} disabled={loading}>&times;</button>
+
+          <img
+            src="/payshot.png"
+            alt="Payment Options"
+            style={{ width: '100%', borderRadius: '16px', marginBottom: '1.5rem', marginTop: '1rem' }}
+          />
+
+          {error && <div className="pf-error" style={{ marginBottom: '1rem', width: '100%' }}>{error}</div>}
+
+          <button
+            onClick={handleIPaid}
+            disabled={loading}
+            className="pf-submit-btn"
+            style={{ background: '#10b981', width: '100%', boxSizing: 'border-box' }}
+          >
+            {loading ? "Processing..." : "✅ I Paid"}
+          </button>
+        </div>
+
+        <style>{`
+          .pf-modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; padding: 1rem;
+          }
+          .pf-modal-container {
+            background: #ffffff; width: 100%; max-width: 480px;
+            border-radius: 28px; padding: 2.5rem 2rem 2rem; position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
+            animation: pf-slide-up 0.3s cubic-bezier(0.16,1,0.3,1);
+            max-height: 90vh; display: flex; flex-direction: column;
+          }
+          @keyframes pf-slide-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .pf-close-button {
+            position: absolute; top: 1rem; right: 1.25rem;
+            background: transparent; border: none; width: 32px; height: 32px;
+            border-radius: 50%; cursor: pointer; font-size: 1.75rem;
+            display: flex; align-items: center; justify-content: center;
+            color: #94a3b8; transition: color 0.2s;
+          }
+          .pf-close-button:hover { color: #0f172a; }
+          .pf-error {
+            background: #fef2f2; color: #b91c1c; padding: 0.75rem;
+            border-radius: 8px; font-size: 0.875rem; font-weight: 500;
+          }
+          .pf-submit-btn {
+            padding: 1.125rem; width: 100%; color: white; border: none;
+            border-radius: 16px; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; transition: transform 0.2s, background 0.2s;
+          }
+          .pf-submit-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
     <div className="pf-modal-overlay" onClick={onClose}>
@@ -466,6 +499,18 @@ export const DevStudioPaymentForm = ({
           font-size: 0.875rem;
           font-weight: 500;
           flex-shrink: 0;
+        }
+        .pf-payment-options-img-container {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 0.5rem;
+          flex-shrink: 0;
+        }
+        .pf-payment-options-img {
+          max-width: 100%;
+          height: auto;
+          max-height: 50px;
+          object-fit: contain;
         }
         .pf-input-group {
           display: flex;

@@ -178,19 +178,49 @@ export const Cibil = () => {
   const navigate = useNavigate();
   const [checkLoading, setCheckLoading] = useState(!localStorage.getItem("cibilPaid"));
 
-  // 1. Show success popup if returning from Razorpay payment (inline verification done in modal)
+  // 1. Handle Instamojo payment redirect return
+  //    Instamojo appends: ?payment_status=Credit&payment_id=...&payment_request_id=...&request_id=...
   useEffect(() => {
-    const paymentParam = searchParams.get("payment");
-    if (paymentParam === "success") {
-      setShowSuccessPopup(true);
-      setHasPaid(true);
-      localStorage.setItem("cibilPaid", "true");
-      // Remove query params from URL
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete("payment");
-      newParams.delete("request_id");
-      setSearchParams(newParams);
+    const paymentStatus = searchParams.get("payment_status");
+    const paymentId = searchParams.get("payment_id");
+    const paymentRequestId = searchParams.get("payment_request_id");
+    const requestId =
+      searchParams.get("request_id") ||
+      localStorage.getItem("pendingRequestId");
+
+    if (!paymentStatus) return;
+
+    // Clean URL immediately regardless of outcome
+    const cleanParams = new URLSearchParams(searchParams);
+    ["payment_status", "payment_id", "payment_request_id", "request_id"].forEach((k) =>
+      cleanParams.delete(k),
+    );
+    setSearchParams(cleanParams);
+
+    if (paymentStatus !== "Credit") {
+      // Payment failed or was cancelled
+      return;
     }
+
+    // Server-side verify
+    apiFetch("/api/payment/verify", {
+      method: "POST",
+      body: JSON.stringify({
+        payment_id: paymentId,
+        payment_request_id: paymentRequestId,
+        payment_status: paymentStatus,
+        request_id: requestId,
+      }),
+    })
+      .then((res) => {
+        if (res.status === "PAID") {
+          localStorage.setItem("cibilPaid", "true");
+          localStorage.removeItem("pendingRequestId");
+          setHasPaid(true);
+          setShowSuccessPopup(true);
+        }
+      })
+      .catch((err) => console.error("Payment verify error:", err));
   }, [searchParams, setSearchParams]);
 
   // Reset hasPaid immediately on logout so the button reverts to "Apply Now"
