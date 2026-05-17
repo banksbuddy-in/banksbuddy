@@ -167,6 +167,32 @@ app.get("/api/stats", requireAdmin, async (c) => {
   });
 });
 
+// ─── Invoice Data Routes — registered early to avoid route shadowing ────────────
+// GET all invoices map { txnId: invoiceData }. Returns {} if node doesn't exist yet.
+app.get("/api/revenue/invoices", requireAdmin, async (c) => {
+  const data = await dbGet("revenue/invoices").catch(() => null);
+  return c.json(data || {});
+});
+// GET single invoice by txn ID
+app.get("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const data = await dbGet(`revenue/invoices/${c.req.param("id")}`).catch(() => null);
+  return c.json(data || null);
+});
+// POST (upsert) invoice data for a txn ID — auto-creates the RTDB node
+app.post("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbSet(`revenue/invoices/${id}`, { ...body, updatedAt: new Date().toISOString() });
+  return c.json({ ok: true });
+});
+// PUT (partial update) invoice data for a txn ID
+app.put("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbUpdate(`revenue/invoices/${id}`, { ...body, updatedAt: new Date().toISOString() });
+  return c.json({ ok: true });
+});
+
 // Database CRUD (Consultations, Offers, Reviews, Team, Careers, Policies, Partners, Users)
 const collections = [
   "consultations",
@@ -277,6 +303,17 @@ app.put("/api/revenue/cibil/:id", requireAdmin, async (c) => {
   await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
   return c.json({ ok: true });
 });
+
+// Alias for cibil_requests with underscore (as requested by frontend change)
+app.get("/api/cibil_requests", requireAdmin, async (c) => {
+  const data = await dbGet("cibil_requests");
+  return c.json(data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : []);
+});
+app.put("/api/cibil_requests/:id", requireAdmin, async (c) => {
+  await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
+  return c.json({ ok: true });
+});
+
 
 // News
 app.get("/api/news", async (c) => {
@@ -428,15 +465,13 @@ app.get("/api/payment/status/:email", requireAuth, async (c) => {
   const email = c.req.param("email");
   const users = await dbGet("users");
   if (Object.values(users || {}).some((u) => u.email === email && u.cibilPaid))
-    return c.json({ paid: true });
+    return c.json({ paid: true, completed: false });
   const reqs = await dbGet("cibil_requests");
-  if (
-    Object.values(reqs || {}).some(
-      (r) => r.email === email && r.status === "paid",
-    )
-  )
-    return c.json({ paid: true });
-  return c.json({ paid: false });
+  const userReqs = Object.values(reqs || {}).filter((r) => r.email === email);
+  const isCompleted = userReqs.some((r) => r.status === "completed");
+  const isPaid = userReqs.some((r) => r.status === "paid" || r.status === "completed");
+  if (isPaid) return c.json({ paid: true, completed: isCompleted });
+  return c.json({ paid: false, completed: false });
 });
 
 // ─── Global error handler (prevents Bun from crashing on unhandled route errors)

@@ -173,6 +173,9 @@ export const Cibil = () => {
   const [hasPaid, setHasPaid] = useState(() => {
     return localStorage.getItem("cibilPaid") === "true";
   });
+  const [hasCompleted, setHasCompleted] = useState(() => {
+    return localStorage.getItem("cibilCompleted") === "true";
+  });
   const [formStatus, setFormStatus] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -227,6 +230,7 @@ export const Cibil = () => {
   useEffect(() => {
     if (!currentUser) {
       setHasPaid(false);
+      setHasCompleted(false);
     }
   }, [currentUser]);
 
@@ -263,6 +267,11 @@ export const Cibil = () => {
         if (res?.paid) {
           setHasPaid(true);
           localStorage.setItem("cibilPaid", "true");
+        }
+        // Check if admin has marked as completed
+        if (res?.completed) {
+          setHasCompleted(true);
+          localStorage.setItem("cibilCompleted", "true");
         }
       } catch (err) {
         console.error("Error checking payment status:", err);
@@ -307,7 +316,7 @@ export const Cibil = () => {
                 <button className="sp-btn-primary" disabled>
                   Checking Status...
                 </button>
-              ) : hasPaid ? (
+              ) : hasCompleted ? (
                 <button
                   className="sp-btn-primary cb-btn-report"
                   onClick={async () => {
@@ -316,23 +325,6 @@ export const Cibil = () => {
                       localStorage.getItem("userEmail") ||
                       "";
                     if (!savedEmail) return;
-
-                    // Re-verify payment before allowing report request
-                    try {
-                      const res = await apiFetch(
-                        `/api/payment/status/${encodeURIComponent(savedEmail)}`,
-                      );
-                      if (!res?.paid) {
-                        // Payment not confirmed — reset state so user sees Pay Now
-                        localStorage.removeItem("cibilPaid");
-                        setHasPaid(false);
-                        return;
-                      }
-                    } catch (err) {
-                      console.error("Payment status check failed:", err);
-                      // Proceed optimistically if the check errors
-                    }
-
                     setShowSuccessPopup(true);
                     const safeEmail = savedEmail.replace(/[^a-zA-Z0-9]/g, "_");
                     try {
@@ -353,6 +345,10 @@ export const Cibil = () => {
                   }}
                 >
                   Get a Report <GoArrowRight />
+                </button>
+              ) : hasPaid ? (
+                <button className="sp-btn-primary" disabled style={{ background: "#94a3b8", cursor: "not-allowed" }}>
+                  Payment Under Review
                 </button>
               ) : !currentUser ? (
                 <button

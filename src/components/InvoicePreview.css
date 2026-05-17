@@ -1,0 +1,420 @@
+/* ─────────────────────────────────────────────
+   InvoicePreview.css
+   A4-optimised professional invoice stylesheet
+   ───────────────────────────────────────────── */
+
+/* ── Overlay ── */
+.inv-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* ── Action bar ── */
+.inv-action-bar {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 5em;
+  margin: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+
+.inv-action-right {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.inv-close-btn,
+.inv-print-btn,
+.inv-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: "Poppins", sans-serif;
+}
+
+.inv-close-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.inv-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.inv-print-btn {
+  background: #1e293b;
+  color: #fff;
+}
+.inv-print-btn:hover {
+  background: #0f172a;
+}
+
+.inv-pdf-btn {
+  background: linear-gradient(135deg, #0047ab 0%, #003792 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 71, 171, 0.3);
+}
+.inv-pdf-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 71, 171, 0.4);
+}
+
+/* ── Invoice Document ── */
+.inv-document {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 14mm 14mm 12mm;
+  font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+  font-size: 0.88rem;
+  color: #1e293b;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ── Header ── */
+.inv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.inv-logo-wrap {
+  flex: 1;
+}
+
+.inv-logo {
+  height: 10rem;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.inv-header-right {
+  text-align: right;
+}
+
+.inv-title-text {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: #0047ab;
+  margin: 0 0 0.5rem;
+  line-height: 1;
+}
+
+.inv-meta-table {
+  border-collapse: collapse;
+  margin-left: auto;
+  text-align: start;
+}
+
+.inv-meta-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+  padding: 0.67em;
+  text-align: left;
+}
+
+.inv-meta-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  padding: 0.67em;
+  text-align: left;
+  min-width: 120px;
+}
+
+/* ── Divider ── */
+.inv-divider {
+  border: none;
+  border-top: 2px solid #0047ab;
+  margin: 1rem 0;
+}
+
+/* ── Bill To ── */
+.inv-bill-section {
+  margin-bottom: 1.5rem;
+}
+
+.inv-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #0047ab;
+  text-transform: uppercase;
+  margin: 0 0 0.4rem;
+}
+
+.inv-customer-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.2rem;
+}
+
+.inv-customer-address {
+  font-size: 0.84rem;
+  color: #334155;
+  margin: 0 0 0.2rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.inv-customer-phone {
+  font-size: 0.84rem;
+  color: #475569;
+  margin: 0;
+}
+
+/* ── Services Table ── */
+.inv-services-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+
+.inv-services-table thead tr {
+  background: #0047ab;
+  color: #fff;
+}
+
+.inv-services-table th {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  background-color: var(--darkbl);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.inv-th-no {
+  width: 6%;
+  text-align: center;
+}
+.inv-th-desc {
+  width: 46%;
+  text-align: left;
+}
+.inv-th-price {
+  width: 16%;
+  text-align: right;
+}
+.inv-th-qty {
+  width: 10%;
+  text-align: center;
+}
+.inv-th-total {
+  width: 22%;
+  text-align: right;
+}
+
+.inv-services-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.inv-services-table tbody td {
+  padding: 0.7rem 0.75rem;
+  font-size: 0.86rem;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.inv-td-center {
+  text-align: center;
+}
+.inv-td-right {
+  text-align: right;
+  font-weight: 600;
+}
+
+.inv-empty-row td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* ── Summary ── */
+.inv-summary-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.25rem 0 1rem;
+}
+
+.inv-summary-table {
+  border-collapse: collapse;
+  min-width: 260px;
+}
+
+.inv-sum-label {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #475569;
+  padding: 1.67%;
+}
+
+.inv-sum-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+  text-align: right;
+  padding: 1.67%;
+  min-width: 110px;
+}
+
+.inv-sum-value.paid {
+  color: #16a34a;
+}
+
+.inv-sum-due-row {
+  border-top: 2px solid #0047ab;
+}
+
+.inv-sum-due-row .due-label {
+  font-weight: 700;
+  color: #0f172a;
+  padding-top: 0.55rem;
+}
+
+.inv-sum-due-row .due-value {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #dc2626;
+  padding-top: 0.55rem;
+}
+
+/* ── Bottom Sections (Terms + Payment) ── */
+.inv-bottom-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.inv-terms p,
+.inv-payment-method p {
+  font-size: 0.82rem;
+  color: #475569;
+  margin: 0.2rem 0;
+  line-height: 1.55;
+}
+
+.inv-pm-key {
+  font-weight: 700;
+  color: #1e293b;
+  display: inline-block;
+  min-width: 100px;
+}
+
+/* ── Footer ── */
+.inv-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1.25rem;
+}
+
+.inv-thankyou {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0047ab;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+
+.inv-company-details p {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0.1rem 0;
+}
+
+.inv-footer-right {
+  text-align: right;
+}
+
+.inv-signature {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  margin-bottom: 0.25rem;
+}
+
+.inv-signatory-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.inv-signatory-title {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Print / PDF styles
+   ───────────────────────────────────────────── */
+@media print {
+  /* Hide everything except the invoice */
+  body > *:not(#root) {
+    display: none !important;
+  }
+
+  #root > *:not(.inv-overlay) {
+    display: none !important;
+  }
+
+  .inv-overlay {
+    position: static !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .inv-document {
+    width: 100% !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 10mm !important;
+    margin: 0 !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+}

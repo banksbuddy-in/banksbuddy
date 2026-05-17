@@ -179,7 +179,7 @@
 
 .rev-search-input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 1rem; /* No icon padding */
+  padding: 0.75rem 1rem 0.75rem 1rem; 
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   background: #fff;
@@ -221,7 +221,11 @@
   border-radius: 16px;
   border: 1px solid #f1f5f9;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-  overflow: hidden;
+  overflow-x: auto;
+}
+
+.rev-table-wrapper {
+  min-width: 1000px;
 }
 
 .rev-table {
@@ -239,6 +243,8 @@
   letter-spacing: 0.05em;
   color: #64748b;
   border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
 }
 
 .rev-table td {
@@ -266,8 +272,41 @@
 
 .rev-user-sub {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #64748b;
   display: block;
+}
+
+.rev-service-main {
+  font-weight: 600;
+  color: #334155;
+  display: block;
+}
+
+.rev-service-sub {
+  font-size: 0.85rem;
+  color: #0f172a;
+  display: block;
+  margin-top: 2px;
+}
+
+.rev-amount {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.rev-amount-paid {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.rev-amount-due {
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.rev-date-cell {
+  color: #64748b;
+  font-size: 0.85rem;
 }
 
 .rev-status-badge {
@@ -280,64 +319,73 @@
   gap: 0.35rem;
 }
 
+.status-dot {
+  width: 1em;
+  height: 1em;
+  border-radius: 5rem;
+  background: currentColor;
+  padding: 0;
+}
+
 .rev-status-paid {
   background: #dcfce7;
   color: #166534;
 }
 
-.rev-status-pending {
-  background: #fff7ed;
-  color: #9a3412;
+.rev-status-partial {
+  background: #fef3c7;
+  color: #b45309;
 }
 
-.rev-status-resolved {
-  background: #e0f2fe;
-  color: #0369a1;
+.rev-status-due {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
-.rev-status-refunded {
-  background: #f1f5f9;
-  color: #475569;
+.rev-action-group {
+  display: flex;
+  gap: 0.5rem;
 }
 
-.rev-edit-btn-small {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+.rev-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   padding: 0.4rem 0.8rem;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
-.rev-edit-btn-small:hover {
+.rev-action-btn.primary {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.rev-action-btn.primary:hover {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.rev-action-btn.secondary {
+  background: #f1f5f9;
+  color: #475569;
+  border-color: #e2e8f0;
+}
+
+.rev-action-btn.secondary:hover {
   background: #e2e8f0;
   color: #1e293b;
 }
 
-.rev-amount {
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-}
-
-.rev-status-select {
-  padding: 0.35rem 0.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  background: #f8fafc;
-  color: #1e293b;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
-}
-
-.rev-status-select:focus {
-  border-color: #0047ab;
-  background: white;
+.rev-empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
 }
 
 /* Form Styles */
@@ -347,6 +395,20 @@
   font-weight: 500;
   color: #334155;
   margin-bottom: 0.35rem;
+}
+
+.rev-auto-fetched-info {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.rev-auto-fetched-info p {
+  margin: 0.25rem 0;
+  color: #334155;
 }
 
 /* Responsive */
