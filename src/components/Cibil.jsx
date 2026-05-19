@@ -326,17 +326,11 @@ export const Cibil = () => {
                       "";
                     if (!savedEmail) return;
                     setShowSuccessPopup(true);
-                    const safeEmail = savedEmail.replace(/[^a-zA-Z0-9]/g, "_");
                     try {
-                      await apiFetch(`/api/cibil-notifications/${safeEmail}`, {
-                        method: "PUT",
+                      await apiFetch("/api/cibil-notifications/request", {
+                        method: "POST",
                         body: JSON.stringify({
                           email: savedEmail,
-                          type: "report_request",
-                          message: `${savedEmail} asked for a CIBIL report.`,
-                          read: false,
-                          status: "pending",
-                          createdAt: new Date().toISOString(),
                         }),
                       });
                     } catch (err) {

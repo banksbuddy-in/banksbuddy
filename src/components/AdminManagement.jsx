@@ -110,6 +110,8 @@ export const AdminManagement = ({ embedded = false }) => {
     { name: "Regular Users", value: regularUsers },
   ];
 
+
+
   // Helper to generate last 7 days metrics
   const getLast7DaysMetrics = () => {
     const days = [];
@@ -225,98 +227,7 @@ export const AdminManagement = ({ embedded = false }) => {
         </div>
       </div>
 
-      {/* Charts section */}
-      <div className="users-charts-grid">
-        {/* Pie Chart */}
-        <div className="users-chart-card">
-          <div className="users-chart-header">
-            <h4>User Role Distribution</h4>
-          </div>
-          <div style={{ width: "100%", height: 220 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: "8px",
-                    border: "none",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  }}
-                />
-                <Legend iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Line Chart */}
-        <div className="users-chart-card">
-          <div className="users-chart-header">
-            <h4>Vercel & Firebase Platform Activity</h4>
-          </div>
-          <div style={{ width: "100%", height: 220 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={activityData}
-                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 11 }}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#64748b", fontSize: 11 }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: "8px",
-                    border: "none",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                  }}
-                />
-                <Legend iconType="circle" />
-                <Line
-                  type="monotone"
-                  dataKey="Vercel Requests"
-                  stroke="#0f172a"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="Firebase DB Actions"
-                  stroke="#ffcb2b"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Search Filter */}
       <div className="users-filters">

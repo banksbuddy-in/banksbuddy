@@ -320,11 +320,9 @@
 }
 
 .status-dot {
-  width: 1em;
-  height: 1em;
   border-radius: 5rem;
   background: currentColor;
-  padding: 0;
+  padding: 5% 7%;
 }
 
 .rev-status-paid {

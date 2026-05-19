@@ -102,7 +102,7 @@ export const Admin = () => {
       id: "cibil",
       title: "Cibil",
       icon: HiOutlineClipboardList,
-      desc: "CIBIL service requests",
+      desc: "CIBIL report notifications",
     },
     {
       id: "revenue",

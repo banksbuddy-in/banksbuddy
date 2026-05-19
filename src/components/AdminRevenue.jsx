@@ -84,6 +84,7 @@ export const AdminRevenue = ({ embedded }) => {
   const [invoiceForm, setInvoiceForm] = useState({
     invoiceId: "",
     billingAddress: "",
+    paidAmount: "",
   });
 
   const [stats, setStats] = useState({
@@ -142,12 +143,12 @@ export const AdminRevenue = ({ embedded }) => {
         mobile: v.phone || v.mobile || "",
         totalAmount: Number(v.amount || 0),
         paidAmount:
-          v.status === "paid" || v.status === "completed"
+          v.status === "verified" || v.status === "paid" || v.status === "completed"
             ? Number(v.amount || 0)
             : v.paymentId
               ? Number(v.amount || 0)
               : 0,
-        status: v.status || "pending",
+        status: v.status || "initiated",
         date: v.createdAt || v.date || new Date().toISOString(),
       }));
 
@@ -345,7 +346,7 @@ export const AdminRevenue = ({ embedded }) => {
         // Recalculate paidAmount for cibil entries based on new status
         if (t.source === "Cibil") {
           updatedT.paidAmount =
-            newStatus === "paid" || newStatus === "completed"
+            newStatus === "verified" || newStatus === "paid" || newStatus === "completed"
               ? t.totalAmount
               : 0;
           updatedT.dueAmount = t.totalAmount - updatedT.paidAmount;
@@ -387,6 +388,7 @@ export const AdminRevenue = ({ embedded }) => {
     setInvoiceForm({
       invoiceId: txn.invoiceId || "",
       billingAddress: txn.billingAddress || "",
+      paidAmount: txn.paidAmount !== undefined ? String(txn.paidAmount) : "0",
     });
     setShowEditDetailsModal(true);
   };
@@ -395,17 +397,44 @@ export const AdminRevenue = ({ embedded }) => {
     e.preventDefault();
     if (!editingTxn) return;
 
+    const paid = Number(invoiceForm.paidAmount || 0);
+    const total = Number(editingTxn.totalAmount || 0);
+
+    if (paid > total) {
+      alert("Paid amount cannot exceed total amount");
+      return;
+    }
+    if (paid < 0) {
+      alert("Paid amount cannot be negative");
+      return;
+    }
+
     try {
       const invoicePayload = {
         invoiceId: invoiceForm.invoiceId,
         billingAddress: invoiceForm.billingAddress,
-        invoiceDate: new Date().toISOString(),
+        paidAmount: paid,
+        invoiceDate: editingTxn.invoiceDate || new Date().toISOString(),
       };
 
       await apiFetch(`/api/revenue/invoices/${editingTxn.id}`, {
         method: "POST", // using POST as upsert
         body: JSON.stringify(invoicePayload),
       });
+
+      // Synchronize back to original source collections
+      if (editingTxn.source === "Manual") {
+        await apiFetch(`/api/revenue/manual/${editingTxn.id}`, {
+          method: "PUT",
+          body: JSON.stringify({ paidAmount: paid }),
+        });
+      } else if (editingTxn.source === "Cibil") {
+        const status = paid >= total ? "verified" : "initiated";
+        await apiFetch(`/api/cibil-requests/${editingTxn.id}`, {
+          method: "PUT",
+          body: JSON.stringify({ amount: total, status }),
+        });
+      }
 
       await fetchAll();
       setShowEditDetailsModal(false);
@@ -751,31 +780,51 @@ export const AdminRevenue = ({ embedded }) => {
                           gap: "0.75rem",
                         }}
                       >
-                        <select
-                          className="rev-status-select"
-                          style={{
-                            padding: "0.4rem 0.5rem",
-                            borderRadius: "6px",
-                            border: "1px solid #cbd5e1",
-                            fontSize: "0.85rem",
-                            color: "#475569",
-                            background: "#f8fafc",
-                            outline: "none",
-                            cursor: "pointer",
-                            width: "100%",
-                          }}
-                          value={t.status || "pending"}
-                          onChange={(e) => updateTxnStatus(t, e.target.value)}
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="paid">Paid</option>
-                          <option value="resolved">Resolved</option>
-                          <option value="completed">Completed</option>
-                          <option value="refunded">Refunded</option>
-                          <option value="Verification Pending">
-                            Verification Pending
-                          </option>
-                        </select>
+                        {t.source === "Cibil" ? (
+                          <select
+                            className="rev-status-select"
+                            style={{
+                              padding: "0.4rem 0.5rem",
+                              borderRadius: "6px",
+                              border: "1px solid #cbd5e1",
+                              fontSize: "0.85rem",
+                              color: "#475569",
+                              background: "#f8fafc",
+                              outline: "none",
+                              cursor: "pointer",
+                              width: "100%",
+                            }}
+                            value={t.status || "initiated"}
+                            onChange={(e) => updateTxnStatus(t, e.target.value)}
+                          >
+                            <option value="initiated">Initiated</option>
+                            <option value="verified">Verified</option>
+                            {["paid", "completed", "pending", "Verification Pending"].includes(t.status) && (
+                              <option value={t.status}>{t.status}</option>
+                            )}
+                          </select>
+                        ) : (
+                          <select
+                            className="rev-status-select"
+                            style={{
+                              padding: "0.4rem 0.5rem",
+                              borderRadius: "6px",
+                              border: "1px solid #cbd5e1",
+                              fontSize: "0.85rem",
+                              color: "#475569",
+                              background: "#f8fafc",
+                              outline: "none",
+                              cursor: "pointer",
+                              width: "100%",
+                            }}
+                            value={t.status || "pending"}
+                            onChange={(e) => updateTxnStatus(t, e.target.value)}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                            <option value="refunded">Refunded</option>
+                          </select>
+                        )}
                         <div className="rev-action-group">
                           <button
                             className="rev-action-btn primary"
@@ -1040,6 +1089,50 @@ export const AdminRevenue = ({ embedded }) => {
                         invoiceId: e.target.value,
                       })
                     }
+                  />
+                </div>
+              </div>
+              <div className="cb-form-row" style={{ display: "flex", gap: "1rem" }}>
+                <div style={{ flex: 1 }}>
+                  <label className="rev-form-label">Total Amount (Fixed)</label>
+                  <input
+                    className="cb-input"
+                    type="text"
+                    disabled
+                    value={`₹${editingTxn?.totalAmount || 0}`}
+                    style={{ background: "#f1f5f9", cursor: "not-allowed" }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label className="rev-form-label">Paid Amount</label>
+                  <input
+                    className="cb-input"
+                    type="number"
+                    min="0"
+                    max={editingTxn?.totalAmount || 0}
+                    placeholder="Enter paid amount"
+                    value={invoiceForm.paidAmount}
+                    onChange={(e) =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        paidAmount: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="cb-form-row">
+                <div style={{ flex: 1 }}>
+                  <label className="rev-form-label">Balance / Due Amount (Auto-adjusted)</label>
+                  <input
+                    className="cb-input"
+                    type="text"
+                    disabled
+                    value={`₹${Math.max(
+                      0,
+                      Number(editingTxn?.totalAmount || 0) - Number(invoiceForm.paidAmount || 0)
+                    ).toLocaleString()}`}
+                    style={{ background: "#f1f5f9", cursor: "not-allowed", fontWeight: "bold", color: "#e11d48" }}
                   />
                 </div>
               </div>

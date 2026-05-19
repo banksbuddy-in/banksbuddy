@@ -92,7 +92,8 @@ const requireAuth = async (c, next) => {
   const idToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
   if (!idToken) return c.json({ error: "Unauthorized — please log in" }, 401);
   try {
-    await verifyFirebaseToken(idToken);
+    const user = await verifyFirebaseToken(idToken);
+    c.set("user", user);
     await next();
   } catch {
     return c.json({ error: "Unauthorized — invalid token" }, 401);
@@ -405,16 +406,71 @@ app.post("/api/payment/verify", requireAuth, async (c) => {
 app.get("/api/payment/status/:email", requireAuth, async (c) => {
   const email = c.req.param("email");
   const users = await dbGet("users");
-  if (Object.values(users || {}).some((u) => u.email === email && u.cibilPaid))
-    return c.json({ paid: true });
+  if (Object.values(users || {}).some((u) => u.email === email && u.cibilPaid)) {
+    return c.json({ paid: true, completed: true });
+  }
   const reqs = await dbGet("cibil_requests");
-  if (
-    Object.values(reqs || {}).some(
-      (r) => r.email === email && r.status === "paid",
-    )
-  )
-    return c.json({ paid: true });
-  return c.json({ paid: false });
+  const userReqs = Object.values(reqs || {}).filter((r) => r.email === email);
+  
+  if (userReqs.some((r) => r.status === "verified" || r.status === "paid" || r.status === "completed")) {
+    return c.json({ paid: true, completed: true });
+  }
+  if (userReqs.some((r) => r.status === "initiated" || r.status === "Verification Pending")) {
+    return c.json({ paid: true, completed: false });
+  }
+  return c.json({ paid: false, completed: false });
+});
+
+// Custom endpoint to request report and create/update notification
+app.post("/api/cibil-notifications/request", requireAuth, async (c) => {
+  const user = c.get("user");
+  const body = await c.req.json().catch(() => ({}));
+  const email = user.email || body.email;
+  if (!email) return c.json({ error: "Email is required" }, 400);
+  const safeEmail = email.replace(/[^a-zA-Z0-9]/g, "_");
+
+  // Try to fetch name/phone from the user's DB entry or cibil requests
+  let userName = "";
+  let userPhone = "";
+  try {
+    const users = await dbGet("users");
+    const userEntry = Object.entries(users || {}).find(([, u]) => u.email === email);
+    if (userEntry) {
+      const uid = userEntry[0];
+      const userDb = await dbGet(`users/${uid}`);
+      if (userDb) {
+        userName = userDb.fullName || userDb.name || "";
+        userPhone = userDb.phone || userDb.mobile || "";
+      }
+    }
+  } catch (e) {}
+
+  if (!userName || !userPhone) {
+    try {
+      const requests = await dbGet("cibil_requests");
+      if (requests) {
+        const matched = Object.values(requests).find((r) => r.email === email);
+        if (matched) {
+          userName = userName || matched.name || matched.fullName || "";
+          userPhone = userPhone || matched.phone || matched.mobile || "";
+        }
+      }
+    } catch (e) {}
+  }
+
+  const payload = {
+    email,
+    type: "report_request",
+    message: `${email} asked for a CIBIL report.`,
+    read: false,
+    status: "requested",
+    createdAt: new Date().toISOString(),
+  };
+  if (userName) payload.name = userName;
+  if (userPhone) payload.phone = userPhone;
+
+  await dbSet(`cibil_notifications/${safeEmail}`, payload);
+  return c.json({ ok: true });
 });
 
 // ─── Global error handler

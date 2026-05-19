@@ -118,7 +118,7 @@ export const DevStudioPaymentForm = ({
         method: "POST",
         body: JSON.stringify({
           ...formData,
-          status: "Verification Pending",
+          status: "initiated",
           paymentMethod: "UPI Manual",
         }),
       });
