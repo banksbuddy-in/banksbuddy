@@ -26,6 +26,7 @@ import * as XLSX from "xlsx";
 import InvoicePreview from "./InvoicePreview";
 import "./Admin.css";
 import "./AdminRevenue.css";
+import { FaWhatsapp } from "react-icons/fa";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -56,12 +57,12 @@ export const AdminRevenue = ({ embedded }) => {
   const [transactions, setTransactions] = useState([]);
   const [filteredTxns, setFilteredTxns] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditDetailsModal, setShowEditDetailsModal] = useState(false);
   const [showInvoicePreview, setShowInvoicePreview] = useState(false);
-  
+
   const [editingTxn, setEditingTxn] = useState(null);
   const [invoiceDataMap, setInvoiceDataMap] = useState({});
   const [selectedInvoice, setSelectedInvoice] = useState(null);
@@ -76,7 +77,7 @@ export const AdminRevenue = ({ embedded }) => {
     totalAmount: "",
     paidAmount: "",
     isInstantPaid: true,
-    customDate: "", 
+    customDate: "",
   });
 
   // Form State for Edit Details (Invoice Metadata)
@@ -95,14 +96,32 @@ export const AdminRevenue = ({ embedded }) => {
   const fetchAll = async () => {
     try {
       // Use individual .catch so one failing endpoint doesn't block all others
-      const [cibilRaw, manualData, instamojoData, invoicesData] = await Promise.all([
-        apiFetch("/api/cibil-requests").catch((e) => { console.warn("cibil-requests failed:", e.message); return []; }),
-        apiFetch("/api/revenue/manual").catch((e) => { console.warn("revenue/manual failed:", e.message); return []; }),
-        apiFetch("/api/revenue/instamojo").catch((e) => { console.warn("revenue/instamojo failed:", e.message); return []; }),
-        apiFetch("/api/revenue/invoices").catch((e) => { console.warn("revenue/invoices failed:", e.message); return {}; }),
-      ]);
+      const [cibilRaw, manualData, instamojoData, invoicesData] =
+        await Promise.all([
+          apiFetch("/api/cibil-requests").catch((e) => {
+            console.warn("cibil-requests failed:", e.message);
+            return [];
+          }),
+          apiFetch("/api/revenue/manual").catch((e) => {
+            console.warn("revenue/manual failed:", e.message);
+            return [];
+          }),
+          apiFetch("/api/revenue/instamojo").catch((e) => {
+            console.warn("revenue/instamojo failed:", e.message);
+            return [];
+          }),
+          apiFetch("/api/revenue/invoices").catch((e) => {
+            console.warn("revenue/invoices failed:", e.message);
+            return {};
+          }),
+        ]);
 
-      console.log("[Revenue] raw fetch results:", { cibilRaw, manualData, instamojoData, invoicesData });
+      console.log("[Revenue] raw fetch results:", {
+        cibilRaw,
+        manualData,
+        instamojoData,
+        invoicesData,
+      });
 
       setInvoiceDataMap(invoicesData || {});
 
@@ -122,9 +141,12 @@ export const AdminRevenue = ({ embedded }) => {
         email: v.email || "",
         mobile: v.phone || v.mobile || "",
         totalAmount: Number(v.amount || 0),
-        paidAmount: (v.status === "paid" || v.status === "completed")
-          ? Number(v.amount || 0)
-          : v.paymentId ? Number(v.amount || 0) : 0,
+        paidAmount:
+          v.status === "paid" || v.status === "completed"
+            ? Number(v.amount || 0)
+            : v.paymentId
+              ? Number(v.amount || 0)
+              : 0,
         status: v.status || "pending",
         date: v.createdAt || v.date || new Date().toISOString(),
       }));
@@ -136,9 +158,12 @@ export const AdminRevenue = ({ embedded }) => {
         mainCategory: v.mainCategory || "Other Services",
         subCategory: v.subCategory || "Other",
         totalAmount: Number(v.totalAmount || v.amount || 0),
-        paidAmount: v.paidAmount !== undefined
-          ? Number(v.paidAmount)
-          : (v.status === "paid" || v.status === "completed" ? Number(v.amount || 0) : 0),
+        paidAmount:
+          v.paidAmount !== undefined
+            ? Number(v.paidAmount)
+            : v.status === "paid" || v.status === "completed"
+              ? Number(v.amount || 0)
+              : 0,
         email: v.email || "",
         mobile: v.mobile || v.phone || "",
         status: v.status || "pending",
@@ -152,11 +177,14 @@ export const AdminRevenue = ({ embedded }) => {
         email: v.email || "",
         mobile: v.mobile || v.phone || "",
         mainCategory: v.mainCategory || "Cibil Improvement",
-        subCategory: v.serviceTitle || v.subCategory || "CIBIL Score Improvement",
+        subCategory:
+          v.serviceTitle || v.subCategory || "CIBIL Score Improvement",
         serviceType: v.serviceTitle,
         totalAmount: Number(v.amount || 0),
-        paidAmount: (v.status === "paid" || v.status === "completed" || !v.status)
-          ? Number(v.amount || 0) : 0,
+        paidAmount:
+          v.status === "paid" || v.status === "completed" || !v.status
+            ? Number(v.amount || 0)
+            : 0,
         status: v.status || "paid",
         date: v.date || v.createdAt || new Date().toISOString(),
       }));
@@ -204,13 +232,17 @@ export const AdminRevenue = ({ embedded }) => {
         t.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.mobile?.includes(searchTerm) ||
         t.email?.toLowerCase().includes(searchTerm) ||
-        t.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase())
+        t.invoiceId?.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredTxns(filtered);
 
     const totalRev = transactions.reduce((sum, t) => sum + t.paidAmount, 0);
-    const pending = transactions.filter((t) => t.invoiceStatus === "Due" || t.invoiceStatus === "Partial").length;
-    const completed = transactions.filter((t) => t.invoiceStatus === "Paid").length;
+    const pending = transactions.filter(
+      (t) => t.invoiceStatus === "Due" || t.invoiceStatus === "Partial",
+    ).length;
+    const completed = transactions.filter(
+      (t) => t.invoiceStatus === "Paid",
+    ).length;
 
     setStats({
       totalRevenue: totalRev,
@@ -233,22 +265,28 @@ export const AdminRevenue = ({ embedded }) => {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.totalAmount || !formData.paidAmount || !formData.mobile) return;
-    
+    if (
+      !formData.fullName ||
+      !formData.totalAmount ||
+      !formData.paidAmount ||
+      !formData.mobile
+    )
+      return;
+
     if (Number(formData.paidAmount) > Number(formData.totalAmount)) {
       alert("Paid amount cannot exceed total amount");
       return;
     }
     if (Number(formData.paidAmount) < 0 || Number(formData.totalAmount) < 0) {
-        alert("Amounts cannot be negative");
-        return;
+      alert("Amounts cannot be negative");
+      return;
     }
 
     let finalDate = new Date().toISOString();
     if (!formData.isInstantPaid && formData.customDate) {
       finalDate = new Date(formData.customDate).toISOString();
     }
-    
+
     const total = Number(formData.totalAmount);
     const paid = Number(formData.paidAmount);
     const due = total - paid;
@@ -306,13 +344,20 @@ export const AdminRevenue = ({ embedded }) => {
         const updatedT = { ...t, status: newStatus };
         // Recalculate paidAmount for cibil entries based on new status
         if (t.source === "Cibil") {
-          updatedT.paidAmount = (newStatus === "paid" || newStatus === "completed")
-            ? t.totalAmount : 0;
+          updatedT.paidAmount =
+            newStatus === "paid" || newStatus === "completed"
+              ? t.totalAmount
+              : 0;
           updatedT.dueAmount = t.totalAmount - updatedT.paidAmount;
-          updatedT.invoiceStatus = updatedT.dueAmount <= 0 ? "Paid" : updatedT.paidAmount > 0 ? "Partial" : "Due";
+          updatedT.invoiceStatus =
+            updatedT.dueAmount <= 0
+              ? "Paid"
+              : updatedT.paidAmount > 0
+                ? "Partial"
+                : "Due";
         }
         return updatedT;
-      })
+      }),
     );
 
     try {
@@ -401,7 +446,7 @@ export const AdminRevenue = ({ embedded }) => {
         "Due Amount": t.dueAmount,
         Status: t.invoiceStatus,
         Date: new Date(t.date).toLocaleString(),
-      }))
+      })),
     );
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Revenue_Report");
@@ -590,11 +635,9 @@ export const AdminRevenue = ({ embedded }) => {
                 <th>Customer Details</th>
                 <th>Service Category</th>
                 <th>Amount</th>
-                <th>Paid Amount</th>
-                <th>Due Amount</th>
                 <th>Date</th>
                 <th>Status</th>
-                <th>WhatsApp</th>
+                <th>Phone</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -610,23 +653,38 @@ export const AdminRevenue = ({ embedded }) => {
                       <span className="rev-user-sub">{t.mobile}</span>
                     </td>
                     <td>
-                      <span className="rev-service-main">{t.mainCategory || "Other"}</span>
-                      <span className="rev-service-sub">{t.subCategory || t.serviceType}</span>
+                      <span className="rev-service-main">
+                        {t.mainCategory || "Other"}
+                      </span>
+                      <span className="rev-service-sub">
+                        {t.subCategory || t.serviceType}
+                      </span>
                     </td>
-                    <td>
-                      <span className="rev-amount">₹{Number(t.totalAmount).toLocaleString()}</span>
-                    </td>
-                    <td>
-                      <span className="rev-amount-paid">₹{Number(t.paidAmount).toLocaleString()}</span>
-                    </td>
-                    <td>
-                      <span className="rev-amount-due">₹{Number(t.dueAmount).toLocaleString()}</span>
+                    <td
+                      style={{
+                        width: "10em",
+                      }}
+                    >
+                      <span className="rev-amount">
+                        {" "}
+                        Total ₹{Number(t.totalAmount).toLocaleString()}
+                      </span>{" "}
+                      <br />
+                      <span className="rev-amount-paid">
+                        Paid ₹{Number(t.paidAmount).toLocaleString()}
+                      </span>{" "}
+                      <br />
+                      <span className="rev-amount-due">
+                        Due ₹{Number(t.dueAmount).toLocaleString()}
+                      </span>
                     </td>
                     <td className="rev-date-cell">
                       {new Date(t.date).toLocaleDateString()}
                     </td>
                     <td>
-                      <span className={`rev-status-badge rev-status-${t.invoiceStatus.toLowerCase()}`}>
+                      <span
+                        className={`rev-status-badge rev-status-${t.invoiceStatus.toLowerCase()}`}
+                      >
                         <span className="status-dot"></span>
                         {t.invoiceStatus}
                       </span>
@@ -634,17 +692,21 @@ export const AdminRevenue = ({ embedded }) => {
                     <td style={{ textAlign: "center" }}>
                       {t.mobile ? (
                         <a
-                          href={`https://wa.me/${String(t.mobile).replace(/[^0-9]/g, "").replace(/^0/, "91")}`
-                            + `?text=${encodeURIComponent(
+                          href={
+                            `https://wa.me/${String(t.mobile)
+                              .replace(/[^0-9]/g, "")
+                              .replace(/^0/, "91")}` +
+                            `?text=${encodeURIComponent(
                               `Hi ${t.username || "there"}, this is BanksBuddy team.\n\n` +
-                              `Regarding your *${t.mainCategory || "service"}* — ${t.subCategory || ""}\n` +
-                              (Number(t.dueAmount) > 0
-                                ? `Your outstanding payment of *₹${Number(t.dueAmount).toLocaleString()}* is pending.\n`
-                                : `Your payment is fully received. Thank you! 🎉\n`) +
-                              `\nStatus: *${t.status || "Pending"}*\n` +
-                              `\nFor any queries, reply to this message or call us at +91-6377956633.\n` +
-                              `www.banksbuddy.in`
-                            )}`}
+                                `Regarding your *${t.mainCategory || "service"}* — ${t.subCategory || ""}\n` +
+                                (Number(t.dueAmount) > 0
+                                  ? `Your outstanding payment of *₹${Number(t.dueAmount).toLocaleString()}* is pending.\n`
+                                  : `Your payment is fully received. Thank you! 🎉\n`) +
+                                `\nStatus: *${t.status || "Pending"}*\n` +
+                                `\nFor any queries, reply to this message or call us at +91-6377956633.\n` +
+                                `www.banksbuddy.in`,
+                            )}`
+                          }
                           target="_blank"
                           rel="noreferrer"
                           title={`WhatsApp ${t.username}`}
@@ -662,20 +724,33 @@ export const AdminRevenue = ({ embedded }) => {
                             boxShadow: "0 2px 8px rgba(37,211,102,0.4)",
                             transition: "transform 0.15s, box-shadow 0.15s",
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.transform="scale(1.12)"; e.currentTarget.style.boxShadow="0 4px 14px rgba(37,211,102,0.55)"; }}
-                          onMouseLeave={e => { e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="0 2px 8px rgba(37,211,102,0.4)"; }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.12)";
+                            e.currentTarget.style.boxShadow =
+                              "0 4px 14px rgba(37,211,102,0.55)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                            e.currentTarget.style.boxShadow =
+                              "0 2px 8px rgba(37,211,102,0.4)";
+                          }}
                         >
-                          {/* WhatsApp SVG icon */}
-                          <svg viewBox="0 0 32 32" width="1.1em" height="1.1em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.668 4.61 1.832 6.5L4 29l7.697-1.812A12.94 12.94 0 0 0 16 28c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10c-1.97 0-3.81-.57-5.36-1.555l-.374-.235-4.566 1.074 1.117-4.462-.247-.393A9.954 9.954 0 0 1 6 15c0-5.523 4.477-10 10-10zm-3.3 5.5c-.19 0-.5.072-.762.36-.263.288-1 .977-1 2.381 0 1.404 1.024 2.762 1.166 2.954.143.193 2 3.048 4.905 4.154.687.267 1.222.427 1.638.547.689.196 1.317.169 1.813.102.553-.075 1.703-.697 1.944-1.37.24-.673.24-1.25.168-1.37-.072-.119-.264-.19-.553-.335-.289-.144-1.703-.84-1.968-.937-.264-.096-.457-.144-.649.145-.192.288-.745.937-.913 1.13-.168.192-.336.216-.624.072-.289-.144-1.218-.449-2.32-1.43-.857-.763-1.436-1.705-1.605-1.993-.168-.288-.018-.444.127-.588.13-.13.288-.336.432-.504.143-.168.191-.288.288-.48.096-.192.048-.36-.024-.504-.072-.144-.649-1.562-.89-2.14-.233-.562-.472-.487-.648-.496l-.552-.01z"/>
-                          </svg>
+                          <FaWhatsapp />
                         </a>
                       ) : (
-                        <span style={{ color: "#cbd5e1", fontSize: "0.8rem" }}>—</span>
+                        <span style={{ color: "#cbd5e1", fontSize: "0.8rem" }}>
+                          —
+                        </span>
                       )}
                     </td>
                     <td>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.75rem",
+                        }}
+                      >
                         <select
                           className="rev-status-select"
                           style={{
@@ -687,7 +762,7 @@ export const AdminRevenue = ({ embedded }) => {
                             background: "#f8fafc",
                             outline: "none",
                             cursor: "pointer",
-                            width: "100%"
+                            width: "100%",
                           }}
                           value={t.status || "pending"}
                           onChange={(e) => updateTxnStatus(t, e.target.value)}
@@ -697,7 +772,9 @@ export const AdminRevenue = ({ embedded }) => {
                           <option value="resolved">Resolved</option>
                           <option value="completed">Completed</option>
                           <option value="refunded">Refunded</option>
-                          <option value="Verification Pending">Verification Pending</option>
+                          <option value="Verification Pending">
+                            Verification Pending
+                          </option>
                         </select>
                         <div className="rev-action-group">
                           <button
@@ -733,8 +810,15 @@ export const AdminRevenue = ({ embedded }) => {
 
       {/* Add Revenue Modal */}
       {showAddModal && (
-        <div className="cb-modal-overlay" onClick={() => setShowAddModal(false)}>
-          <div className="cb-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "650px" }}>
+        <div
+          className="cb-modal-overlay"
+          onClick={() => setShowAddModal(false)}
+        >
+          <div
+            className="cb-modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "650px" }}
+          >
             <h2 className="cb-modal-title">Add Revenue Entry</h2>
             <form className="cb-form" onSubmit={handleAddSubmit}>
               <div className="cb-form-row">
@@ -745,7 +829,9 @@ export const AdminRevenue = ({ embedded }) => {
                     placeholder="Enter full name"
                     required
                     value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -756,14 +842,18 @@ export const AdminRevenue = ({ embedded }) => {
                     type="tel"
                     required
                     value={formData.mobile}
-                    onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, mobile: e.target.value })
+                    }
                   />
                 </div>
               </div>
 
               <div className="cb-form-row">
                 <div style={{ flex: 1 }}>
-                  <label className="rev-form-label">Main Service Category</label>
+                  <label className="rev-form-label">
+                    Main Service Category
+                  </label>
                   <select
                     className="cb-select"
                     required
@@ -771,7 +861,9 @@ export const AdminRevenue = ({ embedded }) => {
                     onChange={handleMainCategoryChange}
                   >
                     {Object.keys(SERVICE_CATEGORIES).map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -781,10 +873,14 @@ export const AdminRevenue = ({ embedded }) => {
                     className="cb-select"
                     required
                     value={formData.subCategory}
-                    onChange={(e) => setFormData({ ...formData, subCategory: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subCategory: e.target.value })
+                    }
                   >
                     {SERVICE_CATEGORIES[formData.mainCategory].map((sub) => (
-                      <option key={sub} value={sub}>{sub}</option>
+                      <option key={sub} value={sub}>
+                        {sub}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -800,7 +896,9 @@ export const AdminRevenue = ({ embedded }) => {
                     min="0"
                     required
                     value={formData.totalAmount}
-                    onChange={(e) => setFormData({ ...formData, totalAmount: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, totalAmount: e.target.value })
+                    }
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -812,43 +910,84 @@ export const AdminRevenue = ({ embedded }) => {
                     min="0"
                     required
                     value={formData.paidAmount}
-                    onChange={(e) => setFormData({ ...formData, paidAmount: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, paidAmount: e.target.value })
+                    }
                   />
                 </div>
               </div>
-              
-              <div className="cb-form-row" style={{ marginTop: '-0.5rem', marginBottom: '1rem' }}>
-                  <div style={{ flex: 1, fontSize: '0.9rem', color: '#64748b' }}>
-                      <strong>Due Amount:</strong> ₹{Math.max(0, Number(formData.totalAmount || 0) - Number(formData.paidAmount || 0)).toLocaleString()}
-                  </div>
+
+              <div
+                className="cb-form-row"
+                style={{ marginTop: "-0.5rem", marginBottom: "1rem" }}
+              >
+                <div style={{ flex: 1, fontSize: "0.9rem", color: "#64748b" }}>
+                  <strong>Due Amount:</strong> ₹
+                  {Math.max(
+                    0,
+                    Number(formData.totalAmount || 0) -
+                      Number(formData.paidAmount || 0),
+                  ).toLocaleString()}
+                </div>
               </div>
 
-              <div style={{ background: "#f8fafc", padding: "1rem", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                <label className="rev-form-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: formData.isInstantPaid ? 0 : "0.5rem", cursor: "pointer" }}>
+              <div
+                style={{
+                  background: "#f8fafc",
+                  padding: "1rem",
+                  borderRadius: "8px",
+                  border: "1px solid #e2e8f0",
+                }}
+              >
+                <label
+                  className="rev-form-label"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    marginBottom: formData.isInstantPaid ? 0 : "0.5rem",
+                    cursor: "pointer",
+                  }}
+                >
                   <input
                     type="checkbox"
                     checked={formData.isInstantPaid}
-                    onChange={(e) => setFormData({ ...formData, isInstantPaid: e.target.checked })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        isInstantPaid: e.target.checked,
+                      })
+                    }
                     style={{ width: "16px", height: "16px" }}
                   />
-                  <span>Record as <strong>Instantly Paid</strong> (Current Time)</span>
+                  <span>
+                    Record as <strong>Instantly Paid</strong> (Current Time)
+                  </span>
                 </label>
 
                 {!formData.isInstantPaid && (
-                  <div style={{ marginTop: "0.5rem", animation: "fadeIn 0.2s" }}>
+                  <div
+                    style={{ marginTop: "0.5rem", animation: "fadeIn 0.2s" }}
+                  >
                     <label className="rev-form-label">Select Date & Time</label>
                     <input
                       type="datetime-local"
                       className="cb-input"
                       required={!formData.isInstantPaid}
                       value={formData.customDate}
-                      onChange={(e) => setFormData({ ...formData, customDate: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, customDate: e.target.value })
+                      }
                     />
                   </div>
                 )}
               </div>
 
-              <button className="cb-btn-submit" type="submit" style={{ marginTop: "1.5rem" }}>
+              <button
+                className="cb-btn-submit"
+                type="submit"
+                style={{ marginTop: "1.5rem" }}
+              >
                 Add Revenue Entry
               </button>
             </form>
@@ -858,23 +997,49 @@ export const AdminRevenue = ({ embedded }) => {
 
       {/* Edit Details (Invoice Data) Modal */}
       {showEditDetailsModal && (
-        <div className="cb-modal-overlay" onClick={() => setShowEditDetailsModal(false)}>
-          <div className="cb-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "500px" }}>
+        <div
+          className="cb-modal-overlay"
+          onClick={() => setShowEditDetailsModal(false)}
+        >
+          <div
+            className="cb-modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "500px" }}
+          >
             <h2 className="cb-modal-title">Edit Invoice Details</h2>
             <div className="rev-auto-fetched-info">
-              <p><strong>Customer:</strong> {editingTxn?.username} ({editingTxn?.mobile})</p>
-              <p><strong>Service:</strong> {editingTxn?.subCategory || editingTxn?.serviceType}</p>
-              <p><strong>Amount:</strong> ₹{editingTxn?.totalAmount}</p>
+              <p>
+                <strong>Customer:</strong> {editingTxn?.username} (
+                {editingTxn?.mobile})
+              </p>
+              <p>
+                <strong>Service:</strong>{" "}
+                {editingTxn?.subCategory || editingTxn?.serviceType}
+              </p>
+              <p>
+                <strong>Amount:</strong> ₹{editingTxn?.totalAmount}
+              </p>
             </div>
-            <form className="cb-form" onSubmit={handleEditDetailsSubmit} style={{ marginTop: "1.5rem" }}>
+            <form
+              className="cb-form"
+              onSubmit={handleEditDetailsSubmit}
+              style={{ marginTop: "1.5rem" }}
+            >
               <div className="cb-form-row">
                 <div style={{ flex: 1 }}>
-                  <label className="rev-form-label">Invoice ID (Manual entry)</label>
+                  <label className="rev-form-label">
+                    Invoice ID (Manual entry)
+                  </label>
                   <input
                     className="cb-input"
                     placeholder="e.g. INV-2024-001"
                     value={invoiceForm.invoiceId}
-                    onChange={(e) => setInvoiceForm({ ...invoiceForm, invoiceId: e.target.value })}
+                    onChange={(e) =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        invoiceId: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -886,12 +1051,21 @@ export const AdminRevenue = ({ embedded }) => {
                     placeholder="Enter complete billing address"
                     rows={4}
                     value={invoiceForm.billingAddress}
-                    onChange={(e) => setInvoiceForm({ ...invoiceForm, billingAddress: e.target.value })}
+                    onChange={(e) =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        billingAddress: e.target.value,
+                      })
+                    }
                     style={{ resize: "vertical" }}
                   />
                 </div>
               </div>
-              <button className="cb-btn-submit" type="submit" style={{ marginTop: "1rem" }}>
+              <button
+                className="cb-btn-submit"
+                type="submit"
+                style={{ marginTop: "1rem" }}
+              >
                 Save Details
               </button>
             </form>

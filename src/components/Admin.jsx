@@ -51,10 +51,10 @@ export const Admin = () => {
       desc: "Overview & Quick Stats",
     },
     {
-      id: "admins",
-      title: "Admins",
+      id: "users",
+      title: "Users",
       icon: HiOutlineUsers,
-      desc: "Manage Admin Users",
+      desc: "Manage Platform Users",
     },
     {
       id: "partners",
@@ -140,7 +140,7 @@ export const Admin = () => {
             adminModules={adminModules}
           />
         );
-      case "admins":
+      case "users":
         return <AdminManagement embedded={true} />;
       case "policy-reminder":
         return <AdminPolicyReminder embedded={true} />;

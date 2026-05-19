@@ -22,6 +22,7 @@ import "./ch.css";
 import "./res2.css";
 import { Cursor } from "./components/Cursor";
 import { RiAdminFill } from "react-icons/ri";
+import apiFetch from "./lib/api.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,6 +30,32 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  return null;
+}
+
+function ActivityTracker() {
+  const { pathname } = useLocation();
+  const { currentUser } = useAuth();
+
+  useEffect(() => {
+    const logPageView = async () => {
+      try {
+        await apiFetch("/api/activity-logs", {
+          method: "POST",
+          body: JSON.stringify({
+            type: "page_view",
+            path: pathname,
+            uid: currentUser?.uid || "anonymous",
+            timestamp: new Date().toISOString(),
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to log activity view:", err);
+      }
+    };
+    logPageView();
+  }, [pathname, currentUser]);
 
   return null;
 }
@@ -51,6 +78,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <ScrollToTop />
+          <ActivityTracker />
           {/* <Cursor /> */}
           <Navbar />
           <Routes>

@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "firebase": "^12.6.0",
     "framer-motion": "^12.23.25",
     "hono": "^4.7.0",

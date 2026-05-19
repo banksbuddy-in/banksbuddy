@@ -160,6 +160,7 @@ const collections = [
   "manual_revenue",
   "instamojo_revenue",
   "cibil_notifications",
+  "activity_logs",
 ];
 // Collections where anyone (logged in) can submit a form (public-facing forms)
 // Split into two tiers:
@@ -168,6 +169,7 @@ const collections = [
 const trulyPublicWrite = new Set([
   "consultations",
   "partner_applications",
+  "activity_logs",
 ]);
 const authWriteCollections = new Set([
   "policyReminders",
@@ -188,11 +190,13 @@ collections.forEach((col) => {
                 ? "revenue/manual"
                 : col === "instamojo_revenue"
                   ? "revenue/instamojo"
-                  : col;
+                  : col === "activity_logs"
+                    ? "activity-logs"
+                    : col;
   const isSensitive = [
     "users", "cibil_requests", "cibil_notifications",
     "manual_revenue", "instamojo_revenue", "consultations",
-    "partner_applications",
+    "partner_applications", "activity_logs",
   ].includes(col);
   if (isSensitive) {
     app.get(`/api/${path}`, requireAdmin, async (c) => {
