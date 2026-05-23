@@ -103,7 +103,7 @@ export const Careers = () => {
             </small>
 
             <a
-              href={`https://mail.google.com/mail/?view=cm&fs=1&to=banksbuddy2023@gmail.com&su=${encodeURIComponent(
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=info@banksbuddy.in&su=${encodeURIComponent(
                 "BanksBuddy - APPLICATION for " + selectedJob.title,
               )}&body=${encodeURIComponent(
                 `Hello BanksBuddy Team,
