@@ -326,6 +326,23 @@ collections.forEach((col) => {
         console.error("Failed to delete user and related data:", err);
         return c.json({ error: "Failed to delete user and related data" }, 500);
       }
+    } else if (col === "cibil_requests") {
+      try {
+        const reqSnap = await dbGet(`cibil_requests/${id}`).catch(() => null);
+        if (reqSnap && reqSnap.email) {
+          const email = reqSnap.email;
+          const users = await dbGet("users").catch(() => null);
+          if (users) {
+            const userEntry = Object.entries(users).find(([, u]) => u.email === email);
+            if (userEntry) {
+              await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: null });
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error clearing user cibilPaid flag:", err);
+      }
+      await dbDelete(`${col}/${id}`);
     } else {
       await dbDelete(`${col}/${id}`);
     }

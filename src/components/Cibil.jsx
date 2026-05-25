@@ -231,18 +231,13 @@ export const Cibil = () => {
     if (!currentUser) {
       setHasPaid(false);
       setHasCompleted(false);
+      localStorage.removeItem("cibilPaid");
+      localStorage.removeItem("cibilCompleted");
     }
   }, [currentUser]);
 
   // 2. Check payment status: read users/{uid}/cibilPaid directly from Firebase RTDB
   useEffect(() => {
-    // If already cached in localStorage, no need to check again
-    if (localStorage.getItem("cibilPaid") === "true") {
-      setHasPaid(true);
-      setCheckLoading(false);
-      return;
-    }
-
     // If user is not logged in, nothing to check
     if (!currentUser) {
       setCheckLoading(false);
@@ -253,11 +248,14 @@ export const Cibil = () => {
       setCheckLoading(true);
       try {
         // Primary check: read users/{uid}/cibilPaid from Firebase RTDB directly
-        const snapshot = await get(ref(db, `users/${currentUser.uid}/cibilPaid`));
+        let localPaid = false;
         if (snapshot.exists() && snapshot.val() === true) {
+          localPaid = true;
           setHasPaid(true);
           localStorage.setItem("cibilPaid", "true");
-          return;
+        } else {
+          setHasPaid(false);
+          localStorage.removeItem("cibilPaid");
         }
 
         // Fallback: also check cibil_requests collection for paid status by email
@@ -267,11 +265,18 @@ export const Cibil = () => {
         if (res?.paid) {
           setHasPaid(true);
           localStorage.setItem("cibilPaid", "true");
+        } else {
+          setHasPaid(false);
+          localStorage.removeItem("cibilPaid");
         }
+
         // Check if admin has marked as completed
         if (res?.completed) {
           setHasCompleted(true);
           localStorage.setItem("cibilCompleted", "true");
+        } else {
+          setHasCompleted(false);
+          localStorage.removeItem("cibilCompleted");
         }
       } catch (err) {
         console.error("Error checking payment status:", err);
