@@ -12,13 +12,37 @@ const DB_SECRET = process.env.FIREBASE_DATABASE_SECRET;
 
 const authParam = () => (DB_SECRET ? `?auth=${DB_SECRET}` : "");
 
+const trackDbOp = (type, path) => {
+  if (
+    !path ||
+    path.startsWith("analytics") ||
+    path.startsWith("activity-logs") ||
+    path.includes("activity-logs") ||
+    path.includes("activity_logs")
+  ) {
+    return;
+  }
+  const payload = {
+    type,
+    path,
+    timestamp: new Date().toISOString(),
+  };
+  fetch(`${DB_URL}/analytics/db_ops.json${authParam()}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  }).catch(() => null);
+};
+
 const dbGet = async (path) => {
+  trackDbOp("read", path);
   const res = await fetch(`${DB_URL}/${path}.json${authParam()}`);
   if (!res.ok) throw new Error(`Firebase GET ${path} failed`);
   return res.json();
 };
 
 const dbPush = async (path, data) => {
+  trackDbOp("write", path);
   const res = await fetch(`${DB_URL}/${path}.json${authParam()}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,6 +53,7 @@ const dbPush = async (path, data) => {
 };
 
 const dbSet = async (path, data) => {
+  trackDbOp("write", path);
   await fetch(`${DB_URL}/${path}.json${authParam()}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -37,6 +62,7 @@ const dbSet = async (path, data) => {
 };
 
 const dbUpdate = async (path, data) => {
+  trackDbOp("write", path);
   await fetch(`${DB_URL}/${path}.json${authParam()}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -45,6 +71,7 @@ const dbUpdate = async (path, data) => {
 };
 
 const dbDelete = async (path) => {
+  trackDbOp("write", path);
   await fetch(`${DB_URL}/${path}.json${authParam()}`, { method: "DELETE" });
 };
 
@@ -168,6 +195,154 @@ app.get("/api/stats", requireAdmin, async (c) => {
   });
 });
 
+// Analytics Overview — Admin only
+app.get("/api/analytics/overview", requireAdmin, async (c) => {
+  try {
+    const [activityLogsRaw, dbOpsRaw] = await Promise.all([
+      dbGet("activity_logs").catch(() => ({})),
+      dbGet("analytics/db_ops").catch(() => ({})),
+    ]);
+
+    const activityLogs = toArray(activityLogsRaw);
+    const dbOps = toArray(dbOpsRaw);
+
+    // Compute basic totals
+    const totalPageViews = activityLogs.filter(l => l.type === "page_view").length;
+    const dbReads = dbOps.filter(o => o.type === "read").length;
+    const dbWrites = dbOps.filter(o => o.type === "write").length;
+    
+    // Compute unique active users
+    const uniqueUsersSet = new Set();
+    activityLogs.forEach(l => {
+      if (l.uid && l.uid !== "anonymous") {
+        uniqueUsersSet.add(l.uid);
+      } else if (l.id) {
+        uniqueUsersSet.add(l.id);
+      }
+    });
+    const activeUsersCount = uniqueUsersSet.size;
+
+    // Daily Traffic (last 7 days)
+    const trafficByDate = {};
+    const dbOpsByDate = {};
+    
+    // Initialize last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const dateStr = new Date(Date.now() - i * 24 * 3600 * 1000).toISOString().split("T")[0];
+      trafficByDate[dateStr] = 0;
+      dbOpsByDate[dateStr] = { reads: 0, writes: 0 };
+    }
+
+    activityLogs.forEach(log => {
+      if (log.timestamp && log.type === "page_view") {
+        const date = log.timestamp.split("T")[0];
+        if (trafficByDate[date] !== undefined) {
+          trafficByDate[date]++;
+        }
+      }
+    });
+
+    dbOps.forEach(op => {
+      if (op.timestamp) {
+        const date = op.timestamp.split("T")[0];
+        if (dbOpsByDate[date] !== undefined) {
+          if (op.type === "read") dbOpsByDate[date].reads++;
+          else if (op.type === "write") dbOpsByDate[date].writes++;
+        }
+      }
+    });
+
+    const trafficChart = Object.entries(trafficByDate).map(([date, count]) => ({ date, count }));
+    const dbOpsChart = Object.entries(dbOpsByDate).map(([date, ops]) => ({
+      date,
+      reads: ops.reads,
+      writes: ops.writes,
+    }));
+
+    // Browser distribution
+    const browserDist = {};
+    const osDist = {};
+    const countryDist = {};
+    const cityDist = {};
+    const topPages = {};
+
+    activityLogs.forEach(log => {
+      if (log.type === "page_view") {
+        const br = log.browser || "Other";
+        browserDist[br] = (browserDist[br] || 0) + 1;
+
+        const os = log.os || "Other";
+        osDist[os] = (osDist[os] || 0) + 1;
+
+        const co = log.country || "Local";
+        countryDist[co] = (countryDist[co] || 0) + 1;
+
+        const ci = log.city || "Local";
+        cityDist[ci] = (cityDist[ci] || 0) + 1;
+
+        const pg = log.path || "/";
+        topPages[pg] = (topPages[pg] || 0) + 1;
+      }
+    });
+
+    const formatDist = (dist) => Object.entries(dist).map(([name, value]) => ({ name, value }));
+
+    const sortedPages = Object.entries(topPages)
+      .map(([path, views]) => ({ path, views }))
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 10);
+
+    return c.json({
+      summary: {
+        totalPageViews,
+        dbReads,
+        dbWrites,
+        activeUsersCount,
+      },
+      trafficChart,
+      dbOpsChart,
+      browserDist: formatDist(browserDist),
+      osDist: formatDist(osDist),
+      countryDist: formatDist(countryDist).sort((a, b) => b.value - a.value).slice(0, 5),
+      cityDist: formatDist(cityDist).sort((a, b) => b.value - a.value).slice(0, 10),
+      topPages: sortedPages,
+    });
+  } catch (err) {
+    console.error("Error generating analytics:", err);
+    return c.json({ error: "Failed to generate analytics data" }, 500);
+  }
+});
+
+// Prune Analytics — Admin only
+app.delete("/api/analytics/prune", requireAdmin, async (c) => {
+  try {
+    const sevenDaysAgo = Date.now() - 7 * 24 * 3600 * 1000;
+    
+    const dbOps = await dbGet("analytics/db_ops").catch(() => null);
+    if (dbOps) {
+      for (const [id, op] of Object.entries(dbOps)) {
+        if (op && op.timestamp && new Date(op.timestamp).getTime() < sevenDaysAgo) {
+          await dbDelete(`analytics/db_ops/${id}`).catch(() => null);
+        }
+      }
+    }
+
+    const activityLogs = await dbGet("activity_logs").catch(() => null);
+    if (activityLogs) {
+      for (const [id, log] of Object.entries(activityLogs)) {
+        if (log && log.timestamp && new Date(log.timestamp).getTime() < sevenDaysAgo) {
+          await dbDelete(`activity_logs/${id}`).catch(() => null);
+        }
+      }
+    }
+
+    return c.json({ success: true, message: "Analytics pruned successfully" });
+  } catch (err) {
+    console.error("Error pruning analytics:", err);
+    return c.json({ error: "Failed to prune analytics" }, 500);
+  }
+});
+
 // ─── Invoice Data Routes — registered early to avoid route shadowing ────────────
 // GET all invoices map { txnId: invoiceData }. Returns {} if node doesn't exist yet.
 app.get("/api/revenue/invoices", requireAdmin, async (c) => {
@@ -265,6 +440,32 @@ collections.forEach((col) => {
     // No auth needed — public contact/consultation forms
     app.post(`/api/${path}`, async (c) => {
       const body = await c.req.json();
+      if (col === "activity_logs") {
+        const country = c.req.header("x-vercel-ip-country") || "Local";
+        const city = c.req.header("x-vercel-ip-city") || "Local";
+        const region = c.req.header("x-vercel-ip-country-region") || "Local";
+        const userAgent = c.req.header("user-agent") || "";
+        
+        let browser = "Other";
+        if (userAgent.includes("Firefox")) browser = "Firefox";
+        else if (userAgent.includes("Chrome")) browser = "Chrome";
+        else if (userAgent.includes("Safari")) browser = "Safari";
+        else if (userAgent.includes("Edge")) browser = "Edge";
+        else if (userAgent.includes("Opera")) browser = "Opera";
+        
+        let os = "Other";
+        if (userAgent.includes("Windows")) os = "Windows";
+        else if (userAgent.includes("Macintosh") || userAgent.includes("Mac OS")) os = "macOS";
+        else if (userAgent.includes("Android")) os = "Android";
+        else if (userAgent.includes("iPhone") || userAgent.includes("iPad")) os = "iOS";
+        else if (userAgent.includes("Linux")) os = "Linux";
+
+        body.country = country;
+        body.city = city;
+        body.region = region;
+        body.browser = browser;
+        body.os = os;
+      }
       return c.json(
         { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
         201,

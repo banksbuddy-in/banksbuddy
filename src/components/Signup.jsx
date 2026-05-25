@@ -4,6 +4,29 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc";
 import "./logup.css";
 
+const cleanAuthError = (err) => {
+    const msg = err.message || err.toString();
+    if (msg.includes("auth/invalid-credential") || msg.includes("auth/wrong-password") || msg.includes("auth/user-not-found")) {
+        return "Invalid email or password.";
+    }
+    if (msg.includes("auth/popup-closed-by-user")) {
+        return "Sign-in popup was closed before completing.";
+    }
+    if (msg.includes("auth/email-already-in-use")) {
+        return "This email is already registered.";
+    }
+    if (msg.includes("auth/weak-password")) {
+        return "Password is too weak. It should be at least 6 characters.";
+    }
+    if (msg.includes("auth/invalid-email")) {
+        return "Please enter a valid email address.";
+    }
+    if (msg.includes("auth/network-request-failed")) {
+        return "Network connection failed. Please check your internet.";
+    }
+    return msg.replace(/Firebase: Error \(auth\//, "").replace(/\)\./, "").replace(/-/g, " ");
+};
+
 export const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,7 +50,7 @@ export const Signup = () => {
             await signup(email, password, name);
             navigate('/cibil');
         } catch (err) {
-            setError('Failed to create an account: ' + err.message);
+            setError(cleanAuthError(err));
         }
 
         setLoading(false);
@@ -40,7 +63,7 @@ export const Signup = () => {
             await googleSignIn();
             navigate('/cibil');
         } catch (err) {
-            setError('Failed to sign in with Google: ' + err.message);
+            setError(cleanAuthError(err));
         }
         setLoading(false);
     }

@@ -22,6 +22,7 @@ import {
 } from "recharts";
 import "./Admin.css";
 import "./AdminPartners.css";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const STATUS_COLORS = {
@@ -31,6 +32,8 @@ const STATUS_COLORS = {
 };
 
 export const AdminPartners = ({ embedded }) => {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [applications, setApplications] = useState({});
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -92,24 +95,36 @@ export const AdminPartners = ({ embedded }) => {
   }, []);
 
   const handleStatusChange = async (id, newStatus) => {
-    await apiFetch(`/api/partners/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({ status: newStatus }),
-    });
-    setApplications((prev) => ({
-      ...prev,
-      [id]: { ...prev[id], status: newStatus },
-    }));
+    try {
+      await apiFetch(`/api/partners/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ status: newStatus }),
+      });
+      setApplications((prev) => ({
+        ...prev,
+        [id]: { ...prev[id], status: newStatus },
+      }));
+      toast.success(`Application updated to ${newStatus}`);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update status");
+    }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this application?")) {
+    const isConfirmed = await confirm("Are you sure you want to delete this application?");
+    if (!isConfirmed) return;
+    try {
       await apiFetch(`/api/partners/${id}`, { method: "DELETE" });
       setApplications((prev) => {
         const next = { ...prev };
         delete next[id];
         return next;
       });
+      toast.success("Application deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete application");
     }
   };
 

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import apiFetch from "../lib/api.js";
 import "./AddCareer.css";
 import { useNavigate } from "react-router-dom";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 export const AdminReviews = ({ embedded = false }) => {
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [name, setName] = useState("");
   const [review, setReview] = useState("");
-  const [status, setStatus] = useState("");
   const [reviews, setReviews] = useState([]);
   const [editingId, setEditingId] = useState(null);
 
@@ -27,7 +29,7 @@ export const AdminReviews = ({ embedded = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !review) {
-      setStatus("Please provide name and review text.");
+      toast.error("Please provide name and review text.");
       return;
     }
     try {
@@ -36,21 +38,21 @@ export const AdminReviews = ({ embedded = false }) => {
           method: "PUT",
           body: JSON.stringify({ name, review }),
         });
-        setStatus("Review updated successfully.");
+        toast.success("Review updated successfully.");
         setEditingId(null);
       } else {
         await apiFetch("/api/reviews", {
           method: "POST",
           body: JSON.stringify({ name, review }),
         });
-        setStatus("Review submitted successfully.");
+        toast.success("Review submitted successfully.");
       }
       setName("");
       setReview("");
       fetchReviews();
     } catch (err) {
       console.error(err);
-      setStatus("Failed to submit review.");
+      toast.error("Failed to submit review.");
     }
   };
 
@@ -62,14 +64,15 @@ export const AdminReviews = ({ embedded = false }) => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) return;
+    const isConfirmed = await confirm("Are you sure you want to delete this review?");
+    if (!isConfirmed) return;
     try {
       await apiFetch(`/api/reviews/${id}`, { method: "DELETE" });
-      setStatus("Review deleted successfully.");
+      toast.success("Review deleted successfully.");
       fetchReviews();
     } catch (err) {
       console.error(err);
-      setStatus("Failed to delete review.");
+      toast.error("Failed to delete review.");
     }
   };
 
@@ -114,8 +117,6 @@ export const AdminReviews = ({ embedded = false }) => {
           )}
         </div>
       </form>
-
-      {status && <p className="ac-status">{status}</p>}
 
       <h2 className="ac-title" style={{ marginTop: "2rem" }}>
         All Reviews ({reviews.length})

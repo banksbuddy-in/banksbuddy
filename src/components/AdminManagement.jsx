@@ -3,6 +3,7 @@ import apiFetch from "../lib/api.js";
 import "./AdminManagement.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useConfirm } from "../context/ToastContext";
 import {
   PieChart,
   Pie,
@@ -28,6 +29,7 @@ const COLORS = ["#059669", "#3b82f6"];
 export const AdminManagement = ({ embedded = false }) => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const confirm = useConfirm();
   const [users, setUsers] = useState([]);
   const [activityLogs, setActivityLogs] = useState([]);
   const [status, setStatus] = useState("");
@@ -106,8 +108,8 @@ export const AdminManagement = ({ embedded = false }) => {
       return;
     }
     const label = displayName || uid;
-    const confirmed = window.confirm(
-      `⚠️ Delete user "${label}"?\n\nThis will permanently remove their account and all associated data (CIBIL requests, partner applications, policy reminders, notifications).\n\nConsultations will be kept.\n\nThis action cannot be undone.`
+    const confirmed = await confirm(
+      `Delete user "${label}"?\n\nThis will permanently remove their account and all associated data (CIBIL requests, partner applications, policy reminders, notifications).\n\nConsultations will be kept.\n\nThis action cannot be undone.`
     );
     if (!confirmed) return;
     try {

@@ -2,15 +2,17 @@ import React, { useState, useEffect } from "react";
 import apiFetch from "../lib/api.js";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useToast, useConfirm } from "../context/ToastContext";
 import "./AddCareer.css";
 
 export const AddCareer = ({ embedded = false }) => {
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [skills, setSkills] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("");
   const [careers, setCareers] = useState([]);
   const [editingId, setEditingId] = useState(null);
 
@@ -42,7 +44,7 @@ export const AddCareer = ({ embedded = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !description || !skills) {
-      setStatus("Please fill all required fields.");
+      toast.error("Please fill all required fields.");
       return;
     }
     try {
@@ -51,19 +53,19 @@ export const AddCareer = ({ embedded = false }) => {
           method: "PUT",
           body: JSON.stringify({ title, description, skills, message }),
         });
-        setStatus("Job posting updated successfully!");
+        toast.success("Job posting updated successfully!");
       } else {
         await apiFetch("/api/careers", {
           method: "POST",
           body: JSON.stringify({ title, description, skills, message }),
         });
-        setStatus("Job posted successfully!");
+        toast.success("Job posted successfully!");
       }
       resetForm();
       fetchCareers();
     } catch (err) {
       console.error(err);
-      setStatus("Failed to save job posting. Please try again.");
+      toast.error("Failed to save job posting. Please try again.");
     }
   };
 
@@ -77,14 +79,15 @@ export const AddCareer = ({ embedded = false }) => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this job posting?")) return;
+    const isConfirmed = await confirm("Are you sure you want to delete this job posting?");
+    if (!isConfirmed) return;
     try {
       await apiFetch(`/api/careers/${id}`, { method: "DELETE" });
-      setStatus("Job posting deleted.");
+      toast.success("Job posting deleted.");
       fetchCareers();
     } catch (err) {
       console.error(err);
-      setStatus("Failed to delete job posting.");
+      toast.error("Failed to delete job posting.");
     }
   };
 
@@ -150,7 +153,6 @@ export const AddCareer = ({ embedded = false }) => {
           )}
         </div>
       </form>
-      {status && <p className="ac-status">{status}</p>}
 
       <h2 className="ac-title" style={{ marginTop: "2rem" }}>
         Job Postings ({careers.length})

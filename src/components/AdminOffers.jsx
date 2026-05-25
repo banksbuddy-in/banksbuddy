@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiFetch from "../lib/api.js";
 import "./AdminOffers.css";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 export const AdminOffers = ({ embedded = false }) => {
+  const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [offerName, setOfferName] = useState("");
@@ -20,7 +23,7 @@ export const AdminOffers = ({ embedded = false }) => {
       setOffers(data);
     } catch (error) {
       console.error("Error fetching offers:", error);
-      alert("Error fetching offers");
+      toast.error("Failed to fetch offers.");
     }
   };
 
@@ -38,11 +41,11 @@ export const AdminOffers = ({ embedded = false }) => {
   const addOffer = async (e) => {
     e.preventDefault();
     if (offers.length >= 2) {
-      alert("Maximum 2 offers allowed. Please delete an existing offer first.");
+      toast.error("Maximum 2 offers allowed. Please delete an existing offer first.");
       return;
     }
     if (!offerName || !offerImage) {
-      alert("Please provide both offer name and image");
+      toast.error("Please provide both offer name and image");
       return;
     }
     setLoading(true);
@@ -51,27 +54,28 @@ export const AdminOffers = ({ embedded = false }) => {
         method: "POST",
         body: JSON.stringify({ name: offerName, image: offerImage }),
       });
-      alert("Offer added successfully!");
+      toast.success("Offer added successfully!");
       setOfferName("");
       setOfferImage("");
       fetchOffers();
     } catch (error) {
       console.error("Error adding offer:", error);
-      alert("Error adding offer");
+      toast.error("Failed to add offer.");
     } finally {
       setLoading(false);
     }
   };
 
   const deleteOffer = async (offerId) => {
-    if (!window.confirm("Are you sure you want to delete this offer?")) return;
+    const isConfirmed = await confirm("Are you sure you want to delete this offer?");
+    if (!isConfirmed) return;
     try {
       await apiFetch(`/api/offers/${offerId}`, { method: "DELETE" });
-      alert("Offer deleted successfully!");
+      toast.success("Offer deleted successfully!");
       fetchOffers();
     } catch (error) {
       console.error("Error deleting offer:", error);
-      alert("Error deleting offer");
+      toast.error("Failed to delete offer.");
     }
   };
 

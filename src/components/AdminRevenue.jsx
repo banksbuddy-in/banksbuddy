@@ -27,6 +27,7 @@ import InvoicePreview from "./InvoicePreview";
 import "./Admin.css";
 import "./AdminRevenue.css";
 import { FaWhatsapp } from "react-icons/fa";
+import { useToast } from "../context/ToastContext";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -54,6 +55,7 @@ const SERVICE_CATEGORIES = {
 };
 
 export const AdminRevenue = ({ embedded }) => {
+  const toast = useToast();
   const [transactions, setTransactions] = useState([]);
   const [filteredTxns, setFilteredTxns] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -275,11 +277,11 @@ export const AdminRevenue = ({ embedded }) => {
       return;
 
     if (Number(formData.paidAmount) > Number(formData.totalAmount)) {
-      alert("Paid amount cannot exceed total amount");
+      toast.error("Paid amount cannot exceed total amount");
       return;
     }
     if (Number(formData.paidAmount) < 0 || Number(formData.totalAmount) < 0) {
-      alert("Amounts cannot be negative");
+      toast.error("Amounts cannot be negative");
       return;
     }
 
@@ -319,6 +321,7 @@ export const AdminRevenue = ({ embedded }) => {
       });
 
       await fetchAll();
+      toast.success("Revenue added successfully!");
 
       setShowAddModal(false);
       setFormData({
@@ -334,6 +337,7 @@ export const AdminRevenue = ({ embedded }) => {
       });
     } catch (error) {
       console.error("Error saving revenue:", error);
+      toast.error("Failed to save revenue record.");
     }
   };
 
@@ -401,11 +405,11 @@ export const AdminRevenue = ({ embedded }) => {
     const total = Number(editingTxn.totalAmount || 0);
 
     if (paid > total) {
-      alert("Paid amount cannot exceed total amount");
+      toast.error("Paid amount cannot exceed total amount");
       return;
     }
     if (paid < 0) {
-      alert("Paid amount cannot be negative");
+      toast.error("Paid amount cannot be negative");
       return;
     }
 
@@ -437,10 +441,12 @@ export const AdminRevenue = ({ embedded }) => {
       }
 
       await fetchAll();
+      toast.success("Invoice and payment details updated!");
       setShowEditDetailsModal(false);
       setEditingTxn(null);
     } catch (error) {
       console.error("Error saving invoice details:", error);
+      toast.error("Failed to update invoice details.");
     }
   };
 

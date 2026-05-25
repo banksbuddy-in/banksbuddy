@@ -11,6 +11,7 @@ import {
   HiOutlineX,
   HiOutlineHome,
   HiOutlineCurrencyRupee,
+  HiOutlineChartBar,
 } from "react-icons/hi";
 import "./Admin.css";
 
@@ -25,6 +26,7 @@ import { AdminPartners } from "./AdminPartners";
 import { AdminManagement } from "./AdminManagement";
 import { AdminCibil } from "./AdminCibil";
 import { AdminRevenue } from "./AdminRevenue";
+import { AdminAnalytics } from "./AdminAnalytics";
 
 export const Admin = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
@@ -110,6 +112,12 @@ export const Admin = () => {
       icon: HiOutlineCurrencyRupee,
       desc: "Financial overview",
     },
+    {
+      id: "analytics",
+      title: "Analytics",
+      icon: HiOutlineChartBar,
+      desc: "Realtime usage & metrics",
+    },
   ];
 
   // Fetch real stats from backend API
@@ -160,6 +168,8 @@ export const Admin = () => {
         return <AdminCibil embedded={true} />;
       case "revenue":
         return <AdminRevenue embedded={true} />;
+      case "analytics":
+        return <AdminAnalytics />;
       default:
         return (
           <DashboardContent

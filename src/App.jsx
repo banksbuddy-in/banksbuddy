@@ -6,6 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { useEffect } from "react";
 import "./App.css";
@@ -76,28 +77,30 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <AuthProvider>
-          <ScrollToTop />
-          <ActivityTracker />
-          {/* <Cursor /> */}
-          <Navbar />
-          <Routes>
-            {Dat.map((e) => {
-              return (
-                <Route
-                  path={e.path}
-                  element={e.element}
-                  key={e.label || e.path}
-                />
-              );
-            })}
-          </Routes>
-          <Link to="https://wa.me/+916377956633" className="ablink">
-            <FaWhatsapp />
-          </Link>
-          <AdminButton />
-          <Footer />
-        </AuthProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <ScrollToTop />
+            <ActivityTracker />
+            {/* <Cursor /> */}
+            <Navbar />
+            <Routes>
+              {Dat.map((e) => {
+                return (
+                  <Route
+                    path={e.path}
+                    element={e.element}
+                    key={e.label || e.path}
+                  />
+                );
+              })}
+            </Routes>
+            <Link to="https://wa.me/+916377956633" className="ablink">
+              <FaWhatsapp />
+            </Link>
+            <AdminButton />
+            <Footer />
+          </AuthProvider>
+        </ToastProvider>
       </BrowserRouter>
     </div>
   );

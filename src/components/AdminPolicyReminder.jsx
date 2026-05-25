@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiFetch from "../lib/api.js";
 import "./AdminPolicyReminder.css";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 export const AdminPolicyReminder = ({ embedded = false }) => {
+  const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const [policies, setPolicies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,7 +60,7 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
       setPolicies(data);
     } catch (error) {
       console.error("Error fetching policies:", error);
-      alert("Error fetching policies");
+      toast.error("Failed to fetch policies.");
     } finally {
       setLoading(false);
     }
@@ -127,7 +130,7 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
       !formData.purchaseDate ||
       !formData.expirationDate
     ) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
     setLoading(true);
@@ -137,19 +140,19 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
           method: "PUT",
           body: JSON.stringify(formData),
         });
-        alert("Policy updated successfully!");
+        toast.success("Policy updated successfully!");
       } else {
         await apiFetch("/api/policies", {
           method: "POST",
           body: JSON.stringify(formData),
         });
-        alert("Policy added successfully!");
+        toast.success("Policy added successfully!");
       }
       resetForm();
       fetchPolicies();
     } catch (error) {
       console.error("Error saving policy:", error);
-      alert("Error saving policy");
+      toast.error("Failed to save policy.");
     } finally {
       setLoading(false);
     }
@@ -173,17 +176,15 @@ export const AdminPolicyReminder = ({ embedded = false }) => {
   };
 
   const handleDelete = async (policyId) => {
-    if (
-      !window.confirm("Are you sure you want to delete this policy reminder?")
-    )
-      return;
+    const isConfirmed = await confirm("Are you sure you want to delete this policy reminder?");
+    if (!isConfirmed) return;
     try {
       await apiFetch(`/api/policies/${policyId}`, { method: "DELETE" });
-      alert("Policy deleted successfully!");
+      toast.success("Policy reminder deleted successfully!");
       fetchPolicies();
     } catch (error) {
       console.error("Error deleting policy:", error);
-      alert("Error deleting policy");
+      toast.error("Failed to delete policy.");
     }
   };
 

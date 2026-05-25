@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiFetch from "../lib/api.js";
 import "./AdminTeam.css";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 export const AdminTeam = ({ embedded = false }) => {
+  const toast = useToast();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]);
   const [name, setName] = useState("");
@@ -36,7 +39,7 @@ export const AdminTeam = ({ embedded = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !role || !image) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
     try {
@@ -46,7 +49,7 @@ export const AdminTeam = ({ embedded = false }) => {
           method: "PUT",
           body: JSON.stringify({ name, role, image }),
         });
-        alert("Updated!");
+        toast.success("Team member updated successfully!");
       } else {
         // Create new member
         const memberId = Date.now().toString();
@@ -54,13 +57,13 @@ export const AdminTeam = ({ embedded = false }) => {
           method: "POST",
           body: JSON.stringify({ name, role, image }),
         });
-        alert("Added!");
+        toast.success("Team member added successfully!");
       }
       resetForm();
       fetchTeamMembers();
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      alert("Error saving");
+      toast.error("Error saving team member");
     }
   };
 
@@ -79,13 +82,15 @@ export const AdminTeam = ({ embedded = false }) => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this member?")) return;
+    const isConfirmed = await confirm("Are you sure you want to delete this team member?");
+    if (!isConfirmed) return;
     try {
       await apiFetch(`/api/team/${id}`, { method: "DELETE" });
+      toast.success("Team member deleted successfully!");
       fetchTeamMembers();
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      alert("Error deleting");
+      toast.error("Error deleting team member");
     }
   };
 
