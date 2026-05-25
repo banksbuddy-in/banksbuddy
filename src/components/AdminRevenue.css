@@ -380,6 +380,17 @@
   color: #1e293b;
 }
 
+.rev-action-btn.danger {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.rev-action-btn.danger:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
 .rev-empty-state {
   text-align: center;
   padding: 3rem;

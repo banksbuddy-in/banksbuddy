@@ -248,21 +248,21 @@ export const Cibil = () => {
       setCheckLoading(true);
       try {
         // Primary check: read users/{uid}/cibilPaid from Firebase RTDB directly
-        let localPaid = false;
-        if (snapshot.exists() && snapshot.val() === true) {
-          localPaid = true;
-          setHasPaid(true);
-          localStorage.setItem("cibilPaid", "true");
-        } else {
-          setHasPaid(false);
-          localStorage.removeItem("cibilPaid");
+        let isPaid = false;
+        try {
+          const snapshot = await get(ref(db, `users/${currentUser.uid}/cibilPaid`));
+          if (snapshot.exists() && snapshot.val() === true) {
+            isPaid = true;
+          }
+        } catch (rtdbErr) {
+          console.error("RTDB payment check error:", rtdbErr);
         }
 
         // Fallback: also check cibil_requests collection for paid status by email
         const res = await apiFetch(
           `/api/payment/status/${encodeURIComponent(currentUser.email)}`,
         );
-        if (res?.paid) {
+        if (isPaid || res?.paid) {
           setHasPaid(true);
           localStorage.setItem("cibilPaid", "true");
         } else {

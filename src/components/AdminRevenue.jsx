@@ -9,6 +9,7 @@ import {
   HiOutlineCheckCircle,
   HiDocumentText,
   HiPencilAlt,
+  HiTrash,
 } from "react-icons/hi";
 import {
   BarChart,
@@ -27,7 +28,7 @@ import InvoicePreview from "./InvoicePreview";
 import "./Admin.css";
 import "./AdminRevenue.css";
 import { FaWhatsapp } from "react-icons/fa";
-import { useToast } from "../context/ToastContext";
+import { useToast, useConfirm } from "../context/ToastContext";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -56,6 +57,7 @@ const SERVICE_CATEGORIES = {
 
 export const AdminRevenue = ({ embedded }) => {
   const toast = useToast();
+  const confirm = useConfirm();
   const [transactions, setTransactions] = useState([]);
   const [filteredTxns, setFilteredTxns] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -467,6 +469,43 @@ export const AdminRevenue = ({ embedded }) => {
     setShowInvoicePreview(true);
   };
 
+  const handleDelete = async (txn) => {
+    const isConfirmed = await confirm(
+      `Are you sure you want to permanently delete the revenue entry for "${txn.username || "this customer"}"? This will delete the entry across all data collections.`
+    );
+    if (!isConfirmed) return;
+
+    try {
+      let endpoint;
+      if (txn.source === "Manual") {
+        endpoint = `/api/revenue/manual/${txn.id}`;
+      } else if (txn.source === "Instamojo") {
+        endpoint = `/api/revenue/instamojo/${txn.id}`;
+      } else {
+        endpoint = `/api/cibil-requests/${txn.id}`;
+      }
+
+      await apiFetch(endpoint, {
+        method: "DELETE",
+      });
+
+      // Purge associated invoice metadata if present
+      try {
+        await apiFetch(`/api/revenue/invoices/${txn.id}`, {
+          method: "DELETE",
+        });
+      } catch (invoiceErr) {
+        // Safe to ignore if there is no invoice metadata stored
+      }
+
+      toast.success("Revenue entry removed successfully.");
+      await fetchAll();
+    } catch (err) {
+      console.error("Error deleting revenue entry:", err);
+      toast.error("Failed to delete revenue entry.");
+    }
+  };
+
   const handleDownload = () => {
     const ws = XLSX.utils.json_to_sheet(
       transactions.map((t) => ({
@@ -685,6 +724,7 @@ export const AdminRevenue = ({ embedded }) => {
                     </td>
                     <td>
                       <span className="rev-user-name">{t.username}</span>
+                      <span className="rev-user-sub">{t.email}</span>
                       <span className="rev-user-sub">{t.mobile}</span>
                     </td>
                     <td>
@@ -845,6 +885,13 @@ export const AdminRevenue = ({ embedded }) => {
                             title="Edit Invoice Details"
                           >
                             <HiPencilAlt /> Edit
+                          </button>
+                          <button
+                            className="rev-action-btn danger"
+                            onClick={() => handleDelete(t)}
+                            title="Delete Revenue Entry"
+                          >
+                            <HiTrash /> Delete
                           </button>
                         </div>
                       </div>

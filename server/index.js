@@ -143,8 +143,38 @@ app.get("/api/stats", async (c) => {
     careers: cnt(cr),
     partners: cnt(pr),
     cibil: cnt(cb),
-    revenue: cnt(rn),
   });
+});
+
+// ─── Invoice Data Routes — registered early to avoid route shadowing ────────────
+// GET all invoices map { txnId: invoiceData }. Returns {} if node doesn't exist yet.
+app.get("/api/revenue/invoices", requireAdmin, async (c) => {
+  const data = await dbGet("revenue/invoices").catch(() => null);
+  return c.json(data || {});
+});
+// GET single invoice by txn ID
+app.get("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const data = await dbGet(`revenue/invoices/${c.req.param("id")}`).catch(() => null);
+  return c.json(data || null);
+});
+// POST (upsert) invoice data for a txn ID — auto-creates the RTDB node
+app.post("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbSet(`revenue/invoices/${id}`, { ...body, updatedAt: new Date().toISOString() });
+  return c.json({ ok: true });
+});
+// PUT (partial update) invoice data for a txn ID
+app.put("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbUpdate(`revenue/invoices/${id}`, { ...body, updatedAt: new Date().toISOString() });
+  return c.json({ ok: true });
+});
+// DELETE invoice data for a txn ID
+app.delete("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  await dbDelete(`revenue/invoices/${c.req.param("id")}`);
+  return c.json({ ok: true });
 });
 
 // Database CRUD (Consultations, Offers, Reviews, Team, Careers, Policies, Partners, Users)

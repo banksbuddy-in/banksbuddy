@@ -368,6 +368,11 @@ app.put("/api/revenue/invoices/:id", requireAdmin, async (c) => {
   await dbUpdate(`revenue/invoices/${id}`, { ...body, updatedAt: new Date().toISOString() });
   return c.json({ ok: true });
 });
+// DELETE invoice data for a txn ID
+app.delete("/api/revenue/invoices/:id", requireAdmin, async (c) => {
+  await dbDelete(`revenue/invoices/${c.req.param("id")}`);
+  return c.json({ ok: true });
+});
 
 // Database CRUD (Consultations, Offers, Reviews, Team, Careers, Policies, Partners, Users)
 const collections = [
