@@ -4,7 +4,7 @@
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
         ".write": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-        ".validate": "newData.child('role').val() === (data.exists() ? data.child('role').val() : null) || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+        ".validate": "newData.child('role').val() === (data.exists() ? data.child('role').val() : 'user') || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
       }
     },
 

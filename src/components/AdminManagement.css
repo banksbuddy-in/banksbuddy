@@ -347,3 +347,15 @@
     opacity: 1;
   }
 }
+
+.users-action-btn.danger {
+  background: #fef2f2;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+.users-action-btn.danger:hover:not(:disabled) {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}

@@ -295,7 +295,40 @@ collections.forEach((col) => {
     return c.json({ ok: true });
   });
   app.delete(`/api/${path}/:id`, requireAdmin, async (c) => {
-    await dbDelete(`${col}/${c.req.param("id")}`);
+    const id = c.req.param("id");
+    if (col === "users") {
+      try {
+        const user = await dbGet(`users/${id}`).catch(() => null);
+        await dbDelete(`users/${id}`);
+        if (user && user.email) {
+          const email = user.email;
+          const safeEmail = email.replace(/[^a-zA-Z0-9]/g, "_");
+          await dbDelete(`cibil_notifications/${safeEmail}`).catch(() => null);
+
+          const deleteMatching = async (collectionName) => {
+            const data = await dbGet(collectionName).catch(() => null);
+            if (data) {
+              for (const [key, val] of Object.entries(data)) {
+                if (val && val.email === email) {
+                  await dbDelete(`${collectionName}/${key}`).catch(() => null);
+                }
+              }
+            }
+          };
+
+          await Promise.all([
+            deleteMatching("cibil_requests"),
+            deleteMatching("policyReminders"),
+            deleteMatching("partner_applications"),
+          ]);
+        }
+      } catch (err) {
+        console.error("Failed to delete user and related data:", err);
+        return c.json({ error: "Failed to delete user and related data" }, 500);
+      }
+    } else {
+      await dbDelete(`${col}/${id}`);
+    }
     return c.json({ ok: true });
   });
 });

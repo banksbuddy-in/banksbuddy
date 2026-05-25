@@ -100,6 +100,36 @@ export const AdminManagement = ({ embedded = false }) => {
     }
   };
 
+  const deleteUser = async (uid, displayName) => {
+    if (uid === currentUser?.uid) {
+      showNotification("Error: You cannot delete your own account.");
+      return;
+    }
+    const label = displayName || uid;
+    const confirmed = window.confirm(
+      `⚠️ Delete user "${label}"?\n\nThis will permanently remove their account and all associated data (CIBIL requests, partner applications, policy reminders, notifications).\n\nConsultations will be kept.\n\nThis action cannot be undone.`
+    );
+    if (!confirmed) return;
+    try {
+      await apiFetch(`/api/users/${uid}`, { method: "DELETE" });
+      showNotification(`User "${label}" and their data have been deleted.`);
+      apiFetch("/api/activity-logs", {
+        method: "POST",
+        body: JSON.stringify({
+          type: "db_action",
+          action: "delete_user",
+          targetUid: uid,
+          timestamp: new Date().toISOString(),
+        }),
+      }).catch((err) => console.error("Failed to log delete action:", err));
+      fetchUsers();
+      fetchActivityLogs();
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      showNotification("Failed to delete user. Please try again.");
+    }
+  };
+
   // Analytics logic
   const totalUsers = users.length;
   const adminUsers = users.filter((u) => u.role === "admin").length;
@@ -254,7 +284,8 @@ export const AdminManagement = ({ embedded = false }) => {
               <tr>
                 <th>User Details</th>
                 <th>Current Role</th>
-                <th>Actions</th>
+                <th>Role Actions</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -305,6 +336,16 @@ export const AdminManagement = ({ embedded = false }) => {
                           </button>
                         )}
                       </div>
+                    </td>
+                    <td>
+                      <button
+                        className="users-action-btn danger"
+                        onClick={() => deleteUser(user.id, displayName)}
+                        disabled={isSelf}
+                        title={isSelf ? "You cannot delete your own account" : `Delete ${displayName}`}
+                      >
+                        🗑️ Delete
+                      </button>
                     </td>
                   </tr>
                 );
