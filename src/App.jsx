@@ -63,7 +63,6 @@ function ActivityTracker() {
 
 const AdminButton = () => {
   const { userRole } = useAuth();
-  // Only show if userRole is explicitly 'admin'
   if (userRole !== "admin") return null;
 
   return (

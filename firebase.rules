@@ -1,74 +1,81 @@
 {
   "rules": {
     "users": {
+      // Admins and fallback super admins can read and write all user documents (needed for admin tables)
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2'",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2'",
+      
       "$uid": {
-        ".read": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-        ".write": "auth != null && (auth.uid === $uid || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-        ".validate": "newData.child('role').val() === (data.exists() ? data.child('role').val() : 'user') || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2'"
+        // Individual users can read and write their own data, and so can admins
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
+        
+        // Prevent normal users from upgrading their own role field. Only admins can assign roles.
+        ".validate": "newData.child('role').val() === (data.exists() ? data.child('role').val() : 'user') || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2'"
       }
     },
 
     "consultations": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
       "$consultationId": {
-        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+        ".write": "auth != null && (!data.exists() || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
       }
     },
 
     "offers": {
       ".read": true,
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "reviews": {
       ".read": true,
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "team": {
       ".read": true,
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "careers": {
       ".read": true,
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "policyReminders": {
       ".read": "auth != null",
       "$pushId": {
-        ".write": "auth != null && (!data.exists() || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+        ".write": "auth != null && (!data.exists() || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
       }
     },
 
     "partner_applications": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
       "$applicationId": {
-        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+        ".write": "auth != null && (!data.exists() || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
       }
     },
 
     "cibil_requests": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
       "$requestId": {
-        ".write": "auth != null && (!data.exists() || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+        ".write": "auth != null && (!data.exists() || root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
       }
     },
 
     "cibil_notifications": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "manual_revenue": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     },
 
     "razorpay_revenue": {
-      ".read": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')",
-      ".write": "auth != null && (auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid ==='TIgo64G6i5dsDbroSFkHhmmo1fL2'|| auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2')"
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
     }
   }
 }

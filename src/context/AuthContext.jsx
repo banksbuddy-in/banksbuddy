@@ -8,7 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { ref, set, get, child } from "firebase/database";
+import { ref, set, get, child, onValue } from "firebase/database";
 import { db } from "../firebase";
 import { initializeApp } from "firebase/app";
 
@@ -78,22 +78,53 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    let unsubscribeRole = null;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      // Clean up previous database listener if any
+      if (unsubscribeRole) {
+        unsubscribeRole();
+        unsubscribeRole = null;
+      }
+
       setCurrentUser(user);
+
       if (user) {
-        // Admin is determined by UID, no database read needed
+        // Fallback/optimistic check for the super admin UID to avoid delay
         if (user.uid === ADMIN_UID) {
           setUserRole("admin");
         } else {
-          setUserRole("user");
+          setUserRole("user"); // default till RTDB responds
         }
+
+        // Set up real-time listener on the user's document in RTDB
+        const userRef = ref(db, `users/${user.uid}`);
+        unsubscribeRole = onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            // If the database has a role field, use it. Otherwise fallback.
+            setUserRole(userData.role || (user.uid === ADMIN_UID ? "admin" : "user"));
+          } else {
+            setUserRole(user.uid === ADMIN_UID ? "admin" : "user");
+          }
+          setLoading(false);
+        }, (error) => {
+          console.error("Error loading user role from database:", error);
+          setUserRole(user.uid === ADMIN_UID ? "admin" : "user");
+          setLoading(false);
+        });
       } else {
         setUserRole(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeRole) {
+        unsubscribeRole();
+      }
+    };
   }, []);
 
   const value = {

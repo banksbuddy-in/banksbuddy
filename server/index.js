@@ -80,9 +80,22 @@ const requireAdmin = async (c, next) => {
   if (!idToken) return c.json({ error: "Unauthorized — no token" }, 401);
   try {
     const user = await verifyFirebaseToken(idToken);
-    if (user.localId !== ADMIN_UID) return c.json({ error: "Forbidden — admin only" }, 403);
-    await next();
-  } catch {
+    
+    // First, allow the hardcoded super admin UID as a fallback
+    if (user.localId === ADMIN_UID) {
+      await next();
+      return;
+    }
+
+    // Otherwise, fetch the user record dynamically from Firebase RTDB
+    const userData = await dbGet(`users/${user.localId}`).catch(() => null);
+    if (userData && userData.role === "admin") {
+      await next();
+    } else {
+      return c.json({ error: "Forbidden — admin only" }, 403);
+    }
+  } catch (err) {
+    console.error("Auth error in requireAdmin:", err);
     return c.json({ error: "Unauthorized — invalid token" }, 401);
   }
 };
