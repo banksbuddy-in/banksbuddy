@@ -35,11 +35,19 @@ const AdminTable = ({ embedded = false }) => {
 
     // Map the raw data into clean objects with proper column headers
     const excelData = rows.map((r) => {
-      // Format the date so it looks clean in Excel
-      let formattedDate = r.createdAt;
+      // Format the date so it looks clean in Excel (Asia/Kolkata)
+      let formattedDate = "";
       if (r.createdAt) {
-        const [datePart, timePart] = r.createdAt.split("T");
-        formattedDate = `${datePart} ${timePart.split(".")[0]}`;
+        try {
+          const date = new Date(r.createdAt);
+          if (!isNaN(date.getTime())) {
+            formattedDate = date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+          } else {
+            formattedDate = r.createdAt;
+          }
+        } catch (e) {
+          formattedDate = r.createdAt;
+        }
       }
 
       return {
@@ -126,8 +134,22 @@ const AdminTable = ({ embedded = false }) => {
               {rows.map((r) => (
                 <tr style={{ fontSize: "14px" }} key={r.id}>
                   <td>
-                    {r.createdAt.split("T")[0]} <br />{" "}
-                    {r.createdAt.split("T")[1].split(".")[0]}
+                    {(() => {
+                      if (!r.createdAt) return "—";
+                      try {
+                        const date = new Date(r.createdAt);
+                        if (isNaN(date.getTime())) return r.createdAt;
+                        const dateStr = date.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" });
+                        const timeStr = date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: true });
+                        return (
+                          <>
+                            {dateStr} <br /> {timeStr}
+                          </>
+                        );
+                      } catch (e) {
+                        return r.createdAt;
+                      }
+                    })()}
                   </td>
                   <td>{r.Name}</td>
                   <td>{r.email}</td>
@@ -138,15 +160,16 @@ const AdminTable = ({ embedded = false }) => {
                     {r.phone ? (
                       <a
                         href={
-                          `https://wa.me/${String(r.phone)
-                            .replace(/[^0-9]/g, "")
-                            .replace(/^0/, "91")}` +
-                          `?text=${encodeURIComponent(
-                            `Hi ${r.Name || "there"}, this is BanksBuddy team.\n\n` +
-                              `Regarding your request for the *${r.serviceType || "service"}* ` +
-                              `\nFor further queries,please reply to this message or call us at +91-6377956633.\n` +
-                              `www.banksbuddy.in`,
-                          )}`
+                          (() => {
+                            const cleanPhone = String(r.phone).replace(/[^0-9]/g, "");
+                            const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+                            return `https://wa.me/${waPhone}?text=${encodeURIComponent(
+                              `Hi ${r.Name || "there"}, this is BanksBuddy team.\n\n` +
+                                `Regarding your request for the *${r.serviceType || "service"}* ` +
+                                `\nFor further queries,please reply to this message or call us at +91-6377956633.\n` +
+                                `www.banksbuddy.in`,
+                            )}`;
+                          })()
                         }
                         target="_blank"
                         rel="noreferrer"

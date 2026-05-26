@@ -147,11 +147,13 @@ export const AdminRevenue = ({ embedded }) => {
         mobile: v.phone || v.mobile || "",
         totalAmount: Number(v.amount || 0),
         paidAmount:
-          v.status === "verified" || v.status === "paid" || v.status === "completed"
-            ? Number(v.amount || 0)
-            : v.paymentId
+          v.paidAmount !== undefined
+            ? Number(v.paidAmount)
+            : v.status === "verified" || v.status === "paid" || v.status === "completed"
               ? Number(v.amount || 0)
-              : 0,
+              : v.paymentId
+                ? Number(v.amount || 0)
+                : 0,
         status: v.status || "initiated",
         date: v.createdAt || v.date || new Date().toISOString(),
       }));
@@ -187,9 +189,11 @@ export const AdminRevenue = ({ embedded }) => {
         serviceType: v.serviceTitle,
         totalAmount: Number(v.amount || 0),
         paidAmount:
-          v.status === "paid" || v.status === "completed" || !v.status
-            ? Number(v.amount || 0)
-            : 0,
+          v.paidAmount !== undefined
+            ? Number(v.paidAmount)
+            : v.status === "paid" || v.status === "completed" || !v.status
+              ? Number(v.amount || 0)
+              : 0,
         status: v.status || "paid",
         date: v.date || v.createdAt || new Date().toISOString(),
       }));
@@ -344,42 +348,69 @@ export const AdminRevenue = ({ embedded }) => {
   };
 
   const updateTxnStatus = async (txn, newStatus) => {
+    let paidAmount = txn.paidAmount;
+    let dueAmount = txn.dueAmount;
+    let invoiceStatus = txn.invoiceStatus;
+
+    if (txn.source === "Cibil") {
+      paidAmount = ["verified", "paid", "completed"].includes(newStatus) ? txn.totalAmount : 0;
+      dueAmount = txn.totalAmount - paidAmount;
+      invoiceStatus = dueAmount <= 0 ? "Paid" : "Due";
+    } else if (txn.source === "Manual" || txn.source === "Instamojo") {
+      paidAmount = newStatus === "paid" ? txn.totalAmount : 0;
+      dueAmount = txn.totalAmount - paidAmount;
+      invoiceStatus = dueAmount <= 0 ? "Paid" : "Due";
+    }
+
     // Optimistic UI update immediately
     setTransactions((prev) =>
       prev.map((t) => {
         if (t.id !== txn.id) return t;
-        const updatedT = { ...t, status: newStatus };
-        // Recalculate paidAmount for cibil entries based on new status
-        if (t.source === "Cibil") {
-          updatedT.paidAmount =
-            newStatus === "verified" || newStatus === "paid" || newStatus === "completed"
-              ? t.totalAmount
-              : 0;
-          updatedT.dueAmount = t.totalAmount - updatedT.paidAmount;
-          updatedT.invoiceStatus =
-            updatedT.dueAmount <= 0
-              ? "Paid"
-              : updatedT.paidAmount > 0
-                ? "Partial"
-                : "Due";
-        }
-        return updatedT;
+        return {
+          ...t,
+          status: newStatus,
+          paidAmount,
+          dueAmount,
+          invoiceStatus,
+        };
       }),
     );
 
     try {
       let endpoint;
+      let body = { status: newStatus };
+
       if (txn.source === "Manual") {
         endpoint = `/api/revenue/manual/${txn.id}`;
+        body = {
+          status: newStatus,
+          paidAmount,
+          dueAmount,
+          invoiceStatus,
+          amount: txn.totalAmount, // legacy
+        };
       } else if (txn.source === "Instamojo") {
         endpoint = `/api/revenue/instamojo/${txn.id}`;
+        body = {
+          status: newStatus,
+          paidAmount,
+          dueAmount,
+          invoiceStatus,
+          amount: txn.totalAmount, // legacy
+        };
       } else {
         endpoint = `/api/cibil-requests/${txn.id}`;
+        body = {
+          status: newStatus,
+          amount: txn.totalAmount, // CIBIL request total amount
+          paidAmount,
+          dueAmount,
+        };
       }
 
       await apiFetch(endpoint, {
         method: "PUT",
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify(body),
       });
     } catch (err) {
       console.error("Error updating status:", err);
@@ -395,6 +426,7 @@ export const AdminRevenue = ({ embedded }) => {
       invoiceId: txn.invoiceId || "",
       billingAddress: txn.billingAddress || "",
       paidAmount: txn.paidAmount !== undefined ? String(txn.paidAmount) : "0",
+      totalAmount: txn.totalAmount !== undefined ? String(txn.totalAmount) : "0",
     });
     setShowEditDetailsModal(true);
   };
@@ -404,14 +436,15 @@ export const AdminRevenue = ({ embedded }) => {
     if (!editingTxn) return;
 
     const paid = Number(invoiceForm.paidAmount || 0);
-    const total = Number(editingTxn.totalAmount || 0);
+    const total = Number(invoiceForm.totalAmount || 0);
+    const due = Math.max(0, total - paid);
 
     if (paid > total) {
       toast.error("Paid amount cannot exceed total amount");
       return;
     }
-    if (paid < 0) {
-      toast.error("Paid amount cannot be negative");
+    if (paid < 0 || total < 0) {
+      toast.error("Amounts cannot be negative");
       return;
     }
 
@@ -430,15 +463,39 @@ export const AdminRevenue = ({ embedded }) => {
 
       // Synchronize back to original source collections
       if (editingTxn.source === "Manual") {
+        const status = due <= 0 ? "paid" : paid > 0 ? "partial" : "due";
         await apiFetch(`/api/revenue/manual/${editingTxn.id}`, {
           method: "PUT",
-          body: JSON.stringify({ paidAmount: paid }),
+          body: JSON.stringify({
+            totalAmount: total,
+            paidAmount: paid,
+            dueAmount: due,
+            amount: total, // legacy
+            status, // legacy status
+            invoiceStatus: status.charAt(0).toUpperCase() + status.slice(1),
+          }),
         });
       } else if (editingTxn.source === "Cibil") {
         const status = paid >= total ? "verified" : "initiated";
         await apiFetch(`/api/cibil-requests/${editingTxn.id}`, {
           method: "PUT",
-          body: JSON.stringify({ amount: total, status }),
+          body: JSON.stringify({
+            amount: total,
+            status,
+            paidAmount: paid,
+            dueAmount: due,
+          }),
+        });
+      } else if (editingTxn.source === "Instamojo") {
+        const status = paid >= total ? "paid" : "pending";
+        await apiFetch(`/api/revenue/instamojo/${editingTxn.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            amount: total,
+            status,
+            paidAmount: paid,
+            dueAmount: due,
+          }),
         });
       }
 
@@ -754,7 +811,24 @@ export const AdminRevenue = ({ embedded }) => {
                       </span>
                     </td>
                     <td className="rev-date-cell">
-                      {new Date(t.date).toLocaleDateString()}
+                      {(() => {
+                        if (!t.date) return "—";
+                        try {
+                          const date = new Date(t.date);
+                          if (isNaN(date.getTime())) return t.date;
+                          return (
+                            <>
+                              {date.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}
+                              <br />
+                              <span style={{ fontSize: "0.8rem", color: "#64748b" }}>
+                                {date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: true })}
+                              </span>
+                            </>
+                          );
+                        } catch (e) {
+                          return t.date;
+                        }
+                      })()}
                     </td>
                     <td>
                       <span
@@ -768,19 +842,20 @@ export const AdminRevenue = ({ embedded }) => {
                       {t.mobile ? (
                         <a
                           href={
-                            `https://wa.me/${String(t.mobile)
-                              .replace(/[^0-9]/g, "")
-                              .replace(/^0/, "91")}` +
-                            `?text=${encodeURIComponent(
-                              `Hi ${t.username || "there"}, this is BanksBuddy team.\n\n` +
-                                `Regarding your *${t.mainCategory || "service"}* — ${t.subCategory || ""}\n` +
-                                (Number(t.dueAmount) > 0
-                                  ? `Your outstanding payment of *₹${Number(t.dueAmount).toLocaleString()}* is pending.\n`
-                                  : `Your payment is fully received. Thank you! 🎉\n`) +
-                                `\nStatus: *${t.status || "Pending"}*\n` +
-                                `\nFor any queries, reply to this message or call us at +91-6377956633.\n` +
-                                `www.banksbuddy.in`,
-                            )}`
+                            (() => {
+                              const cleanMobile = String(t.mobile || "").replace(/[^0-9]/g, "");
+                              const waMobile = cleanMobile.length === 10 ? `91${cleanMobile}` : cleanMobile;
+                              return `https://wa.me/${waMobile}?text=${encodeURIComponent(
+                                `Hi ${t.username || "there"}, this is BanksBuddy team.\n\n` +
+                                  `Regarding your *${t.mainCategory || "service"}* — ${t.subCategory || ""}\n` +
+                                  (Number(t.dueAmount) > 0
+                                    ? `Your outstanding payment of *₹${Number(t.dueAmount).toLocaleString()}* is pending.\n`
+                                    : `Your payment is fully received. Thank you! 🎉\n`) +
+                                  `\nStatus: *${t.status || "Pending"}*\n` +
+                                  `\nFor any queries, reply to this message or call us at +91-6377956633.\n` +
+                                  `www.banksbuddy.in`,
+                              )}`;
+                            })()
                           }
                           target="_blank"
                           rel="noreferrer"
@@ -1147,13 +1222,19 @@ export const AdminRevenue = ({ embedded }) => {
               </div>
               <div className="cb-form-row" style={{ display: "flex", gap: "1rem" }}>
                 <div style={{ flex: 1 }}>
-                  <label className="rev-form-label">Total Amount (Fixed)</label>
+                  <label className="rev-form-label">Total Amount</label>
                   <input
                     className="cb-input"
-                    type="text"
-                    disabled
-                    value={`₹${editingTxn?.totalAmount || 0}`}
-                    style={{ background: "#f1f5f9", cursor: "not-allowed" }}
+                    type="number"
+                    min="0"
+                    placeholder="Enter total amount"
+                    value={invoiceForm.totalAmount}
+                    onChange={(e) =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        totalAmount: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div style={{ flex: 1 }}>
@@ -1162,7 +1243,7 @@ export const AdminRevenue = ({ embedded }) => {
                     className="cb-input"
                     type="number"
                     min="0"
-                    max={editingTxn?.totalAmount || 0}
+                    max={Number(invoiceForm.totalAmount || 0)}
                     placeholder="Enter paid amount"
                     value={invoiceForm.paidAmount}
                     onChange={(e) =>
@@ -1183,7 +1264,7 @@ export const AdminRevenue = ({ embedded }) => {
                     disabled
                     value={`₹${Math.max(
                       0,
-                      Number(editingTxn?.totalAmount || 0) - Number(invoiceForm.paidAmount || 0)
+                      Number(invoiceForm.totalAmount || 0) - Number(invoiceForm.paidAmount || 0)
                     ).toLocaleString()}`}
                     style={{ background: "#f1f5f9", cursor: "not-allowed", fontWeight: "bold", color: "#e11d48" }}
                   />

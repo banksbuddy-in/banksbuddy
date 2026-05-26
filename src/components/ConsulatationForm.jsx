@@ -38,6 +38,7 @@ export const ConsulatationForm = () => {
       ...(serviceType === "Loan" && { loanType }),
       employmentType,
       ...(employmentType === "Salaried" && { income }),
+      createdAt: new Date().toISOString(),
     };
 
     try {

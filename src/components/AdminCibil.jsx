@@ -123,10 +123,14 @@ export const AdminCibil = ({ embedded = false }) => {
                     <tr key={notif.id} className="modern-notif-row">
                       <td className="modern-notif-date">
                         <div className="dt-date">
-                          {notif.createdAt ? new Date(notif.createdAt).toLocaleDateString() : "-"}
+                          {notif.createdAt
+                            ? new Date(notif.createdAt).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+                            : "-"}
                         </div>
                         <div className="dt-time">
-                          {notif.createdAt ? new Date(notif.createdAt).toLocaleTimeString() : "-"}
+                          {notif.createdAt
+                            ? new Date(notif.createdAt).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: true })
+                            : "-"}
                         </div>
                       </td>
                       <td className="modern-notif-user">
@@ -159,7 +163,13 @@ export const AdminCibil = ({ embedded = false }) => {
                             {(notif.phone || linkedReq.phone) && (
                               <>
                                 <a
-                                  href={`https://wa.me/${(notif.phone || linkedReq.phone).replace(/[^0-9]/g, "")}`}
+                                  href={
+                                    (() => {
+                                      const cleanPhone = String(notif.phone || linkedReq.phone || "").replace(/[^0-9]/g, "");
+                                      const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+                                      return `https://wa.me/${waPhone}`;
+                                    })()
+                                  }
                                   target="_blank"
                                   rel="noreferrer"
                                   title="Chat on WhatsApp"
