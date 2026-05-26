@@ -80,6 +80,31 @@ const toArray = (data) => {
   return Object.entries(data).map(([id, val]) => ({ id, ...val }));
 };
 
+const syncCibilStatusToUser = async (id, updatedFields) => {
+  try {
+    const cibilReq = await dbGet(`cibil_requests/${id}`).catch(() => null);
+    if (cibilReq && cibilReq.email) {
+      const email = cibilReq.email;
+      const status = updatedFields.status !== undefined ? updatedFields.status : cibilReq.status;
+      const isPaid = ["verified", "paid", "completed", "initiated", "Verification Pending"].includes(status);
+      const isCompleted = ["verified", "paid", "completed"].includes(status);
+
+      const users = await dbGet("users").catch(() => null);
+      if (users) {
+        const userEntry = Object.entries(users).find(([, u]) => u.email === email);
+        if (userEntry) {
+          await dbUpdate(`users/${userEntry[0]}`, {
+            cibilPaid: isPaid ? true : null,
+            cibilCompleted: isCompleted ? true : null,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Error syncing CIBIL status to user:", err);
+  }
+};
+
 // ─── Auth Helpers ─────────────────────────────────────────────────────────────
 const ADMIN_UID = "YNzKifqerZSPHAFVqfpUFxbwcRB2";
 const FIREBASE_PROJECT_ID = "banksbuddy-fbcc4";
@@ -209,6 +234,7 @@ app.get("/api/stats", requireAdmin, async (c) => {
 // Analytics Overview — Admin only
 app.get("/api/analytics/overview", requireAdmin, async (c) => {
   try {
+    const range = c.req.query("range") || "7d";
     const [activityLogsRaw, dbOpsRaw] = await Promise.all([
       dbGet("activity_logs").catch(() => ({})),
       dbGet("analytics/db_ops").catch(() => ({})),
@@ -217,14 +243,51 @@ app.get("/api/analytics/overview", requireAdmin, async (c) => {
     const activityLogs = toArray(activityLogsRaw);
     const dbOps = toArray(dbOpsRaw);
 
-    // Compute basic totals
-    const totalPageViews = activityLogs.filter(l => l.type === "page_view").length;
-    const dbReads = dbOps.filter(o => o.type === "read").length;
-    const dbWrites = dbOps.filter(o => o.type === "write").length;
+    // Calculate days based on range parameter
+    let days = 7;
+    if (range === "30d" || range === "1m") days = 30;
+    else if (range === "3m") days = 90;
+    else if (range === "1y") days = 365;
+    else if (range === "all") {
+      let oldestDate = Date.now();
+      activityLogs.forEach(l => {
+        if (l.timestamp) {
+          const t = new Date(l.timestamp).getTime();
+          if (t < oldestDate) oldestDate = t;
+        }
+      });
+      dbOps.forEach(o => {
+        if (o.timestamp) {
+          const t = new Date(o.timestamp).getTime();
+          if (t < oldestDate) oldestDate = t;
+        }
+      });
+      const msDiff = Date.now() - oldestDate;
+      days = Math.max(7, Math.ceil(msDiff / (24 * 3600 * 1000)));
+      if (days > 1000) days = 1000; // performance cap
+    }
+
+    const cutoffTime = Date.now() - days * 24 * 3600 * 1000;
+
+    // Filter datasets based on cutoff
+    const filteredActivityLogs = activityLogs.filter(log => {
+      if (!log.timestamp) return false;
+      return new Date(log.timestamp).getTime() >= cutoffTime;
+    });
+
+    const filteredDbOps = dbOps.filter(op => {
+      if (!op.timestamp) return false;
+      return new Date(op.timestamp).getTime() >= cutoffTime;
+    });
+
+    // Compute basic totals on filtered data
+    const totalPageViews = filteredActivityLogs.filter(l => l.type === "page_view").length;
+    const dbReads = filteredDbOps.filter(o => o.type === "read").length;
+    const dbWrites = filteredDbOps.filter(o => o.type === "write").length;
     
-    // Compute unique active users
+    // Compute unique active users on filtered data
     const uniqueUsersSet = new Set();
-    activityLogs.forEach(l => {
+    filteredActivityLogs.forEach(l => {
       if (l.uid && l.uid !== "anonymous") {
         uniqueUsersSet.add(l.uid);
       } else if (l.id) {
@@ -233,18 +296,18 @@ app.get("/api/analytics/overview", requireAdmin, async (c) => {
     });
     const activeUsersCount = uniqueUsersSet.size;
 
-    // Daily Traffic (last 7 days)
+    // Daily Traffic for the active range
     const trafficByDate = {};
     const dbOpsByDate = {};
     
-    // Initialize last 7 days
-    for (let i = 6; i >= 0; i--) {
+    // Initialize exactly for the number of days selected
+    for (let i = days - 1; i >= 0; i--) {
       const dateStr = new Date(Date.now() - i * 24 * 3600 * 1000).toISOString().split("T")[0];
       trafficByDate[dateStr] = 0;
       dbOpsByDate[dateStr] = { reads: 0, writes: 0 };
     }
 
-    activityLogs.forEach(log => {
+    filteredActivityLogs.forEach(log => {
       if (log.timestamp && log.type === "page_view") {
         const date = log.timestamp.split("T")[0];
         if (trafficByDate[date] !== undefined) {
@@ -253,7 +316,7 @@ app.get("/api/analytics/overview", requireAdmin, async (c) => {
       }
     });
 
-    dbOps.forEach(op => {
+    filteredDbOps.forEach(op => {
       if (op.timestamp) {
         const date = op.timestamp.split("T")[0];
         if (dbOpsByDate[date] !== undefined) {
@@ -270,14 +333,14 @@ app.get("/api/analytics/overview", requireAdmin, async (c) => {
       writes: ops.writes,
     }));
 
-    // Browser distribution
+    // Distributions on filtered data
     const browserDist = {};
     const osDist = {};
     const countryDist = {};
     const cityDist = {};
     const topPages = {};
 
-    activityLogs.forEach(log => {
+    filteredActivityLogs.forEach(log => {
       if (log.type === "page_view") {
         const br = log.browser || "Other";
         browserDist[br] = (browserDist[br] || 0) + 1;
@@ -491,10 +554,18 @@ collections.forEach((col) => {
     // Any authenticated user can submit
     app.post(`/api/${path}`, requireAuth, async (c) => {
       const body = await c.req.json();
-      return c.json(
-        { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
-        201,
-      );
+      const id = await dbPush(col, { ...body, createdAt: new Date().toISOString() });
+      if (col === "cibil_requests") {
+        try {
+          const user = c.get("user");
+          if (user && user.localId) {
+            await dbUpdate(`users/${user.localId}`, { cibilPaid: true });
+          }
+        } catch (err) {
+          console.error("Error setting cibilPaid on user after request push:", err);
+        }
+      }
+      return c.json({ id }, 201);
     });
   } else {
     // Admin only
@@ -508,7 +579,12 @@ collections.forEach((col) => {
   }
   // PUT and DELETE: always admin only
   app.put(`/api/${path}/:id`, requireAdmin, async (c) => {
-    await dbUpdate(`${col}/${c.req.param("id")}`, await c.req.json());
+    const id = c.req.param("id");
+    const body = await c.req.json();
+    await dbUpdate(`${col}/${id}`, body);
+    if (col === "cibil_requests") {
+      await syncCibilStatusToUser(id, body);
+    }
     return c.json({ ok: true });
   });
   app.delete(`/api/${path}/:id`, requireAdmin, async (c) => {
@@ -552,7 +628,7 @@ collections.forEach((col) => {
           if (users) {
             const userEntry = Object.entries(users).find(([, u]) => u.email === email);
             if (userEntry) {
-              await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: null });
+              await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: null, cibilCompleted: null });
             }
           }
         }
@@ -572,7 +648,10 @@ app.get("/api/revenue/cibil", requireAdmin, async (c) =>
   c.json((await dbGet("cibil_requests")) || {}),
 );
 app.put("/api/revenue/cibil/:id", requireAdmin, async (c) => {
-  await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbUpdate(`cibil_requests/${id}`, body);
+  await syncCibilStatusToUser(id, body);
   return c.json({ ok: true });
 });
 
@@ -582,7 +661,10 @@ app.get("/api/cibil_requests", requireAdmin, async (c) => {
   return c.json(data ? Object.keys(data).map(k => ({ id: k, ...data[k] })) : []);
 });
 app.put("/api/cibil_requests/:id", requireAdmin, async (c) => {
-  await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbUpdate(`cibil_requests/${id}`, body);
+  await syncCibilStatusToUser(id, body);
   return c.json({ ok: true });
 });
 

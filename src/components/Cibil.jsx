@@ -25,7 +25,7 @@ import "./ServicePageRefactored.css";
 import { Cover } from "./Cover";
 import apiFetch from "../lib/api.js";
 import { motion } from "framer-motion";
-import { ref, get } from "firebase/database";
+import { ref, get, onValue } from "firebase/database";
 import { db } from "../firebase";
 
 import DevStudioPaymentForm from "./DevStudioPaymentForm"; // Helper to select icon based on document text (Reusing logic from ServicePage)
@@ -237,6 +237,7 @@ export const Cibil = () => {
   }, [currentUser]);
 
   // 2. Check payment status: read users/{uid}/cibilPaid directly from Firebase RTDB
+  // 2. Check payment status in realtime: listen to users/{uid} directly from Firebase RTDB
   useEffect(() => {
     // If user is not logged in, nothing to check
     if (!currentUser) {
@@ -244,47 +245,61 @@ export const Cibil = () => {
       return;
     }
 
-    const checkPaymentStatus = async () => {
-      setCheckLoading(true);
-      try {
-        // Primary check: read users/{uid}/cibilPaid from Firebase RTDB directly
-        let isPaid = false;
-        try {
-          const snapshot = await get(ref(db, `users/${currentUser.uid}/cibilPaid`));
-          if (snapshot.exists() && snapshot.val() === true) {
-            isPaid = true;
-          }
-        } catch (rtdbErr) {
-          console.error("RTDB payment check error:", rtdbErr);
-        }
+    setCheckLoading(true);
 
-        // Fallback: also check cibil_requests collection for paid status by email
+    // Initial check and fallback from backend
+    const performInitialCheck = async () => {
+      try {
         const res = await apiFetch(
           `/api/payment/status/${encodeURIComponent(currentUser.email)}`,
         );
-        if (isPaid || res?.paid) {
+        if (res?.paid) {
           setHasPaid(true);
           localStorage.setItem("cibilPaid", "true");
-        } else {
-          setHasPaid(false);
-          localStorage.removeItem("cibilPaid");
         }
-
-        // Check if admin has marked as completed
         if (res?.completed) {
           setHasCompleted(true);
           localStorage.setItem("cibilCompleted", "true");
-        } else {
-          setHasCompleted(false);
-          localStorage.removeItem("cibilCompleted");
         }
       } catch (err) {
-        console.error("Error checking payment status:", err);
+        console.error("Error performing fallback check:", err);
       } finally {
         setCheckLoading(false);
       }
     };
-    checkPaymentStatus();
+    performInitialCheck();
+
+    // Set up realtime Firebase RTDB listener
+    const userRef = ref(db, `users/${currentUser.uid}`);
+    const unsubscribe = onValue(
+      userRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          if (userData.cibilPaid === true) {
+            setHasPaid(true);
+            localStorage.setItem("cibilPaid", "true");
+          } else if (userData.cibilPaid === null || userData.cibilPaid === undefined) {
+            // Respect clearance (e.g. refund/deletion)
+            setHasPaid(false);
+            localStorage.removeItem("cibilPaid");
+          }
+
+          if (userData.cibilCompleted === true) {
+            setHasCompleted(true);
+            localStorage.setItem("cibilCompleted", "true");
+          } else if (userData.cibilCompleted === null || userData.cibilCompleted === undefined) {
+            setHasCompleted(false);
+            localStorage.removeItem("cibilCompleted");
+          }
+        }
+      },
+      (err) => {
+        console.error("RTDB listener error:", err);
+      }
+    );
+
+    return () => unsubscribe();
   }, [currentUser]);
 
   const fadeUp = {
@@ -605,6 +620,10 @@ export const Cibil = () => {
         isOpen={showFormModal}
         onClose={() => setShowFormModal(false)}
         serviceTitle={svc.Title}
+        onSuccess={() => {
+          setHasPaid(true);
+          localStorage.setItem("cibilPaid", "true");
+        }}
       />
 
       {/* ─── Success Popup ─── */}

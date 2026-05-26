@@ -46,6 +46,7 @@ export const DevStudioPaymentForm = ({
   onClose,
   serviceTitle,
   amount = "",
+  onSuccess,
 }) => {
   const { currentUser } = useAuth();
   const [formData, setFormData] = useState({
@@ -126,6 +127,7 @@ export const DevStudioPaymentForm = ({
       if (res.id) {
         setShowQR(false);
         setShowSuccess(true);
+        if (onSuccess) onSuccess();
       } else {
         throw new Error("Failed to record payment.");
       }

@@ -348,3 +348,64 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Date Range Selector Styling */
+.analytics-range-selector {
+  display: flex;
+  background: rgba(241, 245, 249, 0.6);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 0.25rem;
+  border-radius: 12px;
+  gap: 0.25rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.range-tab {
+  background: transparent;
+  border: none;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.range-tab:hover {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.range-tab.active {
+  background: #ffffff;
+  color: #3b82f6;
+  box-shadow: 0 2px 8px -2px rgba(148, 163, 184, 0.15), 0 1px 3px -1px rgba(148, 163, 184, 0.1);
+}
+
+@media (max-width: 900px) {
+  .analytics-header-ribbon {
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .live-badge {
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+  }
+  
+  .analytics-range-selector {
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .header-actions {
+    justify-content: center;
+  }
+}

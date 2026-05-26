@@ -35,25 +35,28 @@ export const AdminAnalytics = () => {
   const [loading, setLoading] = useState(true);
   const [pruning, setPruning] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState("overview");
+  const [range, setRange] = useState("7d");
 
-  const fetchAnalytics = async () => {
-    setLoading(true);
+  const fetchAnalytics = async (selectedRange = range, silent = false) => {
+    if (!silent) setLoading(true);
     try {
-      const res = await apiFetch("/api/analytics/overview");
+      const res = await apiFetch(`/api/analytics/overview?range=${selectedRange}`);
       setData(res);
     } catch (err) {
       console.error("Failed to fetch analytics:", err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAnalytics();
+    fetchAnalytics(range, false);
     // Poll every 10 seconds for genuine realtime data
-    const interval = setInterval(fetchAnalytics, 10000);
+    const interval = setInterval(() => {
+      fetchAnalytics(range, true);
+    }, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [range]);
 
   const handlePrune = async () => {
     const isConfirmed = await confirm("Are you sure you want to prune logs older than 7 days?\n\nThis will permanently delete historical db_ops and activity_logs from Firebase to optimize performance.");
@@ -64,7 +67,7 @@ export const AdminAnalytics = () => {
     try {
       await apiFetch("/api/analytics/prune", { method: "DELETE" });
       toast.success("Historical analytics data pruned successfully!");
-      fetchAnalytics();
+      fetchAnalytics(range, false);
     } catch (err) {
       console.error("Failed to prune:", err);
       toast.error("Failed to prune analytics logs.");
@@ -92,8 +95,28 @@ export const AdminAnalytics = () => {
           <span className="live-dot"></span>
           REALTIME DATA FEED
         </div>
+
+        {/* Dynamic Vercel Range Filter Tabs */}
+        <div className="analytics-range-selector">
+          {[
+            { id: "7d", label: "7 Days" },
+            { id: "30d", label: "30 Days" },
+            { id: "3m", label: "3 Months" },
+            { id: "1y", label: "1 Year" },
+            { id: "all", label: "All Time" },
+          ].map((r) => (
+            <button
+              key={r.id}
+              className={`range-tab ${range === r.id ? "active" : ""}`}
+              onClick={() => setRange(r.id)}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+
         <div className="header-actions">
-          <button className="analytics-btn refresh-btn" onClick={fetchAnalytics} disabled={loading}>
+          <button className="analytics-btn refresh-btn" onClick={() => fetchAnalytics(range, false)} disabled={loading}>
             <HiOutlineRefresh className={loading ? "spin" : ""} /> {loading ? "Syncing..." : "Sync Live"}
           </button>
           <button className="analytics-btn prune-btn" onClick={handlePrune} disabled={pruning}>

@@ -53,6 +53,31 @@ const toArray = (data) => {
   return Object.entries(data).map(([id, val]) => ({ id, ...val }));
 };
 
+const syncCibilStatusToUser = async (id, updatedFields) => {
+  try {
+    const cibilReq = await dbGet(`cibil_requests/${id}`).catch(() => null);
+    if (cibilReq && cibilReq.email) {
+      const email = cibilReq.email;
+      const status = updatedFields.status !== undefined ? updatedFields.status : cibilReq.status;
+      const isPaid = ["verified", "paid", "completed", "initiated", "Verification Pending"].includes(status);
+      const isCompleted = ["verified", "paid", "completed"].includes(status);
+
+      const users = await dbGet("users").catch(() => null);
+      if (users) {
+        const userEntry = Object.entries(users).find(([, u]) => u.email === email);
+        if (userEntry) {
+          await dbUpdate(`users/${userEntry[0]}`, {
+            cibilPaid: isPaid ? true : null,
+            cibilCompleted: isCompleted ? true : null,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Error syncing CIBIL status to user:", err);
+  }
+};
+
 // ─── Auth Helpers ─────────────────────────────────────────────────────────────
 const ADMIN_UID = "YNzKifqerZSPHAFVqfpUFxbwcRB2";
 
@@ -267,10 +292,18 @@ collections.forEach((col) => {
   } else if (authWriteCollections.has(col)) {
     app.post(`/api/${path}`, requireAuth, async (c) => {
       const body = await c.req.json();
-      return c.json(
-        { id: await dbPush(col, { ...body, createdAt: new Date().toISOString() }) },
-        201,
-      );
+      const id = await dbPush(col, { ...body, createdAt: new Date().toISOString() });
+      if (col === "cibil_requests") {
+        try {
+          const user = c.get("user");
+          if (user && user.localId) {
+            await dbUpdate(`users/${user.localId}`, { cibilPaid: true });
+          }
+        } catch (err) {
+          console.error("Error setting cibilPaid on user after request push:", err);
+        }
+      }
+      return c.json({ id }, 201);
     });
   } else {
     app.post(`/api/${path}`, requireAdmin, async (c) => {
@@ -282,7 +315,12 @@ collections.forEach((col) => {
     });
   }
   app.put(`/api/${path}/:id`, requireAdmin, async (c) => {
-    await dbUpdate(`${col}/${c.req.param("id")}`, await c.req.json());
+    const id = c.req.param("id");
+    const body = await c.req.json();
+    await dbUpdate(`${col}/${id}`, body);
+    if (col === "cibil_requests") {
+      await syncCibilStatusToUser(id, body);
+    }
     return c.json({ ok: true });
   });
   app.delete(`/api/${path}/:id`, requireAdmin, async (c) => {
@@ -317,6 +355,23 @@ collections.forEach((col) => {
         console.error("Failed to delete user and related data:", err);
         return c.json({ error: "Failed to delete user and related data" }, 500);
       }
+    } else if (col === "cibil_requests") {
+      try {
+        const reqSnap = await dbGet(`cibil_requests/${id}`).catch(() => null);
+        if (reqSnap && reqSnap.email) {
+          const email = reqSnap.email;
+          const users = await dbGet("users").catch(() => null);
+          if (users) {
+            const userEntry = Object.entries(users).find(([, u]) => u.email === email);
+            if (userEntry) {
+              await dbUpdate(`users/${userEntry[0]}`, { cibilPaid: null, cibilCompleted: null });
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error clearing user cibilPaid flag:", err);
+      }
+      await dbDelete(`${col}/${id}`);
     } else {
       await dbDelete(`${col}/${id}`);
     }
@@ -329,7 +384,10 @@ app.get("/api/revenue/cibil", requireAdmin, async (c) =>
   c.json((await dbGet("cibil_requests")) || {}),
 );
 app.put("/api/revenue/cibil/:id", requireAdmin, async (c) => {
-  await dbUpdate(`cibil_requests/${c.req.param("id")}`, await c.req.json());
+  const id = c.req.param("id");
+  const body = await c.req.json();
+  await dbUpdate(`cibil_requests/${id}`, body);
+  await syncCibilStatusToUser(id, body);
   return c.json({ ok: true });
 });
 

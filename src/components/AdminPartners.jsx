@@ -83,7 +83,17 @@ export const AdminPartners = ({ embedded }) => {
     const fetchPartners = async () => {
       try {
         const data = await apiFetch("/api/partners");
-        setApplications(data || {});
+        const appMap = {};
+        if (Array.isArray(data)) {
+          data.forEach((app) => {
+            if (app && app.id) {
+              appMap[app.id] = app;
+            }
+          });
+          setApplications(appMap);
+        } else {
+          setApplications(data || {});
+        }
       } catch (err) {
         console.error("Error fetching partners:", err);
       }
