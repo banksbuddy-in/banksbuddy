@@ -52,8 +52,7 @@ export const AdminTeam = ({ embedded = false }) => {
         toast.success("Team member updated successfully!");
       } else {
         // Create new member
-        const memberId = Date.now().toString();
-        await apiFetch(`/api/team/${memberId}`, {
+        await apiFetch("/api/team", {
           method: "POST",
           body: JSON.stringify({ name, role, image }),
         });
