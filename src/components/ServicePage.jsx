@@ -232,9 +232,13 @@ Warm regards,
     business_loan: "/cc5.jpg",
     loan_against_property: "/cc6.png",
     cibil_improvement: "/cc7.png",
+    "cibil-improvement": "/cc7.png",
     website_development: "/cc8.png",
+    "website-development": "/cc8.png",
     "tax-services": "/tax.png",
+    tax_services: "/tax.png",
     auto_loan: "/lll9.jpg",
+    "digital-marketing": "/mkrt.jpg",
   };
 
   const serviceCategoryMap = {
@@ -246,8 +250,12 @@ Warm regards,
     business_loan: "Loan Services",
     loan_against_property: "Loan Services",
     cibil_improvement: "Cibil Improvement",
+    "cibil-improvement": "Cibil Improvement",
     website_development: "Other Services",
+    "website-development": "Other Services",
     tax_services: "Other Services",
+    "tax-services": "Other Services",
+    "digital-marketing": "Other Services",
   };
 
   const mainCategory = serviceCategoryMap[svc.id] || "Other Services";
@@ -343,7 +351,7 @@ Warm regards,
         </section>
 
         {/* EMI Calculator Section - Hidden for Non-Loan Services */}
-        {!["cibil-improvement", "website-development", "tax-services"].includes(
+        {!["cibil-improvement", "website-development", "tax-services", "digital-marketing"].includes(
           svc.id,
         ) && (
           <section className="sp-section sp-section-alt">

@@ -126,6 +126,21 @@ export const Footer = () => {
                 CIBIL Improvement
               </Link>
             </li>
+            <li>
+              <Link className="fct" to="/tax-services">
+                Tax Services
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/website-development">
+                Website Development
+              </Link>
+            </li>
+            <li>
+              <Link className="fct" to="/digital-marketing">
+                Digital Marketing
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="c2">

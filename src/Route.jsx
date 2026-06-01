@@ -189,6 +189,11 @@ export const Dat = [
     element: <ServicePage />,
   },
   {
+    path: "/digital-marketing",
+    label: "Digital Marketing Services",
+    element: <ServicePage />,
+  },
+  {
     path: "/contact-banksbuddy",
     label: "Contact Us",
     element: <ConsulatationForm />,

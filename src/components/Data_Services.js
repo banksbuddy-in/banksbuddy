@@ -395,7 +395,7 @@ const NewServices = [
     id: "website-development",
     Title: "Website Development",
     image:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&auto=format&fit=crop&q=80", // Web dev image
+      "/hit.jpg", // Web dev image
     overview: [
       "Website development services are designed to help businesses build a strong online presence with modern, responsive, and high-performing websites.",
       "Whether you're looking for a portfolio site, business website, e-commerce store, or a custom web application, development solutions are tailored to match your goals, branding, and functionality needs.",
@@ -439,6 +439,58 @@ const NewServices = [
       },
     ],
   },
+  {
+  "id": "digital-marketing",
+  "Title": "Digital Marketing Services",
+  "image": "/mkrt1.jpg",
+  "overview": [
+    "Digital marketing services are designed to elevate your brand's online visibility, drive targeted traffic, and convert visitors into loyal customers.",
+    "Whether you need search engine optimization (SEO), social media management, pay-per-click (PPC) advertising, or content marketing, these solutions are data-driven to maximize your return on investment.",
+    "A strategic digital marketing approach helps you build brand authority, engage with your target audience, and sustainably scale your business in a competitive online landscape."
+  ],
+  "tagline": "Amplify Your Reach and Drive Growth with Data-Driven Marketing",
+  "TbLabels": [
+    "Starting Price",
+    "Campaign Duration",
+    "Reporting",
+    "Platform Support"
+  ],
+  "TbData": [
+    "Starts from ₹10,000/month",
+    "Ongoing (Monthly basis)",
+    "Detailed Monthly Analytics",
+    "Google, Meta, LinkedIn & More"
+  ],
+  "EliCr": [
+    "Active website or landing page",
+    "Clear marketing goals and budget",
+    "Access to existing social media and analytics accounts"
+  ],
+  "Docs": [
+    "Brand Guidelines & Logo",
+    "Product/Service Information",
+    "Past Campaign Data (if any)",
+    "Platform Access Credentials"
+  ],
+  "Types": [
+    {
+      "titl": "Search Engine Optimization (SEO)",
+      "des": "Improve organic search rankings and drive consistent, high-quality traffic to your website."
+    },
+    {
+      "titl": "Social Media Marketing (SMM)",
+      "des": "Build brand awareness and engage your audience on platforms like Instagram, Facebook, and LinkedIn."
+    },
+    {
+      "titl": "Pay-Per-Click Advertising (PPC)",
+      "des": "Targeted ad campaigns on Google and social media for immediate lead generation and sales."
+    },
+    {
+      "titl": "Content Marketing",
+      "des": "Create valuable blogs, graphics, and videos to attract, educate, and retain your target audience."
+    }
+  ]
+},
   {
     id: "tax-services",
     Title: "Tax Consultancy Services",
