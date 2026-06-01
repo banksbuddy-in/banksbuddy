@@ -223,15 +223,17 @@ img.news-image {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: none;
-  background: #e2e8f0;
+  border: 21px solid transparent;
+  background-clip: padding-box;
+  background-color: #e2e8f0;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
+  box-sizing: content-box;
 }
 
 .no-dots .dot.active {
-  background: var(--bl);
+  background-color: var(--bl);
   transform: scale(1.2);
 }
 

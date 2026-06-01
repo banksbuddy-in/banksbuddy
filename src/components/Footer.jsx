@@ -238,6 +238,7 @@ export const Footer = () => {
               <a
                 target="_blank"
                 href="https://www.instagram.com/banksbuddy.in/"
+                aria-label="Instagram"
               >
                 <FaInstagram />
               </a>
@@ -246,12 +247,13 @@ export const Footer = () => {
               <a
                 target="_blank"
                 href="https://www.facebook.com/share/1AJUxAHeHV/"
+                aria-label="Facebook"
               >
                 <FaFacebook />
               </a>
             </li>
             <li>
-              <a target="_blank" href="https://wa.me/+916377956633">
+              <a target="_blank" href="https://wa.me/+916377956633" aria-label="WhatsApp">
                 <FaWhatsapp />
               </a>
             </li>
@@ -259,12 +261,13 @@ export const Footer = () => {
               <a
                 target="_blank"
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=info@banksbuddy.in&su=Inquiry%20Regarding%20Loan%20Support&body=Hi%20BanksBuddy%20Team%2C%0A%0AI%20am%20interested%20in%20your%20financial%20services.%0A%0AMy%20Details%3A%0AName%3A%20%0APhone%20Number%3A%20%0AType%20of%20Loan%20Needed%20(Personal%2FBusiness)%3A%20%0A%0APlease%20guide%20me%20through%20the%20process.%0A%0AThanks!"
+                aria-label="Email"
               >
                 <MdEmail />
               </a>
             </li>
             <li>
-              <a target="_blank" href="https://wa.me/+916377956633">
+              <a target="_blank" href="https://wa.me/+916377956633" aria-label="LinkedIn">
                 <FaLinkedin />
               </a>
             </li>

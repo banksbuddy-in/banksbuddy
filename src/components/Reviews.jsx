@@ -169,6 +169,8 @@ export const Reviews = () => {
             loop
             muted
             playsInline
+            aria-hidden="true"
+            preload="none"
           />
           <div className="crds">
             <div className="reviews-carousel-viewport">

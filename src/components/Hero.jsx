@@ -1,15 +1,16 @@
 import Marquee from "react-fast-marquee";
-import React from "react";
+import React, { Suspense } from "react";
 import { MdArrowOutward, MdWhatsapp } from "react-icons/md";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Services } from "./Services";
 import { HeroEMI } from "./HeroEMI";
-import { Reviews } from "./Reviews";
 import { Counters } from "./Counters";
 import { EdgeDesign } from "./EdgeDesign";
-import { NewsnOffers } from "./NewsnOffers";
+
+const Reviews = React.lazy(() => import("./Reviews").then(module => ({ default: module.Reviews })));
+const NewsnOffers = React.lazy(() => import("./NewsnOffers").then(module => ({ default: module.NewsnOffers })));
 
 export const Hero = () => {
   const images = Array.from({ length: 10 }, (_, i) => `b${i + 1}.webp`);
@@ -34,8 +35,10 @@ export const Hero = () => {
           autoPlay
           muted
           loop
+          playsInline
           className="abtl"
-          alt="shortabout"
+          aria-hidden="true"
+          preload="none"
         />
         {/* <img src="/shortabt.jpg" alt="shortabout" className="abtl" /> */}
         <div className="abtr">
@@ -112,7 +115,7 @@ export const Hero = () => {
           transition={{ duration: 1.6, ease: "easeOut", delay: 0 }}
           variants={fadeUp}
         >
-          <img className="rhrimg" src="heroman.webp" alt="Hero Image" />
+          <img className="rhrimg" src="heroman.webp" alt="Hero Image" width={311} height={311} />
         </motion.div>
       </div>
       <div className="marquee-container">
@@ -123,6 +126,8 @@ export const Hero = () => {
               src={image}
               alt={`b${index + 1}`}
               className="marquee-image"
+              width={150}
+              height={50}
             />
           ))}
         </Marquee>
@@ -132,8 +137,10 @@ export const Hero = () => {
       <EdgeDesign />
       <Services />
       {/* <HeroEMI /> */}
-      <Reviews />
-      <NewsnOffers />
+      <Suspense fallback={null}>
+        <Reviews />
+        <NewsnOffers />
+      </Suspense>
     </div>
   );
 };

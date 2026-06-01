@@ -82,19 +82,21 @@ function App() {
             <ActivityTracker />
             {/* <Cursor /> */}
             <Navbar />
-            <Suspense fallback={null}>
-              <Routes>
-                {Dat.map((e) => {
-                  return (
-                    <Route
-                      path={e.path}
-                      element={e.element}
-                      key={e.label || e.path}
-                    />
-                  );
-                })}
-              </Routes>
-            </Suspense>
+            <main>
+              <Suspense fallback={null}>
+                <Routes>
+                  {Dat.map((e) => {
+                    return (
+                      <Route
+                        path={e.path}
+                        element={e.element}
+                        key={e.label || e.path}
+                      />
+                    );
+                  })}
+                </Routes>
+              </Suspense>
+            </main>
             <Link to="https://wa.me/+916377956633" className="ablink">
               <FaWhatsapp />
             </Link>

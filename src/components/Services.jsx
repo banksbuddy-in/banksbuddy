@@ -76,7 +76,7 @@ export const Services = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           variants={fadeUp}
           style={{
-            padding: "4% 1.5%",
+            padding: "3.5%",
             margin: "0 4%",
           }}
         >
@@ -121,7 +121,7 @@ export const Services = () => {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
             variants={fadeUp}
-            style={{ padding: "5% 5%" }}
+            style={{ padding: "3.5%" }}
           >
             <img src={s.smg} alt={s.title} />
             <div className="service-title">{s.title}</div>

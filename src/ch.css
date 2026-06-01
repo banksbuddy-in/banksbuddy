@@ -37,7 +37,7 @@ div#imggrid {
   align-content: center;
 }
 
-img.psa { 
+img.psa {
   width: 10rem;
   background-color: white;
   height: 4rem;
@@ -49,7 +49,6 @@ img.psa {
   align-items: center;
   justify-content: center;
 }
-
 
 img.consult.partner {
   position: relative;
@@ -381,11 +380,28 @@ form.ac-frm.pt {
   }
 }
 nav.navbar {
-    z-index: 88889;
-    position: sticky;
+  z-index: 88889;
+  position: sticky;
 }
 
 .navlist.suv {
-    height: 100%;
-    border-radius: 20rem;
+  height: 100%;
+  border-radius: 20rem;
+}
+.logo img {
+  height: auto;
+}
+
+img.rhrimg {
+  height: auto;
+  width: 90%;
+}
+
+.lhr {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.lhr {
+    padding-top: 0;
 }

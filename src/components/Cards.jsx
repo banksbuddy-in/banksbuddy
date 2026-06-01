@@ -11,7 +11,7 @@ export const Cards = () => {
       id: 1,
       className: "div1",
       url: "/services/personal-loan",
-        media: <img src="/d1.jpg" className="media" alt="Business Loan" />,
+      media: <img src="/d1.webp" className="media" alt="Personal Loan" width={200} height={100} />,
       title: "Personal Loan",
       description:
         "Flexible and hassle-free loans to meet your personal financial requirements, from unexpected expenses to dream vacations.",
@@ -20,7 +20,7 @@ export const Cards = () => {
       id: 2,
       className: "div2",
       url: "/services/business-loan",
-      media: <img src="/d2.jpg" className="media" alt="Business Loan" />,
+      media: <img src="/d2.webp" className="media" alt="Business Loan" width={200} height={100} />,
       title: "Business Loan",
       description:
         "Fuel your entrepreneurial journey with customizable business loans to support expansion, operations, or new ventures.",
@@ -29,7 +29,7 @@ export const Cards = () => {
       id: 3,
       className: "div4",
       url: "/services/education-loan",
-      media: <img src="/d4.jpg" className="media" alt="Education Loan" />,
+      media: <img src="/d4.webp" className="media" alt="Education Loan" width={200} height={100} />,
       title: "Education Loan",
       description:
         "Empowering your academic aspirations with loans to cover tuition fees, study materials, and living expenses.",
@@ -38,7 +38,7 @@ export const Cards = () => {
       id: 4,
       className: "div3",
       url: "/services/home-loan",
-      media: <img src="/d6.jpg" className="media" alt="Home Loan" />,
+      media: <img src="/d6.webp" className="media" alt="Home Loan" width={200} height={100} />,
       title: "Home Loan",
       description:
         "Affordable housing finance solutions to help you turn your dream of owning a home into reality.",
@@ -47,7 +47,7 @@ export const Cards = () => {
       id: 5,
       className: "div5",
       url: "/services/machinery-loan",
-      media: <img src="/d5.jpg" className="media" alt="Machinery Loan" />,
+      media: <img src="/d5.webp" className="media" alt="Machinery Loan" width={200} height={100} />,
       title: "Machinery Loan",
       description:
         "Power your business with financing for construction, industrial, and manufacturing equipment.",
@@ -56,7 +56,7 @@ export const Cards = () => {
       id: 6,
       className: "div6",
       url: "/services/auto-loan",
-      media: <img src="/d7.jpg" className="media" alt="Auto Loan" />,
+      media: <img src="/d7.webp" className="media" alt="Auto Loan" width={200} height={100} />,
       title: "Auto Loan",
       description:
         "Drive your dream car or two-wheeler with quick approvals and competitive rates tailored for individuals.",
@@ -66,7 +66,7 @@ export const Cards = () => {
       className: "div6",
       url: "/services/loan-against-property",
       media: (
-        <img src="/d3.jpg" className="media" alt="Loan Against Property" />
+        <img src="/d3.webp" className="media" alt="Loan Against Property" width={200} height={100} />
       ),
       title: "Loan Against Property",
       description:

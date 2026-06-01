@@ -140,19 +140,21 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  border: none;
-  background: #e2e8f0;
+  border: 18px solid transparent;
+  background-clip: padding-box;
+  background-color: #e2e8f0;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0;
+  box-sizing: content-box;
 }
 
 .dot:hover {
-  background: #cbd5e1;
+  background-color: #cbd5e1;
 }
 
 .dot.active {
-  background: var(--darkbl);
+  background-color: var(--darkbl);
   transform: scale(1.2);
 }
 
