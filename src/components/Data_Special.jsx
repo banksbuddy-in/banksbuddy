@@ -31,7 +31,7 @@ export const specSv = [
   "id": "digital-marketing",
   "title": "Digital Marketing Services",
   "URL": "/digital-marketing",
-  "smg": "/ss7.jpg",
+  "smg": "/ss7.webp",
   "overview": "Amplify your reach and drive growth with data-driven marketing."
 },
 {

@@ -669,17 +669,42 @@ app.put("/api/cibil_requests/:id", requireAdmin, async (c) => {
 });
 
 
+let cachedNews = null;
+let cachedNewsTime = 0;
+const CACHE_DURATION_MS = 10 * 60 * 1000; // Cache news for 10 minutes
+
 // News
 app.get("/api/news", async (c) => {
   try {
     const API_KEY = process.env.GNEWS_API_KEY;
     if (!API_KEY) return c.json({ articles: [] });
+
+    const now = Date.now();
+    if (cachedNews && now - cachedNewsTime < CACHE_DURATION_MS) {
+      return c.json(cachedNews);
+    }
+
     const res = await fetch(
       `https://gnews.io/api/v4/search?q=finance+banking&country=in&lang=en&max=4&apikey=${API_KEY}`,
     );
-    if (!res.ok) return c.json({ articles: [] });
-    return c.json(await res.json());
+
+    if (!res.ok) {
+      if (cachedNews) {
+        return c.json(cachedNews);
+      }
+      return c.json({ articles: [] });
+    }
+
+    const data = await res.json();
+    if (data && data.articles && data.articles.length > 0) {
+      cachedNews = data;
+      cachedNewsTime = now;
+    }
+    return c.json(data);
   } catch {
+    if (cachedNews) {
+      return c.json(cachedNews);
+    }
     return c.json({ articles: [] });
   }
 });

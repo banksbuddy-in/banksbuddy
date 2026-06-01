@@ -380,3 +380,12 @@ form.ac-frm.pt {
     justify-content: center;
   }
 }
+nav.navbar {
+    z-index: 88889;
+    position: sticky;
+}
+
+.navlist.suv {
+    height: 100%;
+    border-radius: 20rem;
+}

@@ -107,7 +107,7 @@ export const Login = () => {
                 </div>
 
                 <div className="auth-image-section">
-                    <img src="/log.jpg" alt="Login Visual" />
+                    <img src="/log.jpg" alt="Login Visual" width={600} height={600} loading="lazy" />
                     <div className="image-overlay">
                         <h3>BanksBuddy</h3>
                         <p>Your trusted partner for financial improvement.</p>

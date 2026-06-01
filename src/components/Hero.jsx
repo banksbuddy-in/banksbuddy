@@ -112,7 +112,7 @@ export const Hero = () => {
           transition={{ duration: 1.6, ease: "easeOut", delay: 0 }}
           variants={fadeUp}
         >
-          <img className="rhrimg" src="heroman.png" alt="Hero Image" />
+          <img className="rhrimg" src="heroman.webp" alt="Hero Image" />
         </motion.div>
       </div>
       <div className="marquee-container">

@@ -123,7 +123,7 @@ export const Signup = () => {
                 </div>
 
                 <div className="auth-image-section">
-                    <img src="/log.avif" alt="Signup Visual" />
+                    <img src="/log.avif" alt="Signup Visual" width={600} height={600} loading="lazy" />
                     <div className="image-overlay">
                         <h3>Join Today</h3>
                         <p>Unlock exclusive financial tools and services.</p>

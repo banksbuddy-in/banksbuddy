@@ -8,7 +8,7 @@ import {
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import "./App.css";
 import "./components.css";
 import { Navbar } from "./components/Navbar";
@@ -82,17 +82,19 @@ function App() {
             <ActivityTracker />
             {/* <Cursor /> */}
             <Navbar />
-            <Routes>
-              {Dat.map((e) => {
-                return (
-                  <Route
-                    path={e.path}
-                    element={e.element}
-                    key={e.label || e.path}
-                  />
-                );
-              })}
-            </Routes>
+            <Suspense fallback={null}>
+              <Routes>
+                {Dat.map((e) => {
+                  return (
+                    <Route
+                      path={e.path}
+                      element={e.element}
+                      key={e.label || e.path}
+                    />
+                  );
+                })}
+              </Routes>
+            </Suspense>
             <Link to="https://wa.me/+916377956633" className="ablink">
               <FaWhatsapp />
             </Link>

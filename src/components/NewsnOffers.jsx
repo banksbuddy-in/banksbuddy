@@ -321,15 +321,19 @@ export const NewsnOffers = () => {
 
   const fetchFinancialNews = async () => {
     try {
+      console.log("NewsnOffers: Fetching financial news from /api/news...");
       const data = await apiFetch("/api/news");
+      console.log("NewsnOffers: Received news response:", data);
       if (data && data.articles) {
+        console.log("NewsnOffers: Setting news articles:", data.articles);
         setNews(data.articles);
       } else {
+        console.warn("NewsnOffers: Received empty or invalid articles field:", data);
         setNews([]);
       }
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching news:", error);
+      console.error("NewsnOffers: Error fetching news:", error);
       setNews([]);
       setLoading(false);
     }

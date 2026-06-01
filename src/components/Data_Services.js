@@ -2,7 +2,7 @@ const NewServices = [
   {
     id: "personal_loan",
     Title: "Personal Loan",
-    image: "/ll1.png", // Real image
+    image: "/ll1.webp", // Real image
     overview: [
       "A personal loan is your go-to solution for managing financial needs without hassle. Whether you’re planning a dream wedding, funding higher education, covering medical emergencies, or consolidating debts, our instant personal loan offers quick disbursal, minimal paperwork, and flexible repayment options.",
       "With competitive interest rates and a hassle-free application process, we ensure you get the funds you need, exactly when you need them. No collateral required—just a simple and transparent way to achieve your financial goals with ease.",
@@ -494,7 +494,7 @@ const NewServices = [
   {
     id: "tax-services",
     Title: "Tax Consultancy Services",
-    image: "/taxs.png", // Tax image
+    image: "/taxs.webp", // Tax image
     overview: [
       "Expert Guidance for Smart, Compliant, and Stress-Free Taxation. From proactive tax planning and accurate filing to notice handling and long-term tax optimization, our experienced tax consultants support you at every step.",
       "We help you maximize exemptions, ensure compliance with the latest laws, and resolve any tax notices efficiently. Say goodbye to tax stress and fines.",

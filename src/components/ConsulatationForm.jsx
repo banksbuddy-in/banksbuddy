@@ -260,7 +260,7 @@ export const ConsulatationForm = () => {
             </button>
           </div>
         </form>
-        <img src="/consult.png" alt="form" className="consult" />
+        <img src="/consult.webp" alt="form" className="consult" />
       </div>
       {status && (
         <div className="cb-success-overlay" onClick={() => setStatus("")}>
