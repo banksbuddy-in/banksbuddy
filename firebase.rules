@@ -29,7 +29,9 @@
 
     "reviews": {
       ".read": true,
-      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2')"
+      "$reviewId": {
+        ".write": "!data.exists() || (auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || auth.uid === 'YNzKifqerZSPHAFVqfpUFxbwcRB2' || auth.uid === '0l08pFleyMMchtI3gmblXPfSS1f2' || auth.uid === 'TIgo64G6i5dsDbroSFkHhmmo1fL2'))"
+      }
     },
 
     "team": {

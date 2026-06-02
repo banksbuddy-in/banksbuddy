@@ -472,6 +472,7 @@ const trulyPublicWrite = new Set([
   "consultations",
   "partner_applications",
   "activity_logs",
+  "reviews",
 ]);
 const authWriteCollections = new Set([
   "policyReminders",

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { reviewData } from "./Data_Reviews";
 import apiFetch from "../lib/api.js";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./r.css";
 
 export const Reviews = () => {
@@ -230,6 +231,11 @@ export const Reviews = () => {
               ))}
             </div>
           </div>
+        </div>
+        <div className="reviews-cta-container">
+          <Link to="/feedback-form" className="reviews-cta-btn">
+            Review Us
+          </Link>
         </div>
       </div>
     </section>

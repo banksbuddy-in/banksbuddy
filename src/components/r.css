@@ -593,3 +593,34 @@ video.crdsvid {
 .crds {
   padding-top: 4%;
 }
+
+.reviews-cta-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3.5rem;
+}
+
+.reviews-cta-btn {
+  background: linear-gradient(135deg, var(--darkbl) 0%, var(--bl) 100%);
+  color: white !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(0, 102, 204, 0.25);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: inline-flex;
+  align-items: center;
+}
+
+.reviews-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 102, 204, 0.35);
+  background: linear-gradient(135deg, var(--bl) 0%, var(--darkbl) 100%);
+}
+
+.reviews-cta-btn:active {
+  transform: translateY(-1px);
+}

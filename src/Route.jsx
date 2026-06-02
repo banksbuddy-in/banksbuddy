@@ -32,6 +32,7 @@ const Login = lazy(() => import("./components/Login").then(m => ({ default: m.Lo
 const Signup = lazy(() => import("./components/Signup").then(m => ({ default: m.Signup })));
 const Credit = lazy(() => import("./components/Credit").then(m => ({ default: m.Credit })));
 const PaymentTestPage = lazy(() => import("./components/PaymentTestPage").then(m => ({ default: m.PaymentTestPage })));
+const FeedbackForm = lazy(() => import("./components/FeedbackForm").then(m => ({ default: m.FeedbackForm })));
 
 export const Dat = [
   {
@@ -43,6 +44,16 @@ export const Dat = [
     path: "/login",
     label: "Login",
     element: <Login />,
+  },
+  {
+    path: "/feedback-form",
+    label: "Feedback",
+    element: <FeedbackForm />,
+  },
+  {
+    path: "/feeback-form",
+    label: "Feedback Typo",
+    element: <FeedbackForm />,
   },
   {
     path: "/signup",
