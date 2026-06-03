@@ -24,7 +24,7 @@ export const Cover = ({ title, tagline, description, image }) => {
     return (
         <div id="cover" style={{ backgroundImage: `url('${image || "/cc2.jpg"}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
             <h1>{p1} <span>{p2}</span></h1>
-            <p>{description || "Dreams don’t wait. Neither should your finances. Get your Personal Loan with BanksBuddy"}</p>
+            {/* <p>{description || "Dreams don’t wait. Neither should your finances. Get your Personal Loan with BanksBuddy"}</p> */}
             <button style={{ alignItems: "center", gap: "0.5rem" }} onClick={() => n("/contact-banksbuddy")}>
                 Get Started <GoArrowRight />
             </button>

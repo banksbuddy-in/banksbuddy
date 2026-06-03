@@ -15,6 +15,7 @@ export const ConsulatationForm = () => {
   const [city, setCity] = useState("");
   const [serviceType, setServiceType] = useState("");
   const [loanType, setLoanType] = useState("");
+  const [otherServiceType, setOtherServiceType] = useState("");
   const [employmentType, setEmploymentType] = useState("");
   const [income, setIncome] = useState("");
   const [status, setStatus] = useState("");
@@ -36,6 +37,7 @@ export const ConsulatationForm = () => {
       city,
       serviceType,
       ...(serviceType === "Loan" && { loanType }),
+      ...(serviceType === "Other" && { otherServiceType }),
       employmentType,
       ...(employmentType === "Salaried" && { income }),
       createdAt: new Date().toISOString(),
@@ -56,6 +58,7 @@ export const ConsulatationForm = () => {
       setCity("");
       setServiceType("");
       setLoanType("");
+      setOtherServiceType("");
       setEmploymentType("");
       setIncome("");
     } catch (err) {
@@ -208,6 +211,22 @@ export const ConsulatationForm = () => {
                   Loan Against Property (LAP)
                 </option>
                 <option value="Other">Other</option>
+              </select>
+            )}
+
+            {/* Conditional Other Service Type Dropdown */}
+            {serviceType === "Other" && (
+              <select
+                className="a-input"
+                value={otherServiceType}
+                onChange={(e) => setOtherServiceType(e.target.value)}
+                required
+              >
+                <option value="">Select Type of Service</option>
+                <option value="Consultation Services">Consultation Services</option>
+                <option value="Tax Services">Tax Services</option>
+                <option value="Website Services">Website Services</option>
+                <option value="Digital Marketing Services">Digital Marketing Services</option>
               </select>
             )}
 

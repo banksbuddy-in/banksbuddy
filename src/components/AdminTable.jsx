@@ -55,7 +55,7 @@ const AdminTable = ({ embedded = false }) => {
         Name: r.Name || "", // Using capital 'Name' to match your JSX
         Email: r.email || "",
         "Service Type": r.serviceType || "",
-        "Loan Type": r.loanType || "",
+        "Loan Type": r.loanType || r.otherServiceType || "",
         Reason: r.reason || "",
         Phone: r.phone || "",
       };
@@ -154,7 +154,7 @@ const AdminTable = ({ embedded = false }) => {
                   <td>{r.Name}</td>
                   <td>{r.email}</td>
                   <td>{r.serviceType}</td>
-                  <td>{r.loanType}</td>
+                  <td>{r.loanType || r.otherServiceType || "—"}</td>
                   <td style={{ width: "30%" }}>{r.reason}</td>
                   <td style={{ textAlign: "center" }}>
                     {r.phone ? (
@@ -165,7 +165,7 @@ const AdminTable = ({ embedded = false }) => {
                             const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
                             return `https://wa.me/${waPhone}?text=${encodeURIComponent(
                               `Hi ${r.Name || "there"}, this is BanksBuddy team.\n\n` +
-                                `Regarding your request for the *${r.serviceType || "service"}* ` +
+                                `Regarding your request for the *${r.serviceType || "service"}${r.loanType || r.otherServiceType ? ` (${r.loanType || r.otherServiceType})` : ""}* ` +
                                 `\nFor further queries,please reply to this message or call us at +91-6377956633.\n` +
                                 `www.banksbuddy.in`,
                             )}`;
