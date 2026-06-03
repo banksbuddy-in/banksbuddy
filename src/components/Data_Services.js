@@ -8,7 +8,7 @@ const NewServices = [
       "With competitive interest rates and a hassle-free application process, we ensure you get the funds you need, exactly when you need them. No collateral required—just a simple and transparent way to achieve your financial goals with ease.",
       "Secured personal loans for salaried and certain self-employed profiles.",
     ],
-    tagline: "Unlock Financial Freedom",
+    tagline: "Unlock Financial Freedom with Personal Loans",
     TbData: [
       "₹50 Lakhs",
       "Tenure from 12 months to 84 months",
@@ -110,7 +110,7 @@ const NewServices = [
       "With a simple application process, quick disbursal, and no collateral for eligible students, we ensure uninterrupted learning. Focus on your studies while we take care of the finances.",
       "Finance for students pursuing domestic or international courses.",
     ],
-    tagline: "Invest in Your Future",
+    tagline: "Invest in Your Future with Education Loans",
     TbData: [
       "₹ 3 Cr",
       "Tenure from 12 months to 84 months*",
@@ -161,7 +161,7 @@ const NewServices = [
       "With fast approvals, minimal documentation, and flexible tenure, we make it easy to upgrade your assets and fuel your growth.",
       "Loans for new/used machinery and refinance of existing machinery loans.",
     ],
-    tagline: "Power Your Growth",
+    tagline: "Power Your Business Growth with Machinery Loans",
     TbData: [
       "₹5 Cr",
       "Tenure from 12 months to 84 months*",
@@ -205,7 +205,7 @@ const NewServices = [
       "With quick approvals, minimal documentation, and simple processing, owning your vehicle becomes smooth and hassle-free.",
       "Loans available for new/used vehicles and refinance of existing auto loans.",
     ],
-    tagline: "Drive Your Dreams",
+    tagline: "Drive Your Dreams with Easy Auto Loans",
     TbData: [
       "₹1 Cr",
       "Tenure from 12 months to 84 months*",
@@ -252,7 +252,7 @@ const NewServices = [
       "Enjoy flexible repayment options, competitive interest rates, and fast approvals—designed to support your business vision.",
       "Working capital and term loans for businesses (manufacturing, trading, services).",
     ],
-    tagline: "Expand & Succeed Without Limits",
+    tagline: "Expand and Scale Your Business Without Limits",
     TbData: [
       "₹5 Cr",
       "Tenure from 12 months to 84 months*",
@@ -401,7 +401,7 @@ const NewServices = [
       "Whether you're looking for a portfolio site, business website, e-commerce store, or a custom web application, development solutions are tailored to match your goals, branding, and functionality needs.",
       "A well-developed website enhances credibility, increases customer engagement, and acts as a powerful digital asset to grow your business.",
     ],
-    tagline: "Build Your Digital Presence with Modern Web Solutions",
+    tagline: "Modern Web Solutions for Your Digital Presence",
     TbLabels: ["Starting Price", "Timeline", "Responsiveness", "SEO Included"],
     TbData: [
       "Starts from ₹15,000",
@@ -448,7 +448,7 @@ const NewServices = [
     "Whether you need search engine optimization (SEO), social media management, pay-per-click (PPC) advertising, or content marketing, these solutions are data-driven to maximize your return on investment.",
     "A strategic digital marketing approach helps you build brand authority, engage with your target audience, and sustainably scale your business in a competitive online landscape."
   ],
-  "tagline": "Amplify Your Reach and Drive Growth with Data-Driven Marketing",
+  "tagline": "Drive Growth with Data-Driven Digital Marketing",
   "TbLabels": [
     "Starting Price",
     "Campaign Duration",

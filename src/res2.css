@@ -205,7 +205,8 @@ img.ab-partner-logo.desai {
 }
 
 .pan img:hover {
-  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5) saturate(5.5);
+  filter: invert(1) sepia(4) brightness(0.46) hue-rotate(171deg) contrast(3.5)
+    saturate(5.5);
 }
 
 .pan img {
@@ -516,7 +517,6 @@ img.psa {
     padding: 4% 0;
   }
 
-
   .frr2 {
     justify-content: center;
   }
@@ -612,4 +612,7 @@ section.ab-values-section {
 .ab-service-card:hover {
   background-color: var(--darkbl);
   color: white;
+}
+div#cover {
+  width: 100%;
 }
