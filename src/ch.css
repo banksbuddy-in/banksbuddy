@@ -403,5 +403,14 @@ img.rhrimg {
   justify-content: center;
 }
 .lhr {
-    padding-top: 0;
+  padding-top: 0;
+}
+
+.offer-card {
+  max-height: none;
+  height: auto;
+}
+
+img.offer-image {
+  height: auto;
 }

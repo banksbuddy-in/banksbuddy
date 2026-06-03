@@ -240,3 +240,12 @@ img.news-image {
 div#NewsnOffers {
   padding: 5% 13%;
 }
+
+.offer-card {
+    max-height: none;
+    height: auto;
+}
+
+img.offer-image {
+    height: auto;
+}
