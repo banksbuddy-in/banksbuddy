@@ -359,9 +359,11 @@
 .sp-feature-icon {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg,
-      rgba(8, 105, 255, 0.1) 0%,
-      rgba(0, 57, 144, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(8, 105, 255, 0.1) 0%,
+    rgba(0, 57, 144, 0.05) 100%
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -832,9 +834,11 @@
 .sp-doc-icon-wrapper {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg,
-      rgba(8, 105, 255, 0.1) 0%,
-      rgba(0, 57, 144, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(8, 105, 255, 0.1) 0%,
+    rgba(0, 57, 144, 0.05) 100%
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1052,7 +1056,6 @@
   color: var(--bl);
 }
 
-
 /* ==================== Responsive ==================== */
 
 /* Tablet */
@@ -1232,7 +1235,7 @@
 /* Small Mobile */
 @media (max-width: 480px) {
   div#cover {
-    min-height: 30vh;
+    min-height: 20vh;
     padding: 15% 5% 10% 5% !important;
   }
 
@@ -1349,6 +1352,23 @@
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
+  }
+  div#ServicePage {
+    padding: 0;
+  }
+
+  .pgcntt {
+    height: 100%;
+    position: relative !important;
+    padding: 0 7% !important;
+  }
+  div#cover h1,
+  div#cover button {
+    display: none;
+  }
+
+  div#ServicePage {
+    position: relative;
   }
 }
 
