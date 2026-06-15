@@ -43,8 +43,8 @@ const servicesMenu = {
     items: [
       { title: "Consultancy Service", slug: "/consultation" },
       { title: "Tax Services", slug: "/tax-services" },
-      { title: "Website Development", slug: "/website-development" },
-      { title: "Digital Marketing Services", slug: "/digital-marketing" },
+      // { title: "Website Development", slug: "/website-development" },
+      // { title: "Digital Marketing Services", slug: "/digital-marketing" },
     ],
   },
 };

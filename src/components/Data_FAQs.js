@@ -652,7 +652,7 @@ export const serviceFAQMap = {
   tax: taxFAQs, // Fallback
   "cibil-improvement": cibilFAQs,
   cibil: cibilFAQs, // Fallback
-  "website-development": webDevFAQs,
+  // "website-development": webDevFAQs,
 
   emi: emiFAQs,
 };

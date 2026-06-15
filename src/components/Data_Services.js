@@ -391,6 +391,7 @@ const NewServices = [
       },
     ],
   },
+  /*
   {
     id: "website-development",
     Title: "Website Development",
@@ -491,6 +492,7 @@ const NewServices = [
     }
   ]
 },
+  */
   {
     id: "tax-services",
     Title: "Tax Consultancy Services",

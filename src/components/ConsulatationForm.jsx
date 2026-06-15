@@ -225,8 +225,8 @@ export const ConsulatationForm = () => {
                 <option value="">Select Type of Service</option>
                 <option value="Consultation Services">Consultation Services</option>
                 <option value="Tax Services">Tax Services</option>
-                <option value="Website Services">Website Services</option>
-                <option value="Digital Marketing Services">Digital Marketing Services</option>
+                {/* <option value="Website Services">Website Services</option> */}
+                {/* <option value="Digital Marketing Services">Digital Marketing Services</option> */}
               </select>
             )}
 

@@ -131,7 +131,7 @@ export const Footer = () => {
                 Tax Services
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className="fct" to="/website-development">
                 Website Development
               </Link>
@@ -140,7 +140,7 @@ export const Footer = () => {
               <Link className="fct" to="/digital-marketing">
                 Digital Marketing
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="c2">

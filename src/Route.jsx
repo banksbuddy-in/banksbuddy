@@ -196,16 +196,16 @@ export const Dat = [
       </PrivateRoute>
     ),
   },
-  {
-    path: "/website-development",
-    label: "Website Improvement",
-    element: <ServicePage />,
-  },
-  {
-    path: "/digital-marketing",
-    label: "Digital Marketing Services",
-    element: <ServicePage />,
-  },
+  // {
+  //   path: "/website-development",
+  //   label: "Website Improvement",
+  //   element: <ServicePage />,
+  // },
+  // {
+  //   path: "/digital-marketing",
+  //   label: "Digital Marketing Services",
+  //   element: <ServicePage />,
+  // },
   {
     path: "/contact-banksbuddy",
     label: "Contact Us",

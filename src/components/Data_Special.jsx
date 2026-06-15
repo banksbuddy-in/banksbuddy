@@ -27,20 +27,20 @@ export const specSv = [
     smg: "/ss5.jpg",
     overview: "Expert Guidance for Smart, Compliant, and Stress-Free Taxation.",
   },
-  {
-  "id": "digital-marketing",
-  "title": "Digital Marketing Services",
-  "URL": "/digital-marketing",
-  "smg": "/ss7.webp",
-  "overview": "Amplify your reach and drive growth with data-driven marketing."
-},
-{
-  "id": "website-development",
-  "title": "Website Development",
-  "URL": "/website-development",
-  "smg": "/ss6.jpg",
-  "overview": "Custom software solutions that streamline operations and accelerate growth."
-}
+  // {
+  //   "id": "digital-marketing",
+  //   "title": "Digital Marketing Services",
+  //   "URL": "/digital-marketing",
+  //   "smg": "/ss7.webp",
+  //   "overview": "Amplify your reach and drive growth with data-driven marketing."
+  // },
+  // {
+  //   "id": "website-development",
+  //   "title": "Website Development",
+  //   "URL": "/website-development",
+  //   "smg": "/ss6.jpg",
+  //   "overview": "Custom software solutions that streamline operations and accelerate growth."
+  // }
 ];
 export const Insur = [
   {

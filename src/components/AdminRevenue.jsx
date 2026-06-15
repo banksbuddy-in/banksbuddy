@@ -49,7 +49,7 @@ const SERVICE_CATEGORIES = {
     "General Insurance",
   ],
   "Other Services": [
-    "Website Development",
+    // "Website Development",
     "Tax Consultancy Services",
     "Other",
   ],
