@@ -210,7 +210,7 @@ export const Reviews = () => {
                       ))}
                     </div>
                     <p className="mini-text">
-                      "{card.review.substring(0, 150)}..."
+                      "{card.review.substring(0, 256)}"
                     </p>
                     <span className="mini-author">— {card.name}</span>
                   </div>
